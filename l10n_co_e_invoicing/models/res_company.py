@@ -59,8 +59,8 @@ class ResCompany(models.Model):
 
     def write(self, vals):
         rec = super(ResCompany, self).write(vals)
-        get_pkcs12(self.certificate_file, self.certificate_password)
-
+        if self.certificate_file and self.certificate_password:
+            get_pkcs12(self.certificate_file, self.certificate_password)
         return rec
 
 
