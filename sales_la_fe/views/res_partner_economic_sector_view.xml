@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <record id="res_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="priority">15</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="sector_id"/>
+                    <field name="economic_activity_id"/>
+                    <field name="gender"/>
+                    <!--<field name="study_credit" widget="radio"/>-->
+                </xpath>
+                <xpath expr="//field[@name='category_id']" position="before">
+                    <field name="gender"/> 
+                </xpath>
+                <xpath expr="//page[@name='internal_notes']/field[@name='comment']" position="after">
+                    <group>
+                    <field name="study_credit" widget="radio" string="Estudio de credito aprobado?"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
