@@ -6,6 +6,9 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="priority">15</field>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="ciiu_ids" widget="many2many_tags"/>
+                </xpath>
                 <xpath expr="//field[@name='category_id']" position="after">
                     <field name="sector_id"/>
                     <field name="economic_activity_id"/>

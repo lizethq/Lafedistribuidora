@@ -11,5 +11,15 @@
                 </xpath>
             </field>
         </record>
+        <record model="ir.ui.view" id="sales_la_fe_ciiu_code_tree">
+          <field name="name">sales.la.fe.ciiu.code.tree</field>
+          <field name="model">ciiu.code</field>
+          <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="description" />
+        </tree>
+       </field>
+     </record>
     </data>
 </odoo>
