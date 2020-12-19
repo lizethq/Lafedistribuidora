@@ -28,6 +28,7 @@
         'views/partner_economic_sector_view.xml',
         'views/res_partner_economic_sector_view.xml',
         'views/account_move_la_fe_expiration_date_view.xml',
+        'views/product_pivote_view.xml',
         #'views/sale_order_chanel_view.xml',
     ],
     # only loaded in demonstration mode
