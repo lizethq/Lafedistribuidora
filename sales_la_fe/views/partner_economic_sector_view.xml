@@ -35,5 +35,23 @@
             action="action_view_ciiu_code"
             parent="account.account_account_menu"
             sequence="15"/>
+        
+        <record id="action_view_payment_method_la_fe" model="ir.actions.act_window">
+            <field name="name">Medios de pago</field>
+            <field name="res_model">payment.methods.la.fe</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="view_id" ref="view_account_change_lock_date"/>-->
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Crea tu primer medio de pago
+                </p>
+            </field>
+        </record>
+      
+        <menuitem
+            id="menu_action_sales_la_fe_payment_method"
+            name="Medios de pago"
+            action="action_view_payment_method_la_fe"
+            parent="account.account_account_menu"
+            sequence="20"/>
   </data>
 </odoo>
