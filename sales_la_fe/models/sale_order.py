@@ -9,6 +9,7 @@ class SaleOrder(models.Model):
     
     credit_aproved = fields.Char('Crédito aprobado?', compute='_compute_credit_aproved')
     method_la_fe_id = fields.Many2one('payment.methods.la.fe','Medios de pago')
+    channel_id = fields.Many2one('channel.fe', 'Canal')
     
     @api.depends('partner_id')
     def _compute_credit_aproved(self):

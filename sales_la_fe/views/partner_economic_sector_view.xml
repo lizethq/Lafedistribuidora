@@ -53,5 +53,23 @@
             action="action_view_payment_method_la_fe"
             parent="account.account_account_menu"
             sequence="20"/>
+        
+        <record id="action_view_account_payment_channel" model="ir.actions.act_window">
+            <field name="name">Canales de venta</field>
+            <field name="res_model">channel.fe</field>
+            <field name="view_mode">tree,form</field>
+            
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Crea tu canal de venta
+                </p>
+            </field>
+        </record>
+      
+        <menuitem
+            id="menu_action_account_payment_channel"
+            name="Canales de venta"
+            action="action_view_account_payment_channel"
+            parent="account.root_payment_menu"
+            sequence="25"/>
   </data>
 </odoo>

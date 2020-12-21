@@ -12,6 +12,9 @@
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="method_la_fe_id"/>
                 </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="channel_id"/>
+                </xpath>
             </field>
         </record>
     </data>
