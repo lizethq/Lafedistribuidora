@@ -1,0 +1,18 @@
+<odoo>	
+    <data>
+        <record id="module_example_total_amount_sale_la_fe" model="ir.ui.view">	
+            <field name="name">module.example.total.amount.sale.la.fe</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <!--<field name="priority">15</field>-->
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']" position="after">
+                    <group>
+                    <field name="amount_product"/>
+                    <field name="total_products_fe"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
