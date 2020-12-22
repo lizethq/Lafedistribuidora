@@ -12,7 +12,22 @@
                     <field name="total_products_fe"/>
                     </group>
                 </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="delivery_percentage" widget="progressbar"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="module_example_total_amount_sale_la_fe_tree" model="ir.ui.view">	
+            <field name="name">module.example.total.amount.sale.la.fe.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <!--<field name="priority">15</field>-->
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="before">
+                    <field name="delivery_percentage" widget="progressbar"/>
+
+                </xpath>
             </field>
         </record>
     </data>
-</odoo>
+</odoo>  <!--invisible="context.get('set_visible',False)"-->

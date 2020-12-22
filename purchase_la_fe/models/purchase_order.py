@@ -24,9 +24,3 @@ class PurchaseOrder(models.Model):
             else:
                 record.amount_product = False 
                 record.total_products_fe = False 
-                
-                
-    
-        
-    
-    
