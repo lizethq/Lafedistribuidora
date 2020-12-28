@@ -752,7 +752,7 @@ msgid ""
 msgstr ""
 "El grupo de notificación para fallas en la factura electrónica no está configurado. \n"
 "No se le notificará si algo sale mal. \n"
-"Vaya a Configuración> Compañía> Grupo de notificaciones".
+"Vaya a Configuración> Compañía> Grupo de notificaciones."
 
 #. module: l10n_co_e_invoicing
 #: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.account_invoice_dian_document_view_tree
