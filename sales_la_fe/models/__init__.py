@@ -7,6 +7,8 @@ from . import sale_order
 from . import payment_methods_la_fe
 from . import channel_fe
 from . import economic_activity
+from . import sale_order_line
+
+
 
 #from . import sale_order
-#from . import sales_order_chanels

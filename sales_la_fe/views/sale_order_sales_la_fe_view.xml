@@ -15,6 +15,11 @@
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="channel_id"/>
                 </xpath>
+                <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                     
+                    <field name="last_price1"/>
+                    <field name="last_price2"/>
+                </xpath>
             </field>
         </record>
     </data>

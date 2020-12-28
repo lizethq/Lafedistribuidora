@@ -11,7 +11,8 @@
                 </xpath>
                 <xpath expr="//field[@name='category_id']" position="after">
                     <field name="sector_id"/>
-                    <field name="economic_activity_id"/>
+                    <!--<field name="economic_activity_id"/>-->
+                    <field name="ciiu_ids" widget="many2many_tags"/>
                     <field name="gender"/>
                     <!--<field name="study_credit" widget="radio"/>-->
                 </xpath>
