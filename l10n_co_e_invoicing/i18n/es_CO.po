@@ -793,7 +793,7 @@ msgstr ""
 "Código Estado: %s, \n"
 "Razón: %s /n"
 "\n"
-"Póngase en contacto con su administrador".
+"Póngase en contacto con su administrador."
 
 #. module: l10n_co_e_invoicing
 #: code:addons/l10n_co_e_invoicing/models/account_invoice_dian_document.py:0
@@ -845,7 +845,7 @@ msgid ""
 msgstr ""
 "Error desconocido. \n"
 "\n"
-"Póngase en contacto con su administrador".
+"Póngase en contacto con su administrador."
 
 #. module: l10n_co_e_invoicing
 #: code:addons/l10n_co_e_invoicing/models/res_company.py:0
@@ -854,6 +854,7 @@ msgid ""
 "Unknown Error: %s\n"
 "."
 msgstr ""
+"Error desconocido: %s \n"
 
 #. module: l10n_co_e_invoicing
 #: model:ir.model.fields.selection,name:l10n_co_e_invoicing.selection__account_invoice_dian_document__get_status_zip_status_code__99
