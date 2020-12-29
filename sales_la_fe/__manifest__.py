@@ -30,7 +30,8 @@
         'views/account_move_la_fe_expiration_date_view.xml',
         'views/product_pivote_view.xml',
         'views/product_template_sales_la_fe.xml',
-        'views/sale_order_sales_la_fe_view.xml'
+        'views/sale_order_sales_la_fe_view.xml',
+        'views/stock_production_lot_la_fe.xml'
         #'views/sale_order_chanel_view.xml',
     ],
     # only loaded in demonstration mode
