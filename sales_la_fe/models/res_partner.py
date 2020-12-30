@@ -13,6 +13,14 @@ class ResPartner(models.Model):
     study_credit = fields.Selection([('Si', 'Si'), ('No', 'No')], 'Estudio de credito aprobado?')
     ciiu_ids = fields.Many2many('ciiu.code', 'partner_ciiu_rel','partner_id', 'ciiu_id', string='Actividad económica' )
     #economic_activity_ids = fields.Many2many('ciiu.code', 'partner_acteco_rel','partner_id', 'ciiu_code_id', string='Actividad económica' )
+    confidence_degree = fields.Selection(
+        string="Confidence degree",
+        selection=[
+                ('good', 'good debtor'),
+                ('low', 'normal debtor'),
+                ('bad', ' bad debtor'),
+        ],
+    )
     
     
     

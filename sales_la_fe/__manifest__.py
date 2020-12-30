@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account', 'sale'],
+    'depends': ['account', 'sale', 'dev_customer_credit_limit','product_expiry'],
     #
     # always loaded
     'data': [
