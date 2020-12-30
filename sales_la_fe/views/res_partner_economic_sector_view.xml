@@ -27,7 +27,7 @@
             </field>
         </record>
 
-        <record id="res_parntner_partner_credit_limit_form_edited" model="ir.ui.view">
+        <!--<record id="res_parntner_partner_credit_limit_form_edited" model="ir.ui.view">
             <field name="name">res.parntner.partner_credit_limit.form.edited</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="dev_customer_credit_limit.view_credit_readonly_partner_form"/>
@@ -37,6 +37,6 @@
                     <field name="confidence_degree"/>
                 </xpath>
             </field>
-        </record>
+        </record>-->
     </data>
 </odoo>
