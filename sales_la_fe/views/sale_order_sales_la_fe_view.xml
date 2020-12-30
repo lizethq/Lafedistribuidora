@@ -6,12 +6,12 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <!--<field name="priority">15</field>-->
             <field name="arch" type="xml">
-                <!--<xpath expr="//field[@name='partner_id']" position="after">
+                <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="check_credit_two" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='payment_term_id']" position="attributes">
                     <attribute name="attrs">{'readonly':[('check_credit_two','=', True)]}</attribute>
-                </xpath>-->
+                </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="credit_aproved"/>
                 </xpath>
