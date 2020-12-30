@@ -14,7 +14,7 @@ class SaleOrder(models.Model):
         'account.payment.term', string='Payment Terms', check_company=True,  # Unrequired company
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", compute= '_compute_credit_aproved_two', store = True)
     
-    check_credit_two = fields.Boolean('Check_two', compute='_compute_credit_aproved_two')
+    #check_credit_two = fields.Boolean('Check_two', compute='_compute_credit_aproved_two')
     
     
     
@@ -26,7 +26,7 @@ class SaleOrder(models.Model):
             else:
                 record.credit_aproved = False
                 
-    @api.depends('partner_id')
+    """@api.depends('partner_id')
     def _compute_credit_aproved_two(self):
         for record in self:
             if record.partner_id.study_credit:
@@ -41,7 +41,7 @@ class SaleOrder(models.Model):
                     record.credit_aproved = False
             else:
                 record.credit_aproved = False
-                record.check_credit_two = False
+                record.check_credit_two = False"""
                     
                 
                 
