@@ -17,6 +17,8 @@ class SaleOrderLine(models.Model):
     last_price2 = fields.Float('Ultimo precio(2)')
     partner_id = fields.Many2one('res.patner')
     check_control_sales = fields.Boolean('')
+    inventory_quantity = fields.Float('Cantidad a la mano')
+    virtual_available = fields.Float('Cantidad proyectada')
     
     
     @api.onchange('product_id')
@@ -80,6 +82,31 @@ class SaleOrderLine(models.Model):
                     record.check_control_sales = False
             else:
                 record.check_control_sales = False
+                
+                
+    @api.onchange('product_id')
+    def calculate_inventory_quantity(self):
+        for record in self:
+            if record.product_id:
+                pro_obj = self.env['product.template'].search([('id','=',record.product_id.id)])
+                if pro_obj.qty_available:
+                    record.inventory_quantity = pro_obj.qty_available
+                else:
+                    record.inventory_quantity = 0.0
+            else:
+                record.inventory_quantity = 0.0
+    
+    @api.onchange('product_id')
+    def calculate_inventory_virtual(self):
+        for record in self:
+            if record.product_id:
+                pro_obj = self.env['product.template'].search([('id','=',record.product_id.id)])
+                if pro_obj.virtual_available:
+                    record.virtual_available = pro_obj.virtual_available
+                else:
+                    record.virtual_available = 0.0
+            else:
+                record.virtual_available = 0.0
                             
                     
         

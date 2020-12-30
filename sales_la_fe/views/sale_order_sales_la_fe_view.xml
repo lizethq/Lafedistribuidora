@@ -15,10 +15,12 @@
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="channel_id"/>
                 </xpath>
-                <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
-                     
-                    <field name="last_price1"/>
-                    <field name="last_price2"/>
+                <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="before">
+                    <field name="inventory_quantity" readonly="1"/>
+                    <field name="virtual_available" readonly="1"/>
+                    <!--<field name="last_price1" readonly="1"/>-->
+                    <field name="last_price1" readonly="1"/>
+                    <field name="last_price2" readonly="1"/>
                 </xpath>
             </field>
         </record>
