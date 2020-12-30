@@ -17,7 +17,7 @@ class SaleOrderLine(models.Model):
     last_price2 = fields.Float('Ultimo precio(2)')
     partner_id = fields.Many2one('res.patner')
     check_control_sales = fields.Boolean('')
-    hello = fields.Char('')
+    
     inventory_quantity = fields.Float('Cantidad a la mano', compute='_calculate_inventory_quantity')
     virtual_available = fields.Float('Cantidad proyectada', compute='_calculate_inventory_virtual')
     discount = fields.Float(string='Discount (%)',  default=0.0, digits=(12,2))
@@ -86,11 +86,7 @@ class SaleOrderLine(models.Model):
                 
                 
     @api.onchange('product_id')
-<<<<<<< HEAD
-    def calculate_inventory_quantity(self):
-=======
     def _calculate_inventory_quantity(self):
->>>>>>> a4acc4578229f4f5998c0a26d88f1435d4dfe7c5
         for record in self:
             if record.product_id:
                 pro_obj = self.env['product.template'].search([('id','=',record.product_id.id)])
@@ -102,11 +98,7 @@ class SaleOrderLine(models.Model):
                 record.inventory_quantity = 0.0
     
     @api.onchange('product_id')
-<<<<<<< HEAD
-    def calculate_inventory_virtual(self):
-=======
     def _calculate_inventory_virtual(self):
->>>>>>> a4acc4578229f4f5998c0a26d88f1435d4dfe7c5
         for record in self:
             if record.product_id:
                 pro_obj = self.env['product.template'].search([('id','=',record.product_id.id)])
