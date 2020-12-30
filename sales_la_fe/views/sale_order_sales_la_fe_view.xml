@@ -7,6 +7,12 @@
             <!--<field name="priority">15</field>-->
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="check_credit_two" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                    <attribute name="attrs">{'readonly':[('check_credit_two','=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="credit_aproved"/>
                 </xpath>
                 <xpath expr="//field[@name='payment_term_id']" position="after">
@@ -16,8 +22,13 @@
                     <field name="channel_id"/>
                 </xpath>
                 <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="before">
+<<<<<<< HEAD
                     <field name="inventory_quantity" readonly="1"/>
                     <field name="virtual_available" readonly="1"/>
+=======
+                    <field name="inventory_quantity" readonly="1" force_save="1"/>
+                    <field name="virtual_available" readonly="1" force_save="1"/>
+>>>>>>> a4acc4578229f4f5998c0a26d88f1435d4dfe7c5
                     <!--<field name="last_price1" readonly="1"/>-->
                     <field name="last_price1" readonly="1"/>
                     <field name="last_price2" readonly="1"/>
