@@ -18,8 +18,6 @@ class SaleOrderLine(models.Model):
     partner_id = fields.Many2one('res.patner')
     check_control_sales = fields.Boolean('')
 <<<<<<< HEAD
-    inventory_quantity = fields.Float('Cantidad a la mano')
-    virtual_available = fields.Float('Cantidad proyectada')
     
     
 =======
