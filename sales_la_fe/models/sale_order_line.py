@@ -17,15 +17,11 @@ class SaleOrderLine(models.Model):
     last_price2 = fields.Float('Ultimo precio(2)')
     partner_id = fields.Many2one('res.patner')
     check_control_sales = fields.Boolean('')
-<<<<<<< HEAD
-    
-    
-=======
+    hello = fields.Char('')
     inventory_quantity = fields.Float('Cantidad a la mano', compute='_calculate_inventory_quantity')
     virtual_available = fields.Float('Cantidad proyectada', compute='_calculate_inventory_virtual')
     discount = fields.Float(string='Discount (%)',  default=0.0, digits=(12,2))
     #digits='Discount',
->>>>>>> a4acc4578229f4f5998c0a26d88f1435d4dfe7c5
     @api.onchange('product_id')
     def calculate_the_last_two_prices(self):
         for record in self:
