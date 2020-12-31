@@ -50,6 +50,7 @@ class ResCompany(models.Model):
         inverse_name='company_id',
         string='Notification Group')
     get_numbering_range_response = fields.Text(string='GetNumberingRange Response')
+    tributary_information = fields.Text(string='Tributary Information')
 
 
     @api.onchange('signature_policy_url')
@@ -61,6 +62,7 @@ class ResCompany(models.Model):
         rec = super(ResCompany, self).write(vals)
         if self.certificate_file and self.certificate_password:
             get_pkcs12(self.certificate_file, self.certificate_password)
+            
         return rec
 
 

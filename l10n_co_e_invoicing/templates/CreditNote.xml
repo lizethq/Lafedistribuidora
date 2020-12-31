@@ -77,6 +77,7 @@ referencia la factura por ejemplo en servicios públicos>
 	</cac:DiscrepancyResponse>
 <!--TODAS LAS FACTURAS DEBEN SER DEL MISMO ADQUIRIENTE-->
 <!--Si CreditNoteTypeCode igual a 20 es obligatorio-->
+	{% if BillingReference.ID %}
 	<cac:BillingReference>
 		<cac:InvoiceDocumentReference>
 			<cbc:ID>{{BillingReference.ID}}</cbc:ID>
@@ -84,6 +85,7 @@ referencia la factura por ejemplo en servicios públicos>
 			<cbc:IssueDate>{{BillingReference.IssueDate}}</cbc:IssueDate>
 		</cac:InvoiceDocumentReference>
 	</cac:BillingReference>
+	{% endif %}
 <!--TODO: Creo que esto para colocar el numero de la orden, en nuestro caso, seria la cotizacion>
 	<cac:OrderReference>
 		<cbc:ID>{{OrderReferenceID}}</cbc:ID>
@@ -138,7 +140,7 @@ Especifación de este grupo igual a la del documento Invoice>
 					schemeID="{{AccountingSupplierParty.CompanyIDschemeID}}"
 					schemeName="{{AccountingSupplierParty.CompanyIDschemeName}}">{{AccountingSupplierParty.CompanyID}}</cbc:CompanyID>
 			<!--TODO, listName el anexo dice que eliminar o valor No aplica-->
-				<cbc:TaxLevelCode listName="48">{{AccountingSupplierParty.TaxLevelCode}}</cbc:TaxLevelCode>
+				<cbc:TaxLevelCode listName="{{AccountingSupplierParty.listName}}">{{AccountingSupplierParty.TaxLevelCode}}</cbc:TaxLevelCode>
 				<cac:RegistrationAddress>
 					<cbc:ID>{{AccountingSupplierParty.AddressID}}</cbc:ID>
 					<cbc:CityName>{{AccountingSupplierParty.AddressCityName}}</cbc:CityName>
@@ -236,7 +238,7 @@ Especifación de este grupo igual a la del documento Invoice>
 					schemeID="{{AccountingCustomerParty.CompanyIDschemeID}}"
 					schemeName="{{AccountingCustomerParty.CompanyIDschemeName}}">{{AccountingCustomerParty.CompanyID}}</cbc:CompanyID>
 				<!--TODO, listName el anexo dice que eliminar o valor No aplica-->
-				<cbc:TaxLevelCode listName="48">{{AccountingCustomerParty.TaxLevelCode}}</cbc:TaxLevelCode>
+				<cbc:TaxLevelCode listName="{{AccountingCustomerParty.listName}}">{{AccountingCustomerParty.TaxLevelCode}}</cbc:TaxLevelCode>
 				<cac:RegistrationAddress>
 					<cbc:ID>{{AccountingCustomerParty.AddressID}}</cbc:ID>
 					<cbc:CityName>{{AccountingCustomerParty.AddressCityName}}</cbc:CityName>

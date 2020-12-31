@@ -9,6 +9,14 @@ from odoo import api, fields, models
 class AccountInvoice(models.Model):
 	_inherit = "account.move"
 
+	def _get_zzz(self):
+		zz_id = False
+		if self.sudo().env['ir.model'].search([('model','=','account.payment.mean.code')]):
+			zz_id = self.env['account.payment.mean.code'].search([('code','=','ZZZ')])
+		if zz_id:
+			return zz_id.id
+		return False
+		
 	payment_mean_id = fields.Many2one(
 		comodel_name='account.payment.mean',
 		string='Payment Method',
@@ -18,7 +26,8 @@ class AccountInvoice(models.Model):
 	payment_mean_code_id = fields.Many2one('account.payment.mean.code',
 		string='Mean of Payment',
 		copy=False,
-		default=False)
+		default=_get_zzz)
+	invoice_date = fields.Date(default=fields.Date.today()) # datetime.now().date()
 
 
 	def write(self, vals):
@@ -30,13 +39,17 @@ class AccountInvoice(models.Model):
 		
 		return res
 
-	@api.onchange('invoice_date', 'date_due')
+	@api.onchange('invoice_date', 'date_due', 'invoice_payment_term_id')
 	def _onchange_invoice_dates(self):
 		payment_mean_obj = self.env['ir.model.data']
+		time = 0
+		if self.invoice_payment_term_id:
+			time = sum([x.days for x in self.invoice_payment_term_id.line_ids])
 		
 		if not self.invoice_date:
 			payment_mean_id = False
-		elif self.invoice_date == self.invoice_date_due:
+		elif (self.invoice_date == self.invoice_date_due and not self.invoice_payment_term_id) \
+			or (self.invoice_payment_term_id and time == 0):
 			id_payment_mean = payment_mean_obj.get_object_reference(
 				'l10n_co_dian_data',
 				'account_payment_mean_1')[1]
@@ -48,3 +61,10 @@ class AccountInvoice(models.Model):
 			payment_mean_id = self.env['account.payment.mean'].browse(id_payment_mean)
 
 		self.payment_mean_id = payment_mean_id
+
+	@api.onchange('partner_id')
+	def _onchange_partner_id(self):
+		res = super(AccountInvoice, self)._onchange_partner_id()
+		self._onchange_invoice_dates()
+		return res
+		

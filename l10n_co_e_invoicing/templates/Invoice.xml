@@ -162,7 +162,7 @@ ajuste que se da mediante un Nota Débito>
 					schemeID="{{AccountingSupplierParty.CompanyIDschemeID}}"
 					schemeName="{{AccountingSupplierParty.CompanyIDschemeName}}">{{AccountingSupplierParty.CompanyID}}</cbc:CompanyID>
 			<!--TODO, listName el anexo dice que eliminar o valor No aplica-->
-				<cbc:TaxLevelCode listName="48">{{AccountingSupplierParty.TaxLevelCode}}</cbc:TaxLevelCode>
+				<cbc:TaxLevelCode listName="{{AccountingSupplierParty.listName}}">{{AccountingSupplierParty.TaxLevelCode}}</cbc:TaxLevelCode>
 				<cac:RegistrationAddress>
 					<cbc:ID>{{AccountingSupplierParty.AddressID}}</cbc:ID>
 					<cbc:CityName>{{AccountingSupplierParty.AddressCityName}}</cbc:CityName>
@@ -271,7 +271,7 @@ ajuste que se da mediante un Nota Débito>
 					schemeID="{{AccountingCustomerParty.CompanyIDschemeID}}"
 					schemeName="{{AccountingCustomerParty.CompanyIDschemeName}}">{{AccountingCustomerParty.CompanyID}}</cbc:CompanyID>
 			<!--TODO, listName el anexo dice que eliminar o valor No aplica-->
-				<cbc:TaxLevelCode listName="48">{{AccountingCustomerParty.TaxLevelCode}}</cbc:TaxLevelCode>
+				<cbc:TaxLevelCode listName="{{AccountingCustomerParty.listName}}">{{AccountingCustomerParty.TaxLevelCode}}</cbc:TaxLevelCode>
 				<cac:RegistrationAddress>
 					<cbc:ID>{{AccountingCustomerParty.AddressID}}</cbc:ID>
 					<cbc:CityName>{{AccountingCustomerParty.AddressCityName}}</cbc:CityName>

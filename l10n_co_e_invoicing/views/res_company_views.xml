@@ -32,6 +32,7 @@
                                     <field name="email"/>
                                 </tree>
                             </field>
+                            <field name="tributary_information" widget="html"/>
                             <label for="get_numbering_range_response"/>
                             <div>
                                 <button name="action_GetNumberingRange" string="GetNumberingRange" type="object" class="oe_stat_button" icon="fa-check"/>
