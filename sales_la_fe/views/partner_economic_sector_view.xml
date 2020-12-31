@@ -1,0 +1,75 @@
+<odoo>
+    <data>
+        <record id="action_view_partner_economic_sector" model="ir.actions.act_window">
+            <field name="name">Sector económico</field>
+            <field name="res_model">partner.economic.sector</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="view_id" ref="view_account_change_lock_date"/>-->
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Crea tu primer sector
+                </p>
+            </field>
+        </record>
+      
+        <menuitem
+            id="menu_action_sales_la_fe_partner_economic_sector"
+            name="Sector económico"
+            action="action_view_partner_economic_sector"
+            parent="sale.menu_sale_config"
+            sequence="15"/>
+
+        <record id="action_view_ciiu_code" model="ir.actions.act_window">
+            <field name="name">Código ciiu</field>
+            <field name="res_model">ciiu.code</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="view_id" ref="view_account_change_lock_date"/>-->
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Crea tu primer código
+                </p>
+            </field>
+        </record>
+      
+        <menuitem
+            id="menu_action_sales_la_fe_ciiu_code"
+            name="Código ciiu"
+            action="action_view_ciiu_code"
+            parent="account.account_account_menu"
+            sequence="15"/>
+        
+        <record id="action_view_payment_method_la_fe" model="ir.actions.act_window">
+            <field name="name">Medios de pago</field>
+            <field name="res_model">payment.methods.la.fe</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="view_id" ref="view_account_change_lock_date"/>-->
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Crea tu primer medio de pago
+                </p>
+            </field>
+        </record>
+      
+        <menuitem
+            id="menu_action_sales_la_fe_payment_method"
+            name="Medios de pago"
+            action="action_view_payment_method_la_fe"
+            parent="account.account_account_menu"
+            sequence="20"/>
+        
+        <record id="action_view_account_payment_channel" model="ir.actions.act_window">
+            <field name="name">Canales de venta</field>
+            <field name="res_model">channel.fe</field>
+            <field name="view_mode">tree,form</field>
+            
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Crea tu canal de venta
+                </p>
+            </field>
+        </record>
+      
+        <menuitem
+            id="menu_action_account_payment_channel"
+            name="Canales de venta"
+            action="action_view_account_payment_channel"
+            parent="account.root_payment_menu"
+            sequence="25"/>
+  </data>
+</odoo>

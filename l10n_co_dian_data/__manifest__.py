@@ -35,7 +35,7 @@
         "security/l10n_co_account_invoice_discrepancy_response/ir.model.access.csv",
 		"data/l10n_co_account_invoice_discrepancy_response/account_invoice_discrepancy_response_code_data.xml",
 		"wizards/l10n_co_account_invoice_discrepancy_response/account_invoice_debit_note.xml",
-		#"wizards/l10n_co_account_invoice_discrepancy_response/account_invoice_refund.xml",
+		"wizards/l10n_co_account_invoice_discrepancy_response/account_invoice_refund.xml",
 		"views/l10n_co_account_invoice_discrepancy_response/account_invoice_discrepancy_response_code_views.xml",
 		"views/l10n_co_account_invoice_discrepancy_response/account_invoice_views.xml",
 		"views/l10n_co_account_invoice_discrepancy_response/account_journal_views.xml",
@@ -81,7 +81,7 @@
 
         "views/l10n_co_account_fiscal_position_listname/account_fiscal_position_views.xml",
 
-        #"security/l10n_co_product_uom/ir.model.access.csv",
+        "security/l10n_co_product_uom/ir.model.access.csv",
 		"data/l10n_co_product_uom/product.uom.code.csv",
 		"views/l10n_co_product_uom/product_uom_views.xml",
     ],

@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+        <record id="sales_la_fe_sale_order_fields" model="ir.ui.view">
+            <field name="name">sales.la.fe.sale.order.fields</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <!--<field name="priority">15</field>-->
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="check_credit_two" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                    <attribute name="attrs">{'readonly':[('check_credit_two','=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="credit_aproved"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="method_la_fe_id"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="channel_id"/>
+                </xpath>
+                <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="before">
+                    <field name="inventory_quantity" readonly="1" force_save="1"/>
+                    <field name="virtual_available" readonly="1" force_save="1"/>
+                    <!--<field name="last_price1" readonly="1"/>-->
+                    <field name="last_price1" readonly="1"/>
+                    <field name="last_price2" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

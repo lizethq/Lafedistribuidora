@@ -5,7 +5,7 @@
             <field name="model">account.move.reversal</field>
             <field name="inherit_id" ref="account.view_account_move_reversal" />
             <field name="arch" type="xml">
-                <field name="description" position="before">
+                <field name="reason" position="before">
                     <field name="discrepancy_response_code_id"
                         options="{'no_create': True}"
                         required="1"

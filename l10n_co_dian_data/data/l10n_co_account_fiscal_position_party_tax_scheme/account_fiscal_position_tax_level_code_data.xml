@@ -16,9 +16,13 @@
             <field name="name">Régimen simple de tributación</field>
             <field name="code">O-47</field>
         </record>
-        <record id="account_fiscal_position_tax_level_code_zz" model="account.fiscal.position.tax.level.code">
+        <record id="account_fiscal_position_tax_level_code_o_r99pn" model="account.fiscal.position.tax.level.code">
+            <field name="name">No responsable</field>
+            <field name="code">R-99-PN</field>
+        </record>
+        <!-- <record id="account_fiscal_position_tax_level_code_zz" model="account.fiscal.position.tax.level.code">
             <field name="name">No aplica</field>
             <field name="code">ZZ</field>
-        </record>
+        </record> -->
     </data>
 </odoo>

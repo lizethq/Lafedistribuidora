@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+        <record id="res_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="priority">15</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="ciiu_ids" widget="many2many_tags"/>
+                </xpath>
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="sector_id"/>
+                    <!--<field name="economic_activity_id"/>-->
+                    <field name="ciiu_ids" widget="many2many_tags"/>
+                    <field name="gender"/>
+                    <!--<field name="study_credit" widget="radio"/>-->
+                </xpath>
+                <xpath expr="//field[@name='category_id']" position="before">
+                    <field name="gender"/> 
+                </xpath>
+                <!--xpath expr="//page[@name='internal_notes']/field[@name='comment']" position="after">
+                    <group>
+                    <field name="study_credit" widget="radio" string="Estudio de credito aprobado?"/>
+                    </group>
+                </xpath-->
+            </field>
+        </record>
+
+        <record id="res_parntner_partner_credit_limit_form_edited" model="ir.ui.view">
+            <field name="name">res.parntner.partner_credit_limit.form.edited</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="dev_customer_credit_limit.view_credit_readonly_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='credit_limit_on_hold']" position="after">
+                    <field name="study_credit" widget="radio" string="Estudio de credito aprobado?"/>
+                    <field name="confidence_degree"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

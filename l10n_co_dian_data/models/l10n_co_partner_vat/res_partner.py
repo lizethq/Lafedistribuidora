@@ -62,7 +62,7 @@ class ResPartner(models.Model):
                     formatedNitList = []
 
                     for item in nitList:
-                        if item is not '':
+                        if item != '':
                             formatedNitList.append(item)
                             partner.check_digit = '-'.join(formatedNitList)
 
@@ -106,7 +106,7 @@ class ResPartner(models.Model):
         @return: void
         """
         for item in self:
-            if item.document_type_id.code is not 1:
+            if item.document_type_id.code != 1:
                 msg = _('Error! Number of digits in Identification number must be'
                         'between 2 and 12')
                 if len(str(item.identification_document)) < 2:
@@ -124,7 +124,7 @@ class ResPartner(models.Model):
         @return: void
         """
         for item in self:
-            if item.document_type_id.code is not 1:
+            if item.document_type_id.code != 1:
                 if item.identification_document is not False and \
                                 item.document_type_id.code != 21 and \
                                 item.document_type_id.code != 41:

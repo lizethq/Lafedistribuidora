@@ -60,6 +60,7 @@ class AccountInvoiceDianDocument(models.Model):
     invoice_url = fields.Char(string='Invoice Url')
     cufe_cude_uncoded = fields.Char(string='CUFE/CUDE Uncoded')
     cufe_cude = fields.Char(string='CUFE/CUDE')
+    origin_cufe_cude = fields.Char(string='CUFE/CUDE original')
     software_security_code_uncoded = fields.Char(
         string='SoftwareSecurityCode Uncoded')
     software_security_code = fields.Char(
@@ -178,8 +179,11 @@ class AccountInvoiceDianDocument(models.Model):
     def _get_pdf_file(self):
         template = self.env['ir.actions.report'].browse(self.company_id.report_template.id)
         #pdf = self.env.ref('account.move').render_qweb_pdf([self.invoice_id.id])[0]
-        pdf = self.env.ref('account.account_invoices').render_qweb_pdf(self.invoice_id.id)[0]
-        pdf = base64.b64encode(pdf)
+        if template:
+            pdf = template.render_qweb_pdf(self.invoice_id.id)
+        else:
+            pdf = self.env.ref('account.account_invoices').render_qweb_pdf(self.invoice_id.id)
+        pdf = base64.b64encode(pdf[0])
         pdf_name = re.sub(r'\W+', '', self.invoice_id.name) + '.pdf'
 
         _logger.info('pdf')
@@ -197,6 +201,15 @@ class AccountInvoiceDianDocument(models.Model):
 
         if not self.invoice_id.name:
             raise UserError(msg)
+        
+        xml_attachment_file = False
+        if self.ar_xml_file and self.xml_file:
+            xml_without_signature = global_functions.get_template_xml(self._get_attachment_values(), 'attachment')
+            
+            xml_attachment_file = self.env['ir.attachment'].create({
+                'name': self.invoice_id.name + '-attachment.xml',
+                'type': 'binary',
+                'datas': b64encode(xml_without_signature.encode()).decode("utf-8", "ignore")})
 
         xml_attachment = self.env['ir.attachment'].create({
             'name': self.xml_filename,
@@ -205,17 +218,19 @@ class AccountInvoiceDianDocument(models.Model):
         pdf_attachment = self.env['ir.attachment'].create({
             'name': self.invoice_id.name + '.pdf',
             'type': 'binary',
-            'datas': self._get_pdf_file()})
+            'datas': self.invoice_id._get_pdf_file()})
 
         _logger.info('pdf attachment')
         _logger.info(pdf_attachment)
 
+        attach_ids = [xml_attachment.id, pdf_attachment.id]
+        if xml_attachment_file:
+            attach_ids.append(xml_attachment_file.id)
+
         if self.invoice_id.invoice_type_code in ('01', '02'):
-            template.attachment_ids = [(6, 0, [
-                (xml_attachment.id),
-                (pdf_attachment.id)])]
+            template.attachment_ids = [(6, 0, attach_ids)]
         else:
-            template.attachment_ids = [(6, 0, [(xml_attachment.id), (pdf_attachment.id)])]
+            template.attachment_ids = [(6, 0, attach_ids)]
 
         template.send_mail(self.invoice_id.id, force_send=True)
         self.write({'mail_sent': True})
@@ -365,13 +380,13 @@ class AccountInvoiceDianDocument(models.Model):
         _logger.info('impresion')
         _logger.info(self.invoice_id.refund_type)
 
-        if self.invoice_id.type == 'out_invoice':
+        if self.invoice_id.type == 'out_invoice' and not self.invoice_id.refund_type:
             xml_filename_prefix = 'fv'
             dddddddd = str(out_invoice_sent + 1).zfill(8)
         elif self.invoice_id.type == 'out_refund' and self.invoice_id.refund_type != 'debit':
             xml_filename_prefix = 'nc'
             dddddddd = str(out_refund_sent + 1).zfill(8)
-        elif self.invoice_id.type == 'out_refund' and self.invoice_id.refund_type == 'debit':
+        elif self.invoice_id.type == 'out_invoice' and self.invoice_id.refund_type == 'debit':
             xml_filename_prefix = 'nd'
             dddddddd = str(out_refund_sent + 1).zfill(8)
 
@@ -618,7 +633,7 @@ class AccountInvoiceDianDocument(models.Model):
 
         xml_values = self._get_xml_values(False)
 
-        if self.invoice_id.operation_type == '10':
+        if self.invoice_id.operation_type == '10' or self.invoice_id.reversed_entry_id:
             billing_reference = self.invoice_id._get_billing_reference()
         else:
             billing_reference = False
@@ -663,7 +678,7 @@ class AccountInvoiceDianDocument(models.Model):
     def _get_debit_note_values(self):
 
         xml_values = self._get_xml_values(False)
-        if self.invoice_id.operation_type == '10':
+        if self.invoice_id.operation_type == '10' or self.invoice_id.debit_origin_id:
             billing_reference = self.invoice_id._get_billing_reference()
         else:
             billing_reference = False
@@ -788,7 +803,7 @@ class AccountInvoiceDianDocument(models.Model):
         _logger.info('credit')
         _logger.info(self.invoice_id.refund_type)
 
-        if self.invoice_id.type == "out_invoice":
+        if self.invoice_id.type == "out_invoice" and not self.invoice_id.refund_type:
             xml_without_signature = global_functions.get_template_xml(
                 self._get_invoice_values(),
                 'Invoice')
@@ -796,7 +811,7 @@ class AccountInvoiceDianDocument(models.Model):
             xml_without_signature = global_functions.get_template_xml(
                 self._get_credit_note_values(),
                 'CreditNote')
-        elif self.invoice_id.type == "out_refund" and self.invoice_id.refund_type == "debit":
+        elif self.invoice_id.type == "out_invoice" and self.invoice_id.refund_type == "debit":
             xml_without_signature = global_functions.get_template_xml(
                 self._get_debit_note_values(),
                 'DebitNote')
@@ -1100,6 +1115,20 @@ class AccountInvoiceDianDocument(models.Model):
         self.sent_zipped_file()
         self.GetStatusZip()
 
+    def change_cufe(self):
+        if 'procesado anteriormente.' in self.get_status_zip_response and not self.origin_cufe_cude:
+            cufe_origin = self.cufe_cude
+            new_cufe = self.get_status_zip_response.replace("- Regla: 90, Rechazo: Documento con CUFE '", '').replace("' procesado anteriormente.", '')
+            self.origin_cufe_cude = cufe_origin
+            self.cufe_cude = new_cufe
+        else:
+            raise ValidationError('El cufe no ha sido procesado anteriormente')
+    
+    def return_cufe(self):
+        if self.origin_cufe_cude:
+            self.cufe_cude = self.origin_cufe_cude
+            self.origin_cufe_cude = ''
+            
 
 class AccountInvoiceDianDocumentLine(models.Model):
     _name = "account.invoice.dian.document.line"

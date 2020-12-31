@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <record id="account_move_expiration_date_la_fe" model="ir.ui.view">
+            <field name="name">account.move.expiration.date.la.fe</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <!--<field name="priority">15</field>-->
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='fiscal_position_id']" position="after">
+                    <field name="new_expiration_date"/>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="sales_la_fe_ciiu_code_tree">
+          <field name="name">sales.la.fe.ciiu.code.tree</field>
+          <field name="model">ciiu.code</field>
+          <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="description" />
+        </tree>
+       </field>
+     </record>
+    </data>
+</odoo>
