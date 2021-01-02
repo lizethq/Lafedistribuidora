@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+    
+
+    <record id="res_partner_fiscal_position_view_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.fiscal.position.view.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="priority" eval="15" />
+        <field name="inherit_id" ref="l10n_co_dian_data.view_partner_form_partner_vat" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='property_account_position_id']" position="attributes">
+                <attribute name="domain">[('person_type','=',person_type)]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    
+</odoo>
