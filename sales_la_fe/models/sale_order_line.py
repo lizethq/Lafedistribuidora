@@ -66,13 +66,13 @@ class SaleOrderLine(models.Model):
     def calculate_the_possible_products(self):
         for record in self:
             if record.product_id:
-                product_obj = self.env['product.template'].search([('id','=', record.product_id.id)])
-                if product_obj.x_control_ventas:
+                #product_obj = self.env['product.product'].search([('id','=', record.product_id.id)])
+                if record.product_id.x_control_ventas:
                     if record.order_id.partner_id.x_control_ventas:
                         logger.error('*****hello27/12/2020third*********')
                         logger.error(record.order_id.partner_id.x_control_ventas)
-                        logger.error(product_obj.x_control_ventas)
-                        if record.order_id.partner_id.x_control_ventas == 'No' and product_obj.x_control_ventas == 'Sí':
+                        logger.error(record.product_id.x_control_ventas)
+                        if record.order_id.partner_id.x_control_ventas == 'No' and record.product_id.x_control_ventas == 'Sí':
                             record.check_control_sales = True
                             raise ValidationError("Este producto no puede ser vendido a este cliente")
                         else:
