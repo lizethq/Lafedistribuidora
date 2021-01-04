@@ -89,9 +89,9 @@ class SaleOrderLine(models.Model):
     def _calculate_inventory_quantity(self):
         for record in self:
             if record.product_id:
-                pro_obj = self.env['product.template'].search([('id','=',record.product_id.id)])
-                if pro_obj.qty_available:
-                    record.inventory_quantity = pro_obj.qty_available
+                #pro_obj = self.env['product.template'].search([('id','=',record.product_id.id)])
+                if record.product_id.qty_available:
+                    record.inventory_quantity = record.product_id.qty_available
                 else:
                     record.inventory_quantity = 0.0
             else:
@@ -101,9 +101,9 @@ class SaleOrderLine(models.Model):
     def _calculate_inventory_virtual(self):
         for record in self:
             if record.product_id:
-                pro_obj = self.env['product.template'].search([('id','=',record.product_id.id)])
-                if pro_obj.virtual_available:
-                    record.virtual_available = pro_obj.virtual_available
+                #pro_obj = self.env['product.template'].search([('id','=',record.product_id.id)])
+                if record.product_id.virtual_available:
+                    record.virtual_available = record.product_id.virtual_available
                 else:
                     record.virtual_available = 0.0
             else:
