@@ -15,6 +15,9 @@
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="credit_aproved"/>
                 </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{"no_quick_create":True}</attribute>
+                </xpath>
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="method_la_fe_id"/>
                 </xpath>
