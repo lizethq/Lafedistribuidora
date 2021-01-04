@@ -43,7 +43,11 @@ class SaleOrder(models.Model):
                 record.credit_aproved = False
                 record.check_credit_two = False
                     
-                
+    @api.onchange('pricelist_id')
+    def _recompute_products_values(self):
+        for record in self:
+            for line in record.order_line:
+                line.product_id_change()                   
                 
 
     #new_expiration_date = fields.Date('Fecha de Vencimiento')
