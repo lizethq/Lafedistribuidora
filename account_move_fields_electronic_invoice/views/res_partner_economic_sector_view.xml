@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record id="acount_move_line_fields_electronic_invoice" model="ir.ui.view">
+            <field name="name">acount.move.line.fields.electronic.invoice</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="priority">15</field>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='Invoice Lines']" position="after">
+                    <!--<field name="sector_id"/>-->
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
