@@ -11,12 +11,12 @@ class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
     #new_expiration_date = fields.Date('Fecha de Vencimiento')
-    x_cum = fields.Char('Código CUM')
-    x_invima = fields.Char('Código Invima')
-    x_atc = fields.Char('Código ATC')
+    x_cum = fields.Char('Código CUM', compute='_calculate_fields_product')
+    x_invima = fields.Char('Código Invima', compute='_calculate_fields_product')
+    x_atc = fields.Char('Código ATC', compute='_calculate_fields_product')
 
     @api.onchange('product_id')
-    def calculate_fields_product(self):
+    def _calculate_fields_product(self):
         for record in self: 
             if record.product_id:
                 obj_product = self.env['product.template'].search([('id','=',record.product_id.id)])
