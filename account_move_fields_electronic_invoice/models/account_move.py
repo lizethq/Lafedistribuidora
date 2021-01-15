@@ -6,6 +6,22 @@ from odoo.exceptions import AccessDenied
 logger = logging.getLogger(__name__)
 
 
+class AccountMove(models.Model):
+    _inherit = 'account.move'
+    
+    method_la_fe_id = fields.Many2one('payment.methods.la.fe', string='Forma de pago',compute='_compute_method_la_fe_id' )
+    
+    @api.onchange('invoice_origin')
+    def _compute_method_la_fe_id(self):
+        for record in self:
+            if record.invoice_origin:
+                sale_obj = self.env['sale.order'].search([('name','=',record.invoice_origin)])
+                logger.error('******helloVale********')
+                logger.error(sale_obj)
+                record.method_la_fe_id = sale_obj[0].method_la_fe_id.id
+            else:
+                method_la_fe_id = False
+
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'

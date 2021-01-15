@@ -28,7 +28,7 @@
         #'views/partner_economic_sector_view.xml',
         #'views/res_partner_economic_sector_view.xml',
         #'views/account_move_la_fe_expiration_date_view.xml'
-        #'views/res_partner_economic_sector_view.xml',
+        'views/res_partner_economic_sector_view.xml',
         #'viwes/account_move_invoice_electronic_lafe.xml',
         'reports/account_invoice_la_fe.xml',
         'reports/container_factura_electronica_la_fe.xml',
