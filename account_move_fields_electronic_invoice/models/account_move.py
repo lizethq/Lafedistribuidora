@@ -18,9 +18,9 @@ class AccountMove(models.Model):
                 sale_obj = self.env['sale.order'].search([('name','=',record.invoice_origin)])
                 logger.error('******helloVale********')
                 logger.error(sale_obj)
-                record.method_la_fe_id = sale_obj[0].method_la_fe_id.id
+                record.method_la_fe_id = sale_obj.method_la_fe_id.id
             else:
-                method_la_fe_id = False
+                record.method_la_fe_id = False
 
 
 class AccountMoveLine(models.Model):
