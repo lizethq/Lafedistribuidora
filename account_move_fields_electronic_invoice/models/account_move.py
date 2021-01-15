@@ -15,12 +15,32 @@ class AccountMove(models.Model):
     def _compute_method_la_fe_id(self):
         for record in self:
             if record.invoice_origin:
-                sale_obj = self.env['sale.order'].search([('name','=',record.invoice_origin)])
+                logger.error(record.invoice_origin)
+                if len(record.invoice_origin)> 15:
+                    logger.error('************Errorone***********')
+                    list_a = []
+                    str_one = ""
+                    count = 0
+                    for i in record.invoice_origin:
+                        list_a.append(i)
+                        str_one = str_one + i
+                        count = count +1
+                        if count == 15:
+                            break
+                    ab = str(list_a)
+                    logger.error(ab)
+                    logger.error(str_one)
+                else:
+                    str_one = record.invoice_origin
+                logger.error('************Errotwo***********')
+
+                logger.error(str_one)
+                sale_obj = self.env['sale.order'].search([('name','=',str_one)])
                 logger.error('******helloVale********')
                 logger.error(sale_obj)
                 record.method_la_fe_id = sale_obj.method_la_fe_id.id
             else:
-                record.method_la_fe_id = False
+                method_la_fe_id = False
 
 
 class AccountMoveLine(models.Model):
