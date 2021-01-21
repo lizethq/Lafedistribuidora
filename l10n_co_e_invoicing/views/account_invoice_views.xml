@@ -71,7 +71,7 @@
         <field name="email_from">${object.company_id.einvoicing_email}</field>
         <field name="reply_to">${object.company_id.einvoicing_email}</field>
         <field name="subject">${object.company_id.name} generó la Factura electrónica ${object.name}</field>
-        <field name="email_to">${(object.partner_id.email) or (object.company_id.einvoicing_partner_no_email)}</field>
+        <field name="email_to">${(object.partner_id.einvoicing_email) or (object.company_id.einvoicing_partner_no_email)}</field>
         <field name="auto_delete" eval="True"/>
         <field name="lang">${object.partner_id.lang}</field>
         <field name="body_html"><![CDATA[
