@@ -21,6 +21,26 @@ class ResPartner(models.Model):
                 ('bad', ' bad debtor'),
         ],
     )
+    establishment_comercial = fields.Selection(
+        selection=[
+                ('si', 'Si'),
+                ('no', 'No'), 
+        ], default=False
+    )
+    
+    val_establishment = fields.Boolean('Hello', default=False)
+    establishment_comercial_one = fields.Char('Establecimiento #1')
+    establishment_comercial_two = fields.Char('Establecimiento #2')
+    establishment_comercial_three = fields.Char('Establecimiento #3')
+    
+    #@api.onchange('establishment_comercial')
+    @api.onchange('x_establecimiento')
+    def _compute_val_establishment(self):
+        for record in self:
+            if record.x_establecimiento == 'Si':
+                record.val_establishment = True
+            else:
+                record.val_establishment = False
     
     
     

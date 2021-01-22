@@ -19,11 +19,17 @@
                 <xpath expr="//field[@name='category_id']" position="before">
                     <field name="gender"/> 
                 </xpath>
+                
                 <!--xpath expr="//page[@name='internal_notes']/field[@name='comment']" position="after">
                     <group>
                     <field name="study_credit" widget="radio" string="Estudio de credito aprobado?"/>
                     </group>
                 </xpath-->
+                <xpath expr="//field[@name='x_establecimiento']" position="after">
+                    <field name="establishment_comercial_one" attrs="{'invisible':[ '|',('x_establecimiento', '=', 'No'),('x_establecimiento', '=', False)]}" />
+                    <field name="establishment_comercial_two" attrs="{'invisible':[ '|',('x_establecimiento', '=', 'No'),('x_establecimiento', '=', False)]}"  />
+                    <field name="establishment_comercial_three" attrs="{'invisible':[ '|',('x_establecimiento', '=', 'No'),('x_establecimiento', '=', False)]}" /> 
+                </xpath>
             </field>
         </record>
 
