@@ -47,7 +47,7 @@ odoo Apps will check the Customer Credit Limit on Sale order and notify to the s
     'author': 'Devintelle Consulting Service Pvt.Ltd',
     'website': 'http://www.devintellecs.com',
     'images': ['images/main_screenshot.png'],
-    'depends': ['sale_management', 'account'],
+    'depends': ['sale_management', 'account', 'sale_discount_total'],
     'data': [
         'security/security.xml',
         'wizard/customer_limit_wizard_view.xml',
