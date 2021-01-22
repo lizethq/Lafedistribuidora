@@ -17,11 +17,17 @@ class AccountMove(models.Model):
         res = super(AccountMove, self)._get_invoiced_lot_values()
         for i in res:
             obje_lot = self.env['stock.production.lot'].search([('name','=', i['lot_name'])])
-            logger.error('Hello everyone test 20')
+            logger.error('Hello everyone test 22/01/2021')
             logger.error(res)
             if len(obje_lot)>1:
-                raise ValidationError('Error')
-            i['removal_date'] = obje_lot.removal_date
+                #raise ValidationError('Error')
+                logger.error('Hello everyone test 22/01/2021 one')
+                logger.error(obje_lot[0].removal_date)
+                i['removal_date'] = obje_lot[0].removal_date
+            else:
+                logger.error('Hello everyone test 22/01/2021 two')
+                logger.error(obje_lot[0].removal_date)
+                i['removal_date'] = obje_lot[0].removal_date
         #lot_values = i
         logger.error('Hello everyone test 20')
         logger.error(res)
