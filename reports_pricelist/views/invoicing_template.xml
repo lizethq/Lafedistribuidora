@@ -1,0 +1,109 @@
+<odoo>
+    <data>
+
+        <record id="paperformat_landscape" model="report.paperformat">
+            <field name="name">Landspcape</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">23</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="report_invoicing_format_action"
+                model="report.invoicing"
+                string="reports.report_invoicing_format"
+                report_type="qweb-pdf"
+                name="reports.report_invoicing_format"
+                file="reports.report_invoicing_format"
+                paperformat="reports.paperformat_landscape"
+        />
+
+        <template id="reports.report_invoicing_format">
+            <t t-call="report.external_layout">
+                <div class="page">
+                    <br/>
+                    <div class="row">
+                        <h4>
+                            <span>REPORTE DE COMPRA Y VENTA</span>
+                        </h4>
+                        <t>
+                            <strong>PERIODO REAL CONSULTADO:</strong>
+                            <span t-esc="docs[0].date_from"/>
+                            -
+                            <span t-esc="docs[0].date_to"/>
+                            <br/>
+                        </t>
+                    </div>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Invoice</th>
+                                <th>NIT</th>
+                                <th>Partner</th>
+                                <t t-set="taxes" t-value="list(set(docs.line_ids.mapped('tax_ids').mapped('name')))"/>
+                                <t t-esc="taxes.sort()"/>
+                                <t t-foreach="taxes" t-as="t">
+                                    <th>
+                                        <t t-set="name" t-value="t"/>
+                                        Base_
+                                        <span t-esc="name"/>
+                                    </th>
+                                    <th t-esc="t"/>
+                                </t>
+                                <th>Discount</th>
+                                <th class="text-right">Subtotal</th>
+                                <th class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="docs.line_ids" t-as="l">
+                                <td>
+                                    <span t-field="l.invoice_id"/>
+                                </td>
+                                <td>
+                                    <span t-field="l.partner_id.documentnumber"/>
+                                </td>
+                                <td>
+                                    <span t-field="l.partner_id.name"/>
+                                </td>
+                                <t t-if="l.mapped('tax_ids')">
+                                    <t t-foreach="l.mapped('tax_ids').sorted(key=lambda x: x.name)" t-as="t">
+                                        <td class="text-right">
+                                            <t t-set="base" t-value="t.base or 0.0"/>
+                                            <span t-esc="'{0:,.2f}'.format(base)"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-set="amount" t-value="t.amount or 0.0"/>
+                                            <span t-esc="'{0:,.2f}'.format(amount)"/>
+                                        </td>
+                                    </t>
+                                </t>
+                                <td>
+                                    <t t-set="discount" t-value="l.invoice_id.amount_discount"/>
+                                    <span t-esc="'{0:,.2f}'.format(discount)"/>
+                                </td>
+                                <td class="text-right">
+                                    <t t-set="amount_untaxed" t-value="l.amount_untaxed or 0.0"/>
+                                    <span t-esc="'{0:,.2f}'.format(amount_untaxed)"/>
+                                </td>
+                                <td class="text-right">
+                                    <t t-set="amount_total" t-value="l.amount_total or 0.0"/>
+                                    <span t-esc="'{0:,.2f}'.format(amount_total)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

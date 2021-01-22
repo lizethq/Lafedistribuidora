@@ -1,0 +1,35 @@
+{
+    "name": "Product All Pricelist Dynamic || Product Pricelist Listview Dynamic",
+    "version": "13.1.1.1",
+    "description": """
+        Using this module you can display all price list apply on the product with amount in form view and list view Dynamically.
+    """,
+    'price': 14,
+    'currency': 'EUR',
+    "author" : "MAISOLUTIONSLLC",
+    'sequence': 1,
+    "email": 'apps@maisolutionsllc.com',
+    "website":'http://maisolutionsllc.com/',
+    'license': 'OPL-1',
+    'category':"Sales",
+    'summary':"Using this module you can display all price list apply on the product with amount in form view and list view Dynamically.",
+    "depends": [
+        "sale_management",
+    ],
+    "data": [
+        'security/ir.model.access.csv',
+        'security/product_pricelist_groups.xml',
+        'views/product_product_views.xml',
+        # 'views/product_template_views.xml',
+        'views/product_pricelist_views.xml',
+    ],
+    'qweb': [],
+    'css': [],
+    'js': [],
+    "images": ['static/description/main_screenshot.png'],
+    "live_test_url" : "https://youtu.be/aAIwfCYdf_4 ",    
+    'demo': [],
+    'installable': True,
+    'auto_install': False,
+    'application': True,
+}

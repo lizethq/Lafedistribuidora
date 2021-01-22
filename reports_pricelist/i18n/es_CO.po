@@ -1,0 +1,194 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* reports_pricelist
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-01-22 19:34+0000\n"
+"PO-Revision-Date: 2021-01-22 19:34+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: reports_pricelist
+#: model_terms:ir.ui.view,arch_db:reports_pricelist.report_pricelist_format
+msgid "<span>REPORTE DE LISTA DE PRECIOS</span>"
+msgstr ""
+
+#. module: reports_pricelist
+#: model_terms:ir.ui.view,arch_db:reports_pricelist.report_pricelist_format
+msgid "<strong>LISTA DE PRECIOS:</strong>"
+msgstr ""
+
+#. module: reports_pricelist
+#: model_terms:ir.ui.view,arch_db:reports_pricelist.report_pricelist_wizard
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_wizard__category_ids
+#: model_terms:ir.ui.view,arch_db:reports_pricelist.report_pricelist_wizard
+msgid "Category"
+msgstr "Categoría"
+
+#. module: reports_pricelist
+#: model_terms:ir.ui.view,arch_db:reports_pricelist.report_pricelist_format
+msgid "Código"
+msgstr ""
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist__create_uid
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_line__create_uid
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_wizard__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist__create_date
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_line__create_date
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_wizard__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: reports_pricelist
+#: model_terms:ir.ui.view,arch_db:reports_pricelist.report_pricelist_format
+msgid "Descripción del Producto"
+msgstr ""
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist__display_name
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_line__display_name
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_wizard__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: reports_pricelist
+#: model_terms:ir.ui.view,arch_db:reports_pricelist.report_pricelist_format
+msgid "Disponible"
+msgstr ""
+
+#. module: reports_pricelist
+#: model_terms:ir.ui.view,arch_db:reports_pricelist.report_pricelist_wizard
+msgid "Generate PDF"
+msgstr "Generar PDF"
+
+#. module: reports_pricelist
+#: model_terms:ir.ui.view,arch_db:reports_pricelist.report_pricelist_wizard
+msgid "Generate XLSX"
+msgstr "Generar XLSX"
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist__id
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_line__id
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_wizard__id
+msgid "ID"
+msgstr ""
+
+#. module: reports_pricelist
+#: model_terms:ir.ui.view,arch_db:reports_pricelist.report_pricelist_format
+msgid "IVA"
+msgstr ""
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist__in_stock
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_wizard__in_stock
+msgid "In stock"
+msgstr "En Almacén"
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist____last_update
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_line____last_update
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_wizard____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist__write_uid
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_line__write_uid
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_wizard__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist__write_date
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_line__write_date
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_wizard__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist__line_ids
+msgid "Lines"
+msgstr "Líneas"
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist__pricelist_id
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_wizard__pricelist_id
+msgid "Pricelist"
+msgstr "Lista de precios"
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_line__pricelist_item_id
+msgid "Pricelist item"
+msgstr "Item lista de precios"
+
+#. module: reports_pricelist
+#: model:res.groups,name:reports_pricelist.group_pricelist
+msgid "Pricelist reports"
+msgstr "Reporte de LdP"
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_line__product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_line__qty
+msgid "Quantity"
+msgstr "Cantidad"
+
+#. module: reports_pricelist
+#: model:ir.model.fields,field_description:reports_pricelist.field_report_pricelist_line__report_id
+msgid "Report"
+msgstr "Reporte"
+
+#. module: reports_pricelist
+#: model:ir.model,name:reports_pricelist.model_report_pricelist
+#: model:ir.ui.menu,name:reports_pricelist.menu_report_pricelist
+msgid "Report pricelist"
+msgstr "Reporte de LdP"
+
+#. module: reports_pricelist
+#: model:ir.model,name:reports_pricelist.model_report_pricelist_wizard
+msgid "Report pricelist Wizard"
+msgstr "Wizard reporte de LdP"
+
+#. module: reports_pricelist
+#: model:ir.model,name:reports_pricelist.model_report_pricelist_line
+msgid "Report pricelist line"
+msgstr "Linea de reporte de LdP"
+
+#. module: reports_pricelist
+#: model:ir.actions.act_window,name:reports_pricelist.report_pricelist_action
+msgid "Report pricelist wizard"
+msgstr "Wizard de reporte de LdP"
+
+#. module: reports_pricelist
+#: model_terms:ir.ui.view,arch_db:reports_pricelist.report_pricelist_format
+msgid "SubTotal"
+msgstr ""
+
+#. module: reports_pricelist
+#: model_terms:ir.ui.view,arch_db:reports_pricelist.report_pricelist_format
+msgid "Total"
+msgstr ""
+
+#. module: reports_pricelist
+#: model:ir.actions.report,name:reports_pricelist.report_pricelist_format_action
+msgid "reports_pricelist.report_pricelist_format"
+msgstr ""

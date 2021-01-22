@@ -1,0 +1,85 @@
+<odoo>
+    <data>
+        <report
+                id="report_pricelist_format_action"
+                model="report.pricelist"
+                string="reports_pricelist.report_pricelist_format"
+                report_type="qweb-pdf"
+                name="reports_pricelist.report_pricelist_format"
+                file="reports_pricelist.report_pricelist_format"
+        />
+
+        <template id="reports_pricelist.report_pricelist_format">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                td {
+                                    font-size:11px;
+                                }
+                                th {
+                                    font-size:11px;
+                                }
+                            </style>
+                            <h4>
+                                <span>REPORTE DE LISTA DE PRECIOS</span>
+                            </h4>
+                            <t>
+                                <strong>LISTA DE PRECIOS:</strong>
+                                <span t-esc="doc.pricelist_id.name"/> <!-- <span t-esc="docs[0].pricelist_id.name"/> -->
+                                <br/>
+                            </t>
+                            <br/>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Descripción del Producto</th>
+                                        <th>Disponible</th>
+                                        <th>SubTotal</th>
+                                        <th>IVA</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="doc.line_ids" t-as="l"> <!-- .sorted(key=lambda x: x.product_id.product_tmpl_id.name) -->
+                                        <td><span t-field="l.product_id.product_tmpl_id.default_code"/></td>
+                                        <td><span t-field="l.product_id.product_tmpl_id.name"/></td>
+                                        <td><span t-field="l.qty"/></td>
+                                        <td>
+                                            <t t-set="price" t-value="0"/>
+                                            <t t-if="l.pricelist_item_id.fixed_price&gt;0">
+                                                <t t-set="price"
+                                                t-value="l.pricelist_item_id.fixed_price + l.pricelist_item_id.price_surcharge"/>
+                                            </t>
+                                            <t t-if="l.pricelist_item_id.percent_price&gt;0">
+                                                <t t-set="price"
+                                                t-value="l.pricelist_item_id.percent_price / 100 * l.product_id.list_price + l.pricelist_item_id.price_surcharge"/>
+                                            </t>
+                                            <t t-if="l.pricelist_item_id.compute_price == 'formula'">
+                                                <t t-set="price"
+                                                t-value="l.product_id.list_price - l.product_id.list_price*l.pricelist_item_id.price_discount/100 + l.pricelist_item_id.price_surcharge"/>
+                                            </t>
+                                            <t t-if="price==0">
+                                                <t t-set="price"
+                                                t-value="l.product_id.list_price + l.pricelist_item_id.price_surcharge"/>
+                                            </t>
+                                            <t t-esc="'{0:,.2f}'.format(price)"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-set="tax_amount" t-value="sum([x.amount for x in l.product_id.taxes_id])"/>
+                                            <span t-esc="'{0:,.2f}'.format(tax_amount)"/>
+                                            <t t-set="price" t-value="price+tax_amount/100*price"/>
+                                        </td>
+                                        <td class="text-right"><span t-esc="'{0:,.2f}'.format(price)"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
