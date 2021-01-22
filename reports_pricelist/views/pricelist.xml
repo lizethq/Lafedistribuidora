@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+        <record id="report_pricelist_wizard" model="ir.ui.view">
+            <field name="name">report.pricelist.wizard.form</field>
+            <field name="model">report.pricelist.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <!--<field name="date_from"/>-->
+                        <!--<field name="date_to"/>-->
+                        <field name="pricelist_id"/>
+                        <field name="in_stock"/>
+                    </group>
+                    <notebook>
+                        <page string="Category">
+                            <field name="category_ids"/>
+                        </page>
+
+                    </notebook>
+                    <footer>
+                        <div>
+                            <button name="generate_excel" string="Generate XLSX" type="object" default_focus="1"
+                                    class="oe_highlight"/>
+                            <button name="generate_pdf" string="Generate PDF" type="object"
+                                    class="oe_highlight"/>
+                            <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                        </div>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="report_pricelist_action" model="ir.actions.act_window">
+            <field name="name">Report pricelist wizard</field>
+            <field name="res_model">report.pricelist.wizard</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="report_pricelist_action" name="Report pricelist"
+                  id="menu_report_pricelist"
+                  parent="sale.menu_sale_report" sequence="100"
+                  groups="reports_pricelist.group_pricelist"/>
+    </data>
+</odoo>

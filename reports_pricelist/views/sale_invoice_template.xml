@@ -1,0 +1,72 @@
+<odoo>
+    <data>
+        <report
+                id="report_sale_invoice_format_action"
+                model="report.sale.invoice"
+                string="reports.report_sale_invoice_format"
+                report_type="qweb-pdf"
+                name="reports.report_sale_invoice_format"
+                file="reports.report_sale_invoice_format"
+        />
+
+        <template id="reports.report_sale_invoice_format">
+            <t t-call="report.external_layout">
+                <div class="page">
+                    <div class="row">
+                        <h4>
+                            <span>REPORTE DE VENTA</span>
+                        </h4>
+                        <t>
+                            <strong>PERIODO REAL CONSULTADO:</strong>
+                            <span t-esc="docs[0].date_from"/>
+                            -
+                            <span t-esc="docs[0].date_to"/>
+                            <br/>
+                        </t>
+                    </div>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>NIT</th>
+                                <th>Cliente</th>
+                                <th class="text-right">Facturado</th>
+                                <th class="text-right">Recaudado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="amount_invoiced" t-value="0"/>
+                            <t t-set="amount_collect" t-value="0"/>
+                            <tr t-foreach="docs.line_ids.sorted(key=lambda x: x.partner_id.name)" t-as="l">
+                                <td>
+                                    <span t-field="l.partner_id.documentnumber"/>
+                                </td>
+                                <td>
+                                    <span t-field="l.partner_id.name"/>
+                                </td>
+                                <td class="text-right">
+                                    <t t-set="amount_invoiced" t-value="amount_invoiced+(l.amount_invoiced or 0.0)"/>
+                                    <span t-esc="'{0:,.2f}'.format(amount_invoiced)"/>
+                                </td>
+                                <td class="text-right">
+                                    <t t-set="amount_collect" t-value="amount_collect+(l.amount_collect or 0.0)"/>
+                                    <span t-esc="'{0:,.2f}'.format(amount_collect)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfooter>
+                            <tr>
+                                <th colspan="2">TOTALES</th>
+                                <th>
+                                    <t t-esc="'{0:,.2f}'.format(amount_invoiced)"/>
+                                </th>
+                                <th>
+                                    <t t-esc="'{0:,.2f}'.format(amount_collect)"/>
+                                </th>
+                            </tr>
+                        </tfooter>
+                    </table>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

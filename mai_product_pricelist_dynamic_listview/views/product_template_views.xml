@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_product_template_pl_inherit_re" model="ir.ui.view">
+        <field name="name">product.template.pl</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='variants']" position="after">
+                <page name="pricelist" string="PriceList"  groups="mai_product_pricelist_dynamic_listview.group_product_pricelist"> 
+                    <field name="final_pricelist_item_ids" widget="one2many" context="{'show_attribute': False}">
+                        <tree string="ProceList Items" editable="bottom">
+                            <field name="pricelist_id"/>
+                            <field name="pricelist_item_id"/>
+                            <field name="final_price" string="Price"/>
+                            <field name="product_id"/>
+                            <field name="id"/>
+                        </tree>
+                    </field>
+                    <!-- <field name="pricelist_item_ids" widget="one2many" context="{'show_attribute': False}" invisible="1">
+                        <tree string="ProceList Items" editable="bottom">
+                            <field name="pricelist_id"/>
+                            <field name="name"/>
+                            <field name="price" string="Disocunt"/>
+                        </tree>
+                    </field> -->
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- <record id="view_product_pl_tree_inherit_re" model="ir.ui.view">
+        <field name="name">product.template.tree.pl</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="pricelist_name" groups="mai_product_pricelist_dynamic_listview.group_product_pricelist" invisible="1"/>
+            </xpath>
+        </field>
+    </record> -->
+
+</odoo>
