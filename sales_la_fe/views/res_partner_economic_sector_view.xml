@@ -25,10 +25,11 @@
                     <field name="study_credit" widget="radio" string="Estudio de credito aprobado?"/>
                     </group>
                 </xpath-->
-                <xpath expr="//field[@name='x_establecimiento']" position="after">
-                    <field name="establishment_comercial_one" attrs="{'invisible':[ '|',('x_establecimiento', '=', 'No'),('x_establecimiento', '=', False)]}" />
-                    <field name="establishment_comercial_two" attrs="{'invisible':[ '|',('x_establecimiento', '=', 'No'),('x_establecimiento', '=', False)]}"  />
-                    <field name="establishment_comercial_three" attrs="{'invisible':[ '|',('x_establecimiento', '=', 'No'),('x_establecimiento', '=', False)]}" /> 
+                <xpath expr="//field[@name='gender']" position="after">
+                    <field name="establishment_comercial" widget="radio"/> 
+                    <field name="establishment_comercial_one" attrs="{'invisible':['|', ('establishment_comercial', '=', 'no'),('establishment_comercial', '=', False)], 'required': [('establishment_comercial', '=', 'si')]}"/>
+                    <field name="establishment_comercial_two" attrs="{'invisible':[ '|',('establishment_comercial', '=', 'no'),('establishment_comercial', '=', False)]}" />
+                    <field name="establishment_comercial_three" attrs="{'invisible':[ '|',('establishment_comercial', '=', 'no'),('establishment_comercial', '=', False)]}" /> 
                 </xpath>
             </field>
         </record>

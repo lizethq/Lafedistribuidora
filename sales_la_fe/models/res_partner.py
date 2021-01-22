@@ -25,7 +25,7 @@ class ResPartner(models.Model):
         selection=[
                 ('si', 'Si'),
                 ('no', 'No'), 
-        ], default=False
+        ], default=False, string='¿Establecimiento comercial?'
     )
     
     val_establishment = fields.Boolean('Hello', default=False)
