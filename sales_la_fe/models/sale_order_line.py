@@ -83,6 +83,18 @@ class SaleOrderLine(models.Model):
                     record.check_control_sales = False
             else:
                 record.check_control_sales = False
+    
+    @api.onchange('product_id')
+    def _compute_amount_available(self):
+        for record in self:
+            if record.product_id:
+                obj_product = record.product_id.qty_available
+                logger.error('************27/01/2021***********')
+                logger.error(obj_product)
+                #"if obj_product != False:
+                if obj_product  == 0.0 or obj_product  < 0.0:
+                    raise ValidationError('No hay cantidades disponibles de este producto ')
+                    #message_id = self.env['message.wizard'].create({'message': _("Invitation is successfully sent")})
                 
                 
     @api.onchange('product_id')
