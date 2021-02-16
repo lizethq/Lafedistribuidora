@@ -12,6 +12,10 @@
                 <xpath expr="//field[@name='journal_id']" position="after">
                     <field name="method_la_fe_id"/>
                 </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="delivery_adress_shipping"/>
+                    <field name="zip_shipping_id"/>
+                </xpath>
             </field>
         </record>
     </data>
