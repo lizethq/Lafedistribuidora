@@ -31,6 +31,11 @@
                     <field name="last_price1" readonly="1"/>
                     <field name="last_price2" readonly="1"/>
                 </xpath>
+                <xpath expr="//field[@name='order_line']" position="after">
+                    <group>
+                        <button name="recompute_products_values" string="Recalcular Valores" type="object" attrs="{'invisible': [('state','not in',('draft','sent'))]}"/>
+                    </group>
+                </xpath>
             </field>
         </record>
     </data>
