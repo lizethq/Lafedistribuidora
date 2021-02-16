@@ -13,6 +13,9 @@
                     <attribute name="attrs">{'readonly':[('check_credit_two','=', True)]}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="street_sale_order" />
+                    <!--<field name="delivery_adress"/>-->
+                    <field name="zip_id" />
                     <field name="credit_aproved"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="attributes">
@@ -24,17 +27,30 @@
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="channel_id"/>
                 </xpath>
+                <!--<xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+                    <attribute name="attrs">{'invisible'="1"}</attribute>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+    
+                    <attribute name="invisible">1</attribute>
+                </xpath>-->
+                <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                    <field name="delivery_adress_shipping"/>
+                    <field name="zip_shipping_id"/>
+                    <!--<field name="state_id" string=" "  placeholder="State"/>
+                    <field name="city_id" string=" " placeholder="City"/>
+                    <field name="country_id" string=" " placeholder="Country"/>-->
+                    <!--<field name="zip"/>-->
+                    <!--<field name="street2_sale_order"/>    placeholder="City"-->
+                </xpath>
+                
                 <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="before">
                     <field name="inventory_quantity" readonly="1" force_save="1"/>
                     <field name="virtual_available" readonly="1" force_save="1"/>
                     <!--<field name="last_price1" readonly="1"/>-->
                     <field name="last_price1" readonly="1"/>
                     <field name="last_price2" readonly="1"/>
-                </xpath>
-                <xpath expr="//field[@name='order_line']" position="after">
-                    <group>
-                        <button name="recompute_products_values" string="Recalcular Valores" type="object" attrs="{'invisible': [('state','not in',('draft','sent'))]}"/>
-                    </group>
                 </xpath>
             </field>
         </record>
