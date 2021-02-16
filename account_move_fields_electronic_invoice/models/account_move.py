@@ -6,22 +6,61 @@ from collections import defaultdict
 from odoo.exceptions import ValidationError
 from odoo import fields, models
 from odoo.tools import float_is_zero
+
 logger = logging.getLogger(__name__)
+
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
     
     method_la_fe_id = fields.Many2one('payment.methods.la.fe', string='Forma de pago',compute='_compute_method_la_fe_id' )
+    delivery_adress_shipping = fields.Char(
+        'Domicilio de entrega', compute='_compute_partner_delivery_adress_shipping')
+    zip_shipping_id = fields.Many2one(
+        'res.city.zip', string='Ubicación zip entrega',compute='_compute_partner_delivery_zip_shipping')
+    
+    
+    @api.onchange('partner_shipping_id')
+    def _compute_partner_delivery_zip_shipping(self):
+        for record in self:
+            if record.partner_shipping_id:
+                if record.partner_shipping_id.zip_id:
+                    record.zip_shipping_id = record.partner_shipping_id.zip_id.id
+                    logger.error('************hellos_2__2/08/2021**********')
+                else:
+                    record.zip_shipping_id = False
+            else:
+                record.zip_shipping_id = False
+        return
+    
+    @api.onchange('partner_shipping_id')
+    def _compute_partner_delivery_adress_shipping(self):
+        for record in self:
+            if record.partner_shipping_id:
+                if record.partner_shipping_id.street:
+                    record.delivery_adress_shipping = record.partner_shipping_id.street
+                else:
+                    record.delivery_adress_shipping = False
+            else:
+                record.delivery_adress_shipping = False
+        return
+    
 
     def _get_invoiced_lot_values(self):
         res = super(AccountMove, self)._get_invoiced_lot_values()
         for i in res:
             obje_lot = self.env['stock.production.lot'].search([('name','=', i['lot_name'])])
-            logger.error('Hello everyone test 20')
+            logger.error('Hello everyone test 22/01/2021')
             logger.error(res)
             if len(obje_lot)>1:
-                raise ValidationError('Error')
-            i['removal_date'] = obje_lot.removal_date
+                #raise ValidationError('Error')
+                logger.error('Hello everyone test 22/01/2021 one')
+                logger.error(obje_lot[0].use_date)
+                i['use_date'] = obje_lot[0].use_date
+            else:
+                logger.error('Hello everyone test 22/01/2021 two')
+                logger.error(obje_lot[0].use_date)
+                i['use_date'] = obje_lot[0].use_date
         #lot_values = i
         logger.error('Hello everyone test 20')
         logger.error(res)
