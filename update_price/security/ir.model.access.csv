@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_update_price_user,update_price.update.price,model_update_price,purchase.group_purchase_user,1,1,1,1

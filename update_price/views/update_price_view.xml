@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+        <record id="view_message_approved" model="ir.ui.view">
+            <field name="name">update.price.form</field>
+            <field name="model">update.price</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            <form string="Update">
+                <span></span>
+                <group>
+                    <group>
+                        <field name="product_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                        <field name="price" />
+                    </group>
+                </group>
+                <footer>
+		    	<button string="Update" name="action_update_price" type="object" class="oe_highlight"/>
+                </footer>
+            </form>
+            </field>
+        </record>
+        <record id="action_update_price" model="ir.actions.act_window">
+            <field name="name">Data Approved</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">update.price</field>
+            <field name="binding_view_types">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="update_price" name="Update price" action="action_update_price" parent="purchase.purchase_report" sequence="500" />
+    </data>
+</odoo>
