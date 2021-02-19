@@ -258,18 +258,18 @@ class ResPartner(models.Model):
                 result['othernames'] = parts[1]
         return result
 
-    @api.constrains("firstname", "othernames", "lastname", "lastname2")
-    def _check_name(self):
-        """Ensure at least one name is set."""
-        for record in self:
-            if all(
-                (
-                    record.type == "contact" or record.is_company,
-                    not (record.firstname or record.lastname or 
-                         record.othernames or record.lastname2),
-                )
-            ):
-                raise exceptions.EmptyNamesError(record)
+    # @api.constrains("firstname", "othernames", "lastname", "lastname2")
+    # def _check_name(self):
+    #     """Ensure at least one name is set."""
+    #     for record in self:
+    #         if all(
+    #             (
+    #                 record.type == "contact" or record.is_company,
+    #                 not (record.firstname or record.lastname or 
+    #                      record.othernames or record.lastname2),
+    #             )
+    #         ):
+    #             raise exceptions.EmptyNamesError(record)
 
     @api.depends('identification_document')
     def _compute_same_identification_document_partner_id(self):
