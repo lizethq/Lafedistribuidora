@@ -80,45 +80,47 @@ class AccountInvoice(models.Model):
 		_logger.info('validatee')
 
 		res = super(AccountInvoice, self).post()
+		for record in self:
+			# _logger.info(record.type)
+			if record.company_id.einvoicing_enabled and record.journal_id.is_einvoicing:
+				if record.type in ("out_invoice", "out_refund"):
+					if len(self) > 1:
+						raise ValidationError(_('No esta permitido publicar más de una factura electrónica a la vez'))
+					company_currency = record.company_id.currency_id
+					rate = 1
+					# date = self._get_currency_rate_date() or fields.Date.context_today(self)
+					date = fields.Date.context_today(self)
+					# _logger.info(record.currency_id)
+					# _logger.info(company_currency)
+					if record.currency_id.id != company_currency.id:
+						currency = record.currency_id
+						_logger.info(currency)
+						rate = currency._convert(rate, company_currency, record.company_id, date)
+						# _logger.info('rate')
+						# _logger.info(rate)
+						record.trm = rate
 
-		_logger.info(self.type)
-		if self.company_id.einvoicing_enabled and self.journal_id.is_einvoicing:
-			if self.type in ("out_invoice", "out_refund"):
-				company_currency = self.company_id.currency_id
-				rate = 1
-				# date = self._get_currency_rate_date() or fields.Date.context_today(self)
-				date = fields.Date.context_today(self)
-				_logger.info(self.currency_id)
-				_logger.info(company_currency)
-				if self.currency_id.id != company_currency.id:
-					currency = self.currency_id
-					_logger.info(currency)
-					rate = currency._convert(rate, company_currency, self.company_id, date)
-					_logger.info('rate')
-					_logger.info(rate)
-					self.trm = rate
+					if record.type == 'out_invoice' and record.refund_type == 'debit':
+						type_account = 'debit'
+					elif record.type == 'out_refund' and record.refund_type != 'debit':
+						type_account = 'credit'
+					else:
+						type_account = 'invoice'
 
-				if self.type == 'out_invoice' and self.refund_type == 'debit':
-					type_account = 'debit'
-				elif self.type == 'out_refund' and self.refund_type != 'debit':
-					type_account = 'credit'
-				else:
-					type_account = 'invoice'
-
-				dian_document_obj = self.env['account.invoice.dian.document']
-				dian_document = dian_document_obj.create({
-					'invoice_id': self.id,
-					'company_id': self.company_id.id,
-					'type_account': type_account
-				})
-				dian_document.action_set_files()
-				_logger.info(self.send_invoice_to_dian)
-				_logger.info(self.invoice_type_code )
-				if self.send_invoice_to_dian == '0':
-					if self.invoice_type_code in ('01', '02'):
-						dian_document.action_sent_zipped_file()
-					elif self.invoice_type_code == '04':
-						dian_document.action_send_mail()
+					dian_document_obj = self.env['account.invoice.dian.document']
+					dian_document = dian_document_obj.create({
+						'invoice_id': record.id,
+						'company_id': record.company_id.id,
+						'type_account': type_account
+					})
+					dian_document.action_set_files()
+					# _logger.info(record.send_invoice_to_dian)
+					# _logger.info(record.invoice_type_code )
+					if record.send_invoice_to_dian == '0':
+						if record.invoice_type_code in ('01', '02'):
+							dian_document.action_sent_zipped_file()
+						elif record.invoice_type_code == '04':
+							dian_document.action_send_mail()
 
 		return res
 
