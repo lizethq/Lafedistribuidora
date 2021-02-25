@@ -8,7 +8,7 @@ from . import payment_methods_la_fe
 from . import channel_fe
 from . import economic_activity
 from . import sale_order_line
-
+from . import stock_valuation_adjustment_lines
 
 
 #from . import sale_order
