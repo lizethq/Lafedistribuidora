@@ -14,5 +14,16 @@
                 </xpath>
             </field>
         </record>
+        <record id="sales_la_fe_stock_landed_cost" model="ir.ui.view">
+            <field name="name">sales.la.fe.stock.landed.cost</field>
+            <field name="model">stock.landed.cost</field>
+            <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+            
+            <field name="arch" type="xml">
+               <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/field[@name='valuation_adjustment_lines']/tree[1]/field[@name='quantity']" position="after">
+    <field name="cost_per_unit"/>
+  </xpath> 
+            </field>
+        </record>
     </data>
 </odoo>
