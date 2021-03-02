@@ -9,6 +9,8 @@
 ##############################################################################
 
 from odoo import api, models, fields
+import logging
+logger = logging.getLogger(__name__)
 
 class sale_order(models.Model):
     _inherit= 'sale.order'
@@ -46,13 +48,15 @@ class sale_order(models.Model):
         partner_ids = [partner_id.id]
         for partner in partner_id.child_ids:
             partner_ids.append(partner.id)
-    
-        if partner_id.check_credit:
+            
+        
+        if partner_id.check_credit and self.payment_term_id.line_ids.days > 0:
+            logger.info('*************ENTRANDO A LA CONDICIÓN DE LÍMITES DE PAGO 1**************')
             domain = [
                 ('order_id.partner_id', 'in', partner_ids),
                 ('order_id.state', 'in', ['sale', 'credit_limit','done'])]
             order_lines = self.env['sale.order.line'].search(domain)
-            
+
             order = []
             to_invoice_amount = 0.0
             for line in order_lines:
@@ -70,9 +74,9 @@ class sale_order(models.Model):
                                 break
                     else:
                         order.append(line.order_id.id)
-                    
+
                 to_invoice_amount += taxes['total_included']
-            
+
             domain = [
                 ('move_id.partner_id', 'in', partner_ids),
                 ('move_id.state', '=', 'draft'),
@@ -141,7 +145,11 @@ class sale_order(models.Model):
                     }
             else:
                 self.action_confirm()
-        else:
+        elif partner_id.check_credit and self.payment_term_id.line_ids.days <= 0:
+            logger.info('*************ENTRANDO A LA CONDICIÓN DE LÍMITES DE PAGO 2**************')
+            self.action_confirm()
+        elif not partner_id.check_credit:
+            logger.info('*************ENTRANDO A LA CONDICIÓN DE LÍMITES DE PAGO 3**************')
             self.action_confirm()
         return True
         
