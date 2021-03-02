@@ -47,12 +47,12 @@ class sale_order(models.Model):
         for partner in partner_id.child_ids:
             partner_ids.append(partner.id)
     
-        if partner_id.check_credit:
+        if partner_id.check_credit and sum([x.days for x in self.payment_term_id.line_ids]) > 0:
             domain = [
                 ('order_id.partner_id', 'in', partner_ids),
                 ('order_id.state', 'in', ['sale', 'credit_limit','done'])]
             order_lines = self.env['sale.order.line'].search(domain)
-            
+
             order = []
             to_invoice_amount = 0.0
             for line in order_lines:
@@ -70,9 +70,9 @@ class sale_order(models.Model):
                                 break
                     else:
                         order.append(line.order_id.id)
-                    
+
                 to_invoice_amount += taxes['total_included']
-            
+
             domain = [
                 ('move_id.partner_id', 'in', partner_ids),
                 ('move_id.state', '=', 'draft'),
@@ -141,7 +141,9 @@ class sale_order(models.Model):
                     }
             else:
                 self.action_confirm()
-        else:
+        elif partner_id.check_credit and self.payment_term_id.line_ids.days <= 0:
+            self.action_confirm()
+        elif not partner_id.check_credit:
             self.action_confirm()
         return True
         
