@@ -28,10 +28,10 @@
                     <li t-if="record.type.raw_value == 'product'">Cantidad proyectada: <field name="virtual_available"/> <field name="uom_id"/></li>
                 </ul>
                <ul position="inside">
-                    <li t-if="record.type.raw_value == 'product'">Entrantes: <field name="purchased_product_qty"/> <field name="uom_id"/></li>
+                    <li t-if="record.type.raw_value == 'product'">Entrantes: <field name="purchase_product_qty"/> <field name="uom_id"/></li>
                 </ul>
                 <ul position="inside">
-                    <li t-if="record.type.raw_value == 'product'">Salientes: <field name="sales_count"/> <field name="uom_id"/></li>
+                    <li t-if="record.type.raw_value == 'product'">Salientes: <field name="sales_counts"/> <field name="uom_id"/></li>
                 </ul>
         </field>
     </record>

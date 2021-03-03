@@ -48,10 +48,7 @@ class sale_order(models.Model):
         partner_ids = [partner_id.id]
         for partner in partner_id.child_ids:
             partner_ids.append(partner.id)
-            
-        
-        if partner_id.check_credit and self.payment_term_id.line_ids.days > 0:
-            logger.info('*************ENTRANDO A LA CONDICIÓN DE LÍMITES DE PAGO 1**************')
+        if partner_id.check_credit and sum([x.days for x in self.payment_term_id.line_ids]) > 0:
             domain = [
                 ('order_id.partner_id', 'in', partner_ids),
                 ('order_id.state', 'in', ['sale', 'credit_limit','done'])]
@@ -146,10 +143,8 @@ class sale_order(models.Model):
             else:
                 self.action_confirm()
         elif partner_id.check_credit and self.payment_term_id.line_ids.days <= 0:
-            logger.info('*************ENTRANDO A LA CONDICIÓN DE LÍMITES DE PAGO 2**************')
             self.action_confirm()
         elif not partner_id.check_credit:
-            logger.info('*************ENTRANDO A LA CONDICIÓN DE LÍMITES DE PAGO 3**************')
             self.action_confirm()
         return True
         
