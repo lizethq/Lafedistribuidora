@@ -6,6 +6,25 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <!--<field name="priority">15</field>-->
             <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+
+                   <div class="alert alert-warning" role="alert" style="margin-bottom:0px;" attrs="{'invisible': [('lines_qty_empty','=', False)]}">
+                       
+                       Atención, las siguientes líneas no tienen una cantidad registrada:
+
+                       <bold>
+
+                           <a class="alert-link" role="button">
+
+                               <field name="lines_qty_empty" readonly="True"/>
+
+                           </a>
+
+                       </bold>
+
+                   </div>
+
+                </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="check_credit_two" invisible="1"/>
                 </xpath>
