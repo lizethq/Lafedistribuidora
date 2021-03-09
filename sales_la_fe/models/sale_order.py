@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 from odoo import models, fields, api
-from odoo.exceptions import AccessDenied
+from odoo.exceptions import AccessDenied, ValidationError
 
 
 logger = logging.getLogger(__name__)
@@ -36,7 +36,40 @@ class SaleOrder(models.Model):
         'Domicilio de entrega', compute='_compute_partner_delivery_adress_shipping')
     zip_shipping_id = fields.Many2one(
         'res.city.zip', string='Ubicación zip entrega',compute='_compute_partner_delivery_zip_shipping')
+    lines_qty_empty = fields.Char('empty', compute="_check_lines_empty_qty")
     
+    
+    def action_sale_ok(self):
+        for record in self:
+            if not record.partner_id.country_id:
+                raise ValidationError("No se ha registrado el pais en el cliente actual")
+            elif not record.partner_id.property_account_position_id:
+                raise ValidationError("No se ha registrado la posición Fiscal en el cliente actual")
+            elif not record.partner_id.document_type_id:
+                raise ValidationError("No se ha registrado el tipo de documento en el cliente actual")
+            elif not record.partner_id.zip_id:
+                raise ValidationError("No se ha registrado el tipo de documento en el cliente actual")
+            elif not record.partner_id.person_type:
+                raise ValidationError("No se ha seleccionado un tipo de persona en el cliente actual")
+            elif not record.partner_id.email:
+                raise ValidationError("No se ha registrado el email en el cliente actual")
+                
+        return super(SaleOrder, self).action_sale_ok()
+    
+    @api.depends('order_line')
+    def _check_lines_empty_qty(self):
+        lines_empty = []
+        for record in self:
+            for lines in record.order_line:
+                if lines.inventory_quantity <= 0:
+                    lines_empty += ''.join(lines.product_id.default_code).split(',')
+            
+            logger.info('*************************************************************************')
+            logger.info(lines_empty)
+            if lines_empty:
+                record.lines_qty_empty = lines_empty
+            else:
+                record.lines_qty_empty = False
     
     @api.onchange('partner_shipping_id')
     def _compute_partner_delivery_zip_shipping(self):
@@ -50,6 +83,8 @@ class SaleOrder(models.Model):
             else:
                 record.zip_shipping_id = False
         return
+                
+                
     
     @api.onchange('partner_shipping_id')
     def _compute_partner_delivery_adress_shipping(self):
