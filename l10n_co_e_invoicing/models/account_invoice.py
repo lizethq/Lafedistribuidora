@@ -4,6 +4,9 @@
 # Copyright 2019 Diego Carvajal <Github@diegoivanc>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from datetime import datetime, timedelta
+from pytz import timezone
+
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.misc import formatLang, format_date, get_lang
@@ -19,42 +22,74 @@ _logger = logging.getLogger(__name__)
 class AccountInvoice(models.Model):
 	_inherit = "account.move"
 
-	dian_document_lines = fields.One2many(
-		comodel_name='account.invoice.dian.document',
-		inverse_name='invoice_id',
-		string='Dian Document Lines')
+	def _get_warn_pfx(self):
+		warn_pfx = False
+		days = 0
+		if self.journal_id.is_einvoicing:
+			remaining_days = self.company_id.remaining_days_pfx
+			date_due = self.company_id.date_due_pfx
+			today = datetime.strptime(str(datetime.now(timezone(self.env.user.tz)).date()), '%Y-%m-%d')
+			if date_due:
+				date_to = datetime.strptime(str(date_due), '%Y-%m-%d')
+				days = (date_to - today).days
+				if days < remaining_days:
+					warn_pfx = True
+			else:
+				warn_pfx = True
+		
+		self.warn_pfx = warn_pfx
+		self.pfx_available_days = days
 
-	operation_type = fields.Selection(
-		[('10', 'Standard *'),
-		 ('20', 'Credit note that references an e-invoice'),
-		 ('22', 'Credit note without reference to invoices *'),
-		 ('30', 'Debit note that references an e-invoice'),
-		 ('32', 'Debit note without reference to invoices *')],
-		string='Operation Type',
-		default='10')
-	invoice_type_code = fields.Selection(
-		[('01', 'Factura de Venta'),
-		 ('02', 'Factura de Venta Exportación'),
-		 ('03', 'Factura por Contingencia Facturador'),
-		 ('04', 'Factura por Contingencia DIAN')],
-		string='Invoice Type',
-		default='01')
-	send_invoice_to_dian = fields.Selection(
-		[('0', 'Immediately'),
-		 ('1', 'After 1 Day'),
-		 ('2', 'After 2 Days')],
-		string='Send Invoice to DIAN?',
-		default='0')
-
+	dian_document_lines = fields.One2many('account.invoice.dian.document', 'invoice_id', string='Dian Document Lines')
+	operation_type = fields.Selection([('09', 'AIU'),
+									   ('10', 'Standard *'),
+									   ('11', 'Mandatos'),
+									   ('20', 'Credit note that references an e-invoice'),
+									   ('22', 'Credit note without reference to invoices *'),
+									   ('30', 'Debit note that references an e-invoice'),
+									   ('32', 'Debit note without reference to invoices *')], string='Operation Type', default='10')
+	invoice_type_code = fields.Selection([('01', 'Factura de Venta'),
+		 								  ('02', 'Factura de Venta Exportación'),
+										  ('03', 'Factura por Contingencia Facturador'),
+										  ('04', 'Factura por Contingencia DIAN')], string='Invoice Type', default='01')
+	send_invoice_to_dian = fields.Selection([('0', 'Immediately'),
+		 									 ('1', 'After 1 Day'),
+											 ('2', 'After 2 Days')], string='Send Invoice to DIAN?', default='0')
 	trm = fields.Float()
 	is_invoice_out_odoo = fields.Boolean('Creada fuera de odoo?')
 	id_invoice_refound = fields.Char('Factura')
 	uuid_invoice = fields.Char('Cufe')
 	issue_date_invoice = fields.Date('Fecha')
-	customizationid_invoice = fields.Integer(default=10)
+	customizationid_invoice = fields.Integer(string="Tipo de operación Factura", default=10)
+	aiu = fields.Char(string='AIU')
+
 	credit_note_ids = fields.One2many('account.move', 'reversed_entry_id', string="Notas crédito")
 
 	credit_note_count = fields.Integer('Number of Credit Notes', compute='_compute_credit_count')
+	mandante_id = fields.Many2one('res.partner', string="Mandante")
+
+	warn_pfx = fields.Boolean(string="Certificado DIAN por vencer", compute="_get_warn_pfx", store=False)
+	pfx_available_days = fields.Integer(string="Días disponibles", compute="_get_warn_pfx", store=False)
+	status_dian_document = fields.Selection([('00', 'Procesado Correctamente'),
+                                             ('66', 'NSU no encontrado'),
+											 ('90', 'TrackId no encontrado'),
+											 ('99', 'Validaciones contienen errores en campos mandatorios'),
+											 ('111', 'Tiene más de un documento DIAN'),
+											 ('other', 'Other')], string='Estado doc. DIAN', compute="_get_status_doc_dian", default=False, tracking=True)
+	
+	@api.depends('dian_document_lines')
+	def _get_status_doc_dian(self):
+		for record in self:
+			if record.journal_id.is_einvoicing and record.dian_document_lines:
+				if len(record.dian_document_lines) > 1:
+					record.status_dian_document = '111'
+				elif len(record.dian_document_lines) == 1:
+					record.status_dian_document = record.dian_document_lines.get_status_zip_status_code
+				else:
+					record.status_dian_document = False
+			else:
+				record.status_dian_document = False
+
 
 	@api.depends('credit_note_ids')
 	def _compute_credit_count(self):
@@ -73,6 +108,7 @@ class AccountInvoice(models.Model):
 			'view_mode': 'tree,form',
 			'domain': [('reversed_entry_id', '=', self.id)],
 		}
+
 	def post(self):
 		_logger.info('validatee')
 		_logger.info('validatee')
@@ -81,25 +117,22 @@ class AccountInvoice(models.Model):
 
 		res = super(AccountInvoice, self).post()
 		for record in self:
-			# _logger.info(record.type)
 			if record.company_id.einvoicing_enabled and record.journal_id.is_einvoicing:
+				if len(self) > 1:
+					raise ValidationError(_('No está permitido publicar varias facturas electrónicas a la vez.'))
+				if record._get_warn_pfx_state():
+					raise ValidationError(_('Factura electrónica bloqueada. \n\n El Certificado .pfx de la compañia %s está vencido.') % record.company_id.name)
+	
 				if record.type in ("out_invoice", "out_refund"):
-					if len(self) > 1:
-						raise ValidationError(_('No esta permitido publicar más de una factura electrónica a la vez'))
 					company_currency = record.company_id.currency_id
 					rate = 1
 					# date = self._get_currency_rate_date() or fields.Date.context_today(self)
 					date = fields.Date.context_today(self)
-					# _logger.info(record.currency_id)
-					# _logger.info(company_currency)
 					if record.currency_id.id != company_currency.id:
 						currency = record.currency_id
-						_logger.info(currency)
 						rate = currency._convert(rate, company_currency, record.company_id, date)
-						# _logger.info('rate')
-						# _logger.info(rate)
 						record.trm = rate
-
+					
 					if record.type == 'out_invoice' and record.refund_type == 'debit':
 						type_account = 'debit'
 					elif record.type == 'out_refund' and record.refund_type != 'debit':
@@ -108,21 +141,32 @@ class AccountInvoice(models.Model):
 						type_account = 'invoice'
 
 					dian_document_obj = self.env['account.invoice.dian.document']
+					dian_document = False
 					dian_document = dian_document_obj.create({
 						'invoice_id': record.id,
 						'company_id': record.company_id.id,
 						'type_account': type_account
-					})
+						})
 					dian_document.action_set_files()
-					# _logger.info(record.send_invoice_to_dian)
-					# _logger.info(record.invoice_type_code )
 					if record.send_invoice_to_dian == '0':
-						if record.invoice_type_code in ('01', '02'):
+						if record.invoice_type_code in ('01', '02', '03'):
 							dian_document.action_sent_zipped_file()
 						elif record.invoice_type_code == '04':
 							dian_document.action_send_mail()
 
 		return res
+
+	def _get_warn_pfx_state(self):
+		self.ensure_one()
+		warn_pfx = False
+		date_due = self.company_id.date_due_pfx
+		today = datetime.strptime(str(fields.Date.today(self)), '%Y-%m-%d')
+		if date_due:
+			date_to = datetime.strptime(str(date_due), '%Y-%m-%d')
+			days = (date_to - today).days
+			if days <= 0:
+				warn_pfx = True
+		return warn_pfx
 
 	def _get_pdf_file(self):
 		template = self.env['ir.actions.report'].browse(self.dian_document_lines.company_id.report_template.id)
@@ -145,7 +189,7 @@ class AccountInvoice(models.Model):
 		# template = self.env.ref('account.email_template_edi_invoice', raise_if_not_found=False)
 
 		xml_attachment_file = False
-		if self.dian_document_lines[0].ar_xml_file and self.dian_document_lines[0].xml_file:
+		if self.dian_document_lines.filtered(lambda x: x.ar_xml_file and x.xml_file):
 			xml_without_signature = global_functions.get_template_xml(
 				self.dian_document_lines._get_attachment_values(),
 				'attachment')
@@ -160,14 +204,14 @@ class AccountInvoice(models.Model):
 			'name': self.dian_document_lines.xml_filename,
 			'type': 'binary',
 			'datas': self.dian_document_lines.xml_file})
-		pdf_attachment = self.env['ir.attachment'].create({
-			'name': self.name + '.pdf',
-			'type': 'binary',
-			'datas': self._get_pdf_file()})
+		# pdf_attachment = self.env['ir.attachment'].create({
+		# 	'name': self.name + '.pdf',
+		# 	'type': 'binary',
+		# 	'datas': self._get_pdf_file()})
 
-		attach_ids = [(xml_attachment.id),(pdf_attachment.id)]
+		attach_ids = [xml_attachment.id]
 		if xml_attachment_file:
-			attach_ids.append((xml_attachment_file.id))
+			attach_ids.append(xml_attachment_file.id)
 
 		template.attachment_ids = [(6, 0, attach_ids)]
 
@@ -201,25 +245,25 @@ class AccountInvoice(models.Model):
 			'context': ctx,
 		}
 
-	def invoice_validate(self):
-		_logger.info('validatee')
-		_logger.info('validatee')
-		_logger.info('validatee')
-		_logger.info('validatee')
+	# def invoice_validate(self):
+	# 	_logger.info('validatee')
+	# 	_logger.info('validatee')
+	# 	_logger.info('validatee')
+	# 	_logger.info('validatee')
 
-		res = super(AccountInvoice, self).invoice_validate()
+	# 	res = super(AccountInvoice, self).invoice_validate()
 
-		if self.company_id.einvoicing_enabled:
-			if self.type != "in_invoice":
-				dian_document_obj = self.env['account.invoice.dian.document']
-				dian_document = dian_document_obj.create({
-					'invoice_id': self.id,
-					'company_id': self.company_id.id})
-				dian_document.set_files()
-				dian_document.sent_zipped_file()
-				dian_document.GetStatusZip()
+	# 	if self.company_id.einvoicing_enabled:
+	# 		if self.type != "in_invoice":
+	# 			dian_document_obj = self.env['account.invoice.dian.document']
+	# 			dian_document = dian_document_obj.create({
+	# 				'invoice_id': self.id,
+	# 				'company_id': self.company_id.id})
+	# 			dian_document.set_files()
+	# 			dian_document.sent_zipped_file()
+	# 			dian_document.GetStatusZip()
 
-		return res
+	# 	return res
 
 	def _get_payment_exchange_rate(self):
 		company_currency = self.company_id.currency_id
@@ -240,25 +284,32 @@ class AccountInvoice(models.Model):
 			'CalculationRate': rate,
 			'Date': date}
 
-	def action_cancel(self):
-		res = super(AccountInvoice, self).action_cancel()
+	def button_cancel(self):
+		res = super(AccountInvoice, self).button_cancel()
 
 		for dian_document in self.dian_document_lines:
 			if dian_document.state == 'done':
-				raise UserError('You cannot cancel a invoice sent to DIAN')
+				raise UserError(_('No puede cancelar una factura procesada en la DIAN'))
 
 		return res
 	
+	def button_draft(self):
+		res = super(AccountInvoice, self).button_draft()
+
+		for dian_document in self.dian_document_lines:
+			if dian_document.state == 'done':
+				raise UserError(_('No puede cambiar a borrador una factura procesada en la DIAN'))
+
+		return res
+
 	def _get_billing_reference(self):
 		billing_reference = {}
 		msg1 = ''
-		msg2 = _('La nota de crédito no tiene referencia de facturación \n\n')
+		msg2 = _('La nota %s no tiene referencia de facturación \n\n') % 'crédito' if self.refund_type == 'credit' else 'débito' if self.refund_type == 'debit' else ''
 		#for origin_invoice in self.refund_invoice_id:
 		_logger.info(self.reversed_entry_id)
 		origin_invoice_id = self.reversed_entry_id if self.refund_type == 'credit' else self.debit_origin_id if self.refund_type == 'debit' else False
 		for origin_invoice in origin_invoice_id:
-			_logger.info('refund')
-			_logger.info(origin_invoice)
 			if origin_invoice.state in ('open', 'paid', 'posted'):
 				for dian_document in origin_invoice.dian_document_lines:
 					if dian_document.state == 'done':
@@ -266,6 +317,8 @@ class AccountInvoice(models.Model):
 						billing_reference['UUID'] = dian_document.cufe_cude
 						billing_reference['IssueDate'] = origin_invoice.invoice_date
 						billing_reference['CustomizationID'] = origin_invoice.operation_type
+					else:
+						msg1 = _('El documento DIAN de la factura %s no está procesado correctamente. Por favor, validar su estado en la DIAN.') % origin_invoice.name
 
 		if not billing_reference:
 			raise UserError(msg2 + msg1)
@@ -326,13 +379,14 @@ class AccountInvoice(models.Model):
 				tax_code = tax.tax_line_id.tax_group_id.tax_group_type_id.code
 				tax_name = tax.tax_line_id.tax_group_id.tax_group_type_id.name
 				tax_type = tax.tax_line_id.tax_group_id.tax_group_type_id.type
+				rate = 1
+				date = fields.Date.context_today(self)
 				# tax_percent = '{:.2f}'.format(tax.tax_line_id.amount)
 				tax_percent = str(tax.tax_line_id.amount)
 
 				if tax_type == 'withholding_tax' and tax.tax_line_id.amount == 0:
 					raise UserError(msg2 % tax.name)
 				elif tax_type == 'tax' and tax.tax_line_id.amount < 0:
-					_logger.info('negativo einvoicing')
 					raise UserError(msg3 % tax.name)
 				elif tax_type == 'tax' and tax.tax_line_id.amount == 0:
 					pass
@@ -342,9 +396,8 @@ class AccountInvoice(models.Model):
 						withholding_taxes[tax_code]['total'] = 0
 						withholding_taxes[tax_code]['name'] = tax_name
 						withholding_taxes[tax_code]['taxes'] = {}
-					
+
 					if float(tax_percent) < 0.0:
-						# tax_percent = '{:.2f}'.format(tax.tax_line_id.amount*(-1))
 						tax_percent = str(tax.tax_line_id.amount*(-1))
 
 					if tax_percent not in withholding_taxes[tax_code]['taxes']:
@@ -354,7 +407,7 @@ class AccountInvoice(models.Model):
 
 					if self.currency_id.id != company_currency.id:
 						currency = self.currency_id
-						_logger.info(currency)
+						# _logger.info(currency)
 						rate = currency._convert(rate, company_currency, self.company_id, date)
 						withholding_taxes[tax_code]['total'] += (((tax.tax_base_amount/rate) * tax.tax_line_id.amount) / 100) * (-1)
 						withholding_taxes[tax_code]['taxes'][tax_percent]['base'] += tax.tax_base_amount/rate
@@ -381,20 +434,9 @@ class AccountInvoice(models.Model):
 						taxes[tax_code]['taxes'][tax_percent]['base'] = 0
 						taxes[tax_code]['taxes'][tax_percent]['amount'] = 0
 
-					_logger.info('taxesprueba')
-					_logger.info(tax)
-					_logger.info(tax.tax_base_amount)
-					_logger.info(tax.tax_line_id.amount)
-					_logger.info(tax.tax_line_id.amount)
-
-					rate = 1
 					# date = self._get_currency_rate_date() or fields.Date.context_today(self)
-					date = fields.Date.context_today(self)
-					_logger.info(self.currency_id)
-					_logger.info(company_currency)
 					if self.currency_id.id != company_currency.id:
 						currency = self.currency_id
-						_logger.info(currency)
 						rate = currency._convert(rate, company_currency, self.company_id, date)
 						taxes[tax_code]['total'] += (((tax.tax_base_amount / rate) * tax.tax_line_id.amount) / 100)
 						taxes[tax_code]['taxes'][tax_percent]['base'] += tax.tax_base_amount / rate
@@ -403,59 +445,6 @@ class AccountInvoice(models.Model):
 						taxes[tax_code]['total'] += ((tax.tax_base_amount * tax.tax_line_id.amount) / 100)
 						taxes[tax_code]['taxes'][tax_percent]['base'] += tax.tax_base_amount
 						taxes[tax_code]['taxes'][tax_percent]['amount'] += ((tax.tax_base_amount * tax.tax_line_id.amount) / 100)
-
-			# if tax_type == 'withholding_tax':
-				# 	if tax.tax_line_id.amount < 0:
-				# 		tax_percent = '{:.2f}'.format(tax.tax_line_id.amount * (-1))
-				# 	else:
-				# 		raise UserError(msg2 % tax.name)
-				#
-				# 	if tax_code not in withholding_taxes:
-				# 		withholding_taxes[tax_code] = {}
-				# 		withholding_taxes[tax_code]['total'] = 0
-				# 		withholding_taxes[tax_code]['name'] = tax_name
-				# 		withholding_taxes[tax_code]['taxes'] = {}
-				#
-				# 	if tax_percent not in withholding_taxes[tax_code]['taxes']:
-				# 		withholding_taxes[tax_code]['taxes'][tax_percent] = {}
-				# 		withholding_taxes[tax_code]['taxes'][tax_percent]['base'] = 0
-				# 		withholding_taxes[tax_code]['taxes'][tax_percent]['amount'] = 0
-				#
-				# 	withholding_taxes[tax_code]['total'] += tax.amount * (-1)
-				# 	withholding_taxes[tax_code]['taxes'][tax_percent]['base'] += tax.base
-				# 	withholding_taxes[tax_code]['taxes'][tax_percent]['amount'] += tax.amount * (-1)
-				# else:
-				# 	if tax.tax_line_id.amount > 0:
-				# 		tax_percent = '{:.2f}'.format(tax.tax_line_id.amount)
-				# 	else:
-				# 		raise UserError(msg3 % tax.name)
-				#
-				# 	if tax_code not in taxes:
-				# 		taxes[tax_code] = {}
-				# 		taxes[tax_code]['total'] = 0
-				# 		taxes[tax_code]['name'] = tax_name
-				# 		taxes[tax_code]['taxes'] = {}
-				#
-				# 	if tax_percent not in taxes[tax_code]['taxes']:
-				# 		taxes[tax_code]['taxes'][tax_percent] = {}
-				# 		taxes[tax_code]['taxes'][tax_percent]['base'] = 0
-				# 		taxes[tax_code]['taxes'][tax_percent]['amount'] = 0
-				# 	_logger.info('taxxx')
-				# 	_logger.info(tax.tax_base_amount)
-				# 	_logger.info(tax.tax_line_id)
-				# 	taxes[tax_code]['total'] += ((tax.tax_base_amount * tax.tax_line_id.amount) / 100)
-				# 	taxes[tax_code]['taxes'][tax_percent]['base'] += tax.tax_base_amount
-				# 	taxes[tax_code]['taxes'][tax_percent]['amount'] += ((tax.tax_base_amount * tax.tax_line_id.amount) / 100)
-
-
-		# if '06' not in withholding_taxes:
-		# 	withholding_taxes['06'] = {}
-		# 	withholding_taxes['06']['total'] = 0
-		# 	withholding_taxes['06']['name'] = 'ReteRenta'
-		# 	withholding_taxes['06']['taxes'] = {}
-		# 	withholding_taxes['06']['taxes']['0.00'] = {}
-		# 	withholding_taxes['06']['taxes']['0.00']['base'] = 0
-		# 	withholding_taxes['06']['taxes']['0.00']['amount'] = 0
 
 		if '01' not in taxes:
 			taxes['01'] = {}
@@ -705,12 +694,7 @@ class AccountInvoice(models.Model):
 		invoice_lines = {}
 		count = 1
 
-		for invoice_line in self.invoice_line_ids.filtered(lambda x: x.display_type not in ('line_section','line_note')):
-			_logger.info('prueba')
-			_logger.info(invoice_line)
-			_logger.info(invoice_line.product_uom_id)
-			_logger.info(invoice_line.product_id.default_code)
-			_logger.info(invoice_line.product_id)
+		for invoice_line in self.invoice_line_ids.filtered(lambda x: not x.display_type):
 			if not invoice_line.product_uom_id.product_uom_code_id:
 				raise UserError(msg1 % invoice_line.product_uom_id.name)
 
@@ -727,7 +711,7 @@ class AccountInvoice(models.Model):
 
 			if invoice_line.price_unit == 0 or invoice_line.quantity == 0:
 				raise ValidationError(_('Para facturación electrónica no está permitido lineas de producto con precio o cantidad en 0.'))
-			
+
 			if not invoice_line.product_id or not invoice_line.product_id.default_code:
 				raise UserError(msg2 % invoice_line.name)
 
@@ -740,25 +724,39 @@ class AccountInvoice(models.Model):
 			if invoice_line.price_subtotal <= 0 and reference_price <= 0:
 				raise UserError(msg3 % invoice_line.product_id.default_code)
 
-			if self.invoice_type_code == '02':
-				if invoice_line.product_id.product_brand_id:
-					brand_name = invoice_line.product_id.product_brand_id.name
+			# if self.invoice_type_code == '02':
+			# 	if invoice_line.product_id.product_brand_id:
+			# 		brand_name = invoice_line.product_id.product_brand_id.name
 
-				model_name = invoice_line.product_id.manufacturer_pref
+			# 	model_name = invoice_line.product_id.manufacturer_pref
+			brand_name = invoice_line.product_id.brand_name or ''
+			model_name = invoice_line.product_id.model_name or ''
+
+			product_scheme_id = invoice_line.product_id.product_scheme_id or self.env['product.scheme'].search([('code','=','999')])
+
+			nota_ref = ''
+			if self.operation_type == '09':
+				nota_ref = 'Contrato de servicios AIU por concepto de: ' + self.aiu
 
 			invoice_lines[count] = {}
+			invoice_lines[count]['Note'] = nota_ref or ''
 			invoice_lines[count]['unitCode'] = invoice_line.product_uom_id.product_uom_code_id.code
 			invoice_lines[count]['Quantity'] = '{:.2f}'.format(invoice_line.quantity)
 			invoice_lines[count]['PriceAmount'] = '{:.2f}'.format(reference_price)
 			invoice_lines[count]['LineExtensionAmount'] = '{:.2f}'.format(invoice_line.price_subtotal)
+			invoice_lines[count]['PricingReference'] = '{:.2f}'.format(invoice_line.product_id.standard_price or 0.0)
 			invoice_lines[count]['MultiplierFactorNumeric'] = '{:.2f}'.format(invoice_line.discount)
 			invoice_lines[count]['AllowanceChargeAmount'] = '{:.2f}'.format(disc_amount)
 			invoice_lines[count]['AllowanceChargeBaseAmount'] = '{:.2f}'.format(total_wo_disc)
 			invoice_lines[count]['TaxesTotal'] = {}
 			invoice_lines[count]['WithholdingTaxesTotal'] = {}
-			invoice_lines[count]['StandardItemIdentification'] = invoice_line.product_id.default_code
+			invoice_lines[count]['SellersItemIdentification'] = invoice_line.product_id.default_code
+			invoice_lines[count]['StandardItemIdentification'] = invoice_line.product_id.product_scheme_code or ''
+			invoice_lines[count]['StandardschemeID'] = product_scheme_id.code or ''
+			invoice_lines[count]['StandardschemeName'] = product_scheme_id.name or ''
+			invoice_lines[count]['StandardschemeAgencyID'] = product_scheme_id.scheme_agency_id or ''
 
-			for tax in invoice_line.tax_line_id:
+			for tax in invoice_line.tax_ids:
 
 				if tax.amount_type == 'group':
 					tax_ids = tax.children_tax_ids
@@ -775,7 +773,6 @@ class AccountInvoice(models.Model):
 						if tax_type == 'withholding_tax' and tax_id.amount == 0:
 							raise UserError(msg5 % tax_id.name)
 						elif tax_type == 'tax' and tax_id.amount < 0:
-							_logger.info('negativo tax')
 							raise UserError(msg6 % tax_id.name)
 						elif tax_type == 'tax' and tax_id.amount == 0:
 							pass
@@ -824,10 +821,9 @@ class AccountInvoice(models.Model):
 				invoice_lines[count]['TaxesTotal']['04']['taxes']['0.00']['base'] = invoice_line.price_subtotal
 				invoice_lines[count]['TaxesTotal']['04']['taxes']['0.00']['amount'] = 0
 
-
 			invoice_lines[count]['BrandName'] = brand_name
 			invoice_lines[count]['ModelName'] = model_name
-			invoice_lines[count]['ItemDescription'] = invoice_line.name
+			invoice_lines[count]['ItemDescription'] = str(invoice_line.name) if invoice_line.name != invoice_line.product_id.display_name else invoice_line.product_id.name or ''
 			invoice_lines[count]['InformationContentProviderParty'] = (
 				invoice_line._get_information_content_provider_party_values())
 			invoice_lines[count]['PriceAmount'] = '{:.2f}'.format(
@@ -836,3 +832,9 @@ class AccountInvoice(models.Model):
 			count += 1
 
 		return invoice_lines
+
+	def action_reverse(self):
+		for record in self:
+			if record.amount_residual == 0.0:
+				raise ValidationError(_('No esta permitido crear Notas Crédito a facturas ya pagadas.'))
+		return super(AccountInvoice, self).action_reverse()

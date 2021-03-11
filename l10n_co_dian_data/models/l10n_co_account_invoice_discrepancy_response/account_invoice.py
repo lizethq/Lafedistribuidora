@@ -51,6 +51,6 @@ class AccountInvoice(models.Model):
 		if self.type == 'out_invoice' and self.refund_type == 'debit' and journal.debit_note_sequence_id:
 			return journal.debit_note_sequence_id
 		return res
-		
+
 
 

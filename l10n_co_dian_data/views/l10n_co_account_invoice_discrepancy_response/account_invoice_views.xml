@@ -12,13 +12,14 @@
                             readonly="1"/>
                 </xpath>
                 <xpath expr="//field[@name='journal_id']" position="before">
-                    <field name="discrepancy_response_code_id" 
-                            domain="[('type', '=', refund_type)]" 
-                            attrs="{'required': [('refund_type', '!=', False)], 
-                                    'invisible': [('refund_type', '=', False)]}" 
+                    <field name="discrepancy_response_code_id"
+                            domain="[('type', '=', refund_type)]"
+                            attrs="{'required': [('refund_type', '!=', False)],
+                                    'invisible': [('refund_type', '=', False)]}"
                             options="{'no_create_edit': True}"/>
                 </xpath>
-                <xpath expr="//button[@id='account_invoice_payment_btn']" position="after">
+
+                <!-- <xpath expr="//button[@id='account_invoice_payment_btn']" position="after">
                     <button name="%(account_invoice_debit_note_action)d"
                             id="account_invoice_debit_note_action"
                             type='action'
@@ -28,7 +29,7 @@
                                                 ('refund_type', '!=', False),
                                                 ('state', 'in', ['proforma2', 'proforma', 'cancel', 'draft'])]}"
                             icon='fa-file'/>
-                </xpath>
+                </xpath> -->
                 <div class="oe_button_box" position="inside">
                     <button type="object" class="oe_stat_button" name="action_view_debit_notes" icon="fa-plus" attrs="{'invisible': [('debit_note_count', '=', 0)]}">
                         <div class="o_field_widget o_stat_info">
@@ -67,8 +68,8 @@
                 </xpath>
             </field>
         </record>
-        
-        <!-- Update Action Sale Invoice -->
+
+    <!-- Update Action Sale Invoice -->
         <record id="account.action_move_out_invoice_type" model="ir.actions.act_window">
             <field name="domain" eval="[('type', '=', 'out_invoice'),('refund_type','=',False)]"/>
             <field name="context" eval="{'default_type': 'out_invoice', 'default_refund_type': False}"/>
