@@ -10,6 +10,8 @@ class StockQuantInherit(models.Model):
     _inherit = 'stock.quant'
 
     comercial_value = fields.Float('Valor comercial', compute='_compute_comercial_value')
+    date_consume = fields.Datetime('Consumir antes de:', related="lot_id.use_date")
+    
     
     @api.depends('product_id')
     def _compute_comercial_value(self):
