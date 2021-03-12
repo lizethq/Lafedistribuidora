@@ -1,7 +1,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import logging
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+
+logger = logging.getLogger(__name__)
 
 
 class AccountMove(models.Model):
@@ -13,7 +16,25 @@ class AccountMove(models.Model):
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
-
+    
+    """
+    def action_post(self):
+        logger.info('**********************************************0')
+        if self.invoice_origin:
+            for record in self:
+                lot_line = self.env['stock.picking'].search([('origin','=',record.invoice_origin)])
+                if lot_line:
+                    for lines_account in record.invoice_line_ids:
+                        for lines_picking in lot_line.move_line_ids_without_package.filtered(lambda x: x.product_id == lines_account.product_id and x.qty_done == lines_account.quantity):
+                            logger.info(lines_picking.lot_id.id)
+                            logger.info('**********************************************')
+                            lines_account.sudo().update({'lot_id':lines_picking.lot_id.id})
+                
+        result = super(AccountMove, self).action_post()
+        return result
+    """
+        
+    
     @api.constrains("pricelist_id", "currency_id")
     def _check_currency(self):
         for sel in self.filtered(lambda a: a.pricelist_id and a.is_invoice()):
@@ -65,7 +86,33 @@ class AccountMove(models.Model):
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
+    
+    lot_id = fields.Many2one('stock.production.lot','Lote/N° de Serie', compute="_compute_lot_id")
+    life_date = fields.Datetime('Fecha de vencimiento', related="lot_id.use_date")
 
+    @api.depends('move_id','tax_ids')
+    def _compute_lot_id(self):
+        for record in self:
+            if record.move_id and record.tax_ids:
+                if record.move_id.invoice_origin:
+                    lot_line = self.env['stock.picking'].search([('origin','=',record.move_id.invoice_origin)])
+                    if lot_line:
+                        logger.info('***************************AQUI EL TEST DE ASIENTOS*******************0')
+                        for lines_picking in lot_line.move_line_ids_without_package.filtered(lambda x: x.product_id == record.product_id and x.qty_done == record.quantity):
+                            if lines_picking.lot_id:
+                                logger.info(lines_picking.lot_id.id)
+                                logger.info('***************************AQUI EL TEST DE ASIENTOS*******************1')
+                                record.lot_id = lines_picking.lot_id.id
+                                #record.sudo().update({'lot_id':lines_picking.lot_id.id})
+                            else:
+                                record.lot_id = False
+                    else:
+                        record.lot_id = False
+                else:
+                    record.lot_id = False
+            else:
+                record.lot_id = False
+        
     @api.onchange("product_id", "quantity")
     def _onchange_product_id_account_invoice_pricelist(self):
         for sel in self:
