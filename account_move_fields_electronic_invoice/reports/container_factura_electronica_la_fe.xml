@@ -89,10 +89,10 @@
                                   <span style="font-size: 11px;" t-esc="l.x_cum"/>
                               </td>
                               <td>
-                                  <!--<span style="font-size: 11px;" t-esc="l.x_lot"/>-->
+                                  <span style="font-size: 11px;" t-esc="l.lot_id.name"/>
                               </td>
-                              <td>
-                                  <!--<span style="font-size: 11px;" t-esc="l.exp"/>-->
+                              <td t-if="l.life_date">
+                                  <span style="font-size: 11px;" t-esc="l.life_date.strftime('%Y-%m-%d')"/>
                               </td>
                               <td>
                                   <span style="font-size: 11px;" t-esc="l.x_atc"/>
