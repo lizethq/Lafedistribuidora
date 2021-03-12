@@ -9,6 +9,23 @@ from odoo.tools import float_is_zero
 
 logger = logging.getLogger(__name__)
 
+class AccountPaymentInhenit(models.TransientModel):
+    _inherit = 'account.payment.register'
+    
+    import_total = fields.Float('Importe Total', compute="_compute_total_import")
+    
+    @api.depends('invoice_ids')
+    def _compute_total_import(self):
+        logger.info('******************************IMPORT TOTAAAL***********************************')
+        amount_total = 0
+        for record in self:
+            for invoices in record.invoice_ids:
+                amount_total += invoices.amount_residual_signed
+        
+        logger.info('***************IMPOR TOTAL ENTRANCE*****************************************')
+        logger.info(amount_total)
+        
+        record.import_total = amount_total
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -18,7 +35,6 @@ class AccountMove(models.Model):
         'Domicilio de entrega', compute='_compute_partner_delivery_adress_shipping')
     zip_shipping_id = fields.Many2one(
         'res.city.zip', string='Ubicación zip entrega',compute='_compute_partner_delivery_zip_shipping')
-    
     
     @api.onchange('partner_shipping_id')
     def _compute_partner_delivery_zip_shipping(self):
@@ -99,7 +115,7 @@ class AccountMove(models.Model):
             else:
                 record.method_la_fe_id = False
 
-class AccountMoveLine(models.Model):
+class AccountMoveLineInherit(models.Model):
     _inherit = 'account.move.line'
 
     #new_expiration_date = fields.Date('Fecha de Vencimiento')
@@ -110,12 +126,12 @@ class AccountMoveLine(models.Model):
 
     def _sale_can_be_reinvoice(self):
         self.ensure_one()
-        return not self.is_anglo_saxon_line and super(AccountMoveLine, self)._sale_can_be_reinvoice()
+        return not self.is_anglo_saxon_line and super(AccountMoveLineInherit, self)._sale_can_be_reinvoice()
 
 
     def _stock_account_get_anglo_saxon_price_unit(self):
         self.ensure_one()
-        price_unit = super(AccountMoveLine, self)._stock_account_get_anglo_saxon_price_unit()
+        price_unit = super(AccountMoveLineInherit, self)._stock_account_get_anglo_saxon_price_unit()
 
         so_line = self.sale_line_ids and self.sale_line_ids[-1] or False
         if so_line:
@@ -149,4 +165,4 @@ class AccountMoveLine(models.Model):
     
                 
             
-                
+            
