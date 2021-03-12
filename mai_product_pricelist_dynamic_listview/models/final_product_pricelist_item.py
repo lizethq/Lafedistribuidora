@@ -12,11 +12,11 @@ class ProductPricelistItem(models.Model):
     label = fields.Char('Discount')
     final_price = fields.Float('Price')
     product_id =  fields.Many2one('product.product')
-    # product_tmpl_id =  fields.Many2one('product.template', string='Producto', compute='_get_product_tmpl_id')
+    product_tmpl_id =  fields.Many2one('product.template', string='Producto', compute='_get_product_tmpl_id', store=True)
 
-    # def _get_product_tmpl_id(self):
-    #     for rec in self:
-    #         if rec.product_id:
-    #             rec.product_tmpl_id = rec.product_id.product_tmpl_id.id
-    #         else:
-    #             rec.product_tmpl_id = False
+    def _get_product_tmpl_id(self):
+        for rec in self:
+            if rec.product_id:
+                rec.product_tmpl_id = rec.product_id.product_tmpl_id.id
+            else:
+                rec.product_tmpl_id = False

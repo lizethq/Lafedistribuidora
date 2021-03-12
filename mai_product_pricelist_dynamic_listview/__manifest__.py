@@ -20,7 +20,7 @@
         'security/ir.model.access.csv',
         'security/product_pricelist_groups.xml',
         'views/product_product_views.xml',
-        # 'views/product_template_views.xml',
+        'views/product_template_views.xml',
         'views/product_pricelist_views.xml',
     ],
     'qweb': [],

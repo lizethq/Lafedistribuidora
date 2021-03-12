@@ -15,7 +15,7 @@ class ProductPricelist(models.Model):
 
     def delete_common_dynamic(self):
         count = 1
-        # for pricelist_id in self.search([('allow_in_product_view', '=', True)]):
+#         for pricelist_id in self.search([('allow_in_product_view', '=', True)]):
         for pricelist_id in self.search([]):
             field_name = 'x_pricelist_' + str(count)
             label_name = 'Pricelist ' + str(count)
@@ -25,7 +25,7 @@ class ProductPricelist(models.Model):
             count += 1
 
         count = 1
-        # for pricelist_id in self.search([('allow_in_product_view', '=', True)]):
+#         for pricelist_id in self.search([('allow_in_product_view', '=', True)]):
         for pricelist_id in self.search([]):
             field_name = 'x_pricelist_' + str(count)
             field_id = self.env['ir.model.fields'].search([('model_id.model', '=', 'product.product'), ('name', '=', field_name)])
@@ -54,12 +54,12 @@ class ProductPricelist(models.Model):
         self.create_common_dynamic()
         return res
 
-    # def unlink(self):
-    #     res = super(ProductPricelist, self).unlink()
-    #     for rec in self:
-    #         rec.delete_common_dynamic()
-    #         rec.create_common_dynamic()
-    #     return res
+    def unlink(self):
+        res = super(ProductPricelist, self).unlink()
+        for rec in self:
+            rec.delete_common_dynamic()
+            rec.create_common_dynamic()
+        return res
 
     def add_new_dynamic_fields(self, field_name, label_name):
         model_id = self.env['ir.model'].search([('model', '=', 'product.product')])

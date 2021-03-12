@@ -48,10 +48,7 @@ class ProductProduct(models.Model):
                         'final_price': final_price,
                         'pricelist_item_id': new_rec.id
                         })
-                    # fppi_to_remove = fppi_obj.search([('pricelist_id','=',new_rec.pricelist_id.id),
-                    #                                   ('product_id','=',rec.id),
-                    #                                   ('id','!=',new_fppi_id.id)])
-                    # fppi_to_remove.unlink()
+                    
                     new_rec_list.append(new_fppi_id.id)
                     if new_rec.pricelist_id.id not in pricelist_list_check and new_rec.pricelist_id.allow_in_product_view:
                         name = 'x_pricelist_' + str(count)
@@ -60,6 +57,11 @@ class ProductProduct(models.Model):
                             rec.write({name: new_rec.pricelist_id.name + ' - ' + str(round(final_price, 3))})
                         count += 1
                         pricelist_list_check.append(new_rec.pricelist_id.id)
+                fppi_to_remove = fppi_obj.search([('product_id','=',rec.id),
+                                                  ('id','not in',new_rec_list)]).ids
+                if fppi_to_remove:
+                    fppi_to_remove.append(0)
+                    self._cr.execute("DELETE FROM final_product_pricelist_item where id in %s" % str(tuple(fppi_to_remove)))
                 rec.final_pricelist_item_ids = new_rec_list
                 rec.pricelist_name = ', '.join(pricelist_name)
 
@@ -85,4 +87,4 @@ class ProductProduct(models.Model):
                 ]).ids
 
             final_list = pricelist_item_product_templ_ids + pricelist_item_global_ids + pricelist_item_categ_ids
-            rec.pricelist_item_ids = final_list
+            rec.pricelist_item_ids = [(6,0,final_list)]
