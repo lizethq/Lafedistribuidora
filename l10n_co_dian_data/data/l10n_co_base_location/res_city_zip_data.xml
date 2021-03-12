@@ -1633,15 +1633,15 @@
 		    <field name="city_id" ref="l10n_co_dian_data.res_city_co_13683"/>
 		</record>
 
-		<record id="CO130530" model="res.city.zip">
-		    <field name="name">130530</field>
+		<!-- <record id="CO130530" model="res.city.zip"> -->
+		    <!-- <field name="name">130530</field> -->
 		    <!--<field name="city">VILLANUEVA</field>-->
-		    <field name="dian_code">13873</field>
-		    <field name="phone_prefix">5</field>
+		    <!-- <field name="dian_code">13873</field> -->
+		    <!-- <field name="phone_prefix">5</field> -->
 		    <!--<field name="state_id" ref="res_country_state_co_13"/>
 		    <field name="country_id" ref="base.co"/>-->
-		    <field name="city_id" ref="l10n_co_dian_data.res_city_co_13873"/>
-        </record>
+		    <!-- <field name="city_id" ref="l10n_co_dian_data.res_city_co_13873"/> -->
+        <!-- </record> -->
 
 		<record id="CO130540" model="res.city.zip">
 		    <field name="name">130540</field>
