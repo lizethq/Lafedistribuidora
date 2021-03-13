@@ -6,20 +6,20 @@ from odoo import models, fields, api
 class ProductProduct(models.Model):
     _inherit = 'product.product'
     
-    """ 
+    
     product_uom = fields.Many2one('uom.uom')
     product_uom_qty = fields.Float(string="Cantidad")
 
     pricelist_item_ids = fields.Many2many(
-        'product.pricelist.item', 'Pricelist Items', compute='_get_pricelist_items')
+        'product.pricelist.item', 'Pricelist Items')
 
     final_pricelist_item_ids = fields.One2many(
-        'final.product.pricelist.item', 'product_id', compute='_get_pricelist_items_price')
+        'final.product.pricelist.item', 'product_id')
 
-    pricelist_name = fields.Char('Pricelist Name', compute='_get_pricelist_items_price')
+    pricelist_name = fields.Char('Pricelist Name')
 
 
-
+     """
     def _get_display_price(self, product, pricelist_id, item_id):
         if pricelist_id.discount_policy == 'with_discount':
             return product.with_context(pricelist=pricelist_id.id).price
