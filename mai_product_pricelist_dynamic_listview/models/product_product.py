@@ -17,7 +17,7 @@ class ProductProduct(models.Model):
     def _get_display_price(self, product, pricelist_id, item_id):
         if pricelist_id.discount_policy == 'with_discount':
             return product.with_context(pricelist=pricelist_id.id).price
-        product_context = dict(self.env.context, partner_id=self.env.user.partner_id.id, date=fields.Datetime.now(), uom=self.product_uom.id)
+        product_context = dict(self.env.context, partner_id=self.env.user.partner_id.id, date=fields.Datetime.now())
 
         #final_price, rule_id = pricelist_id.with_context(product_context).get_product_price_rule(product or self.product_id, self.product_uom_qty or 1.0, self.env.user.partner_id)
         #base_price, currency = self.with_context(product_context)._get_real_price_currency(product, rule_id, self.product_uom_qty, self.product_uom, pricelist_id.id)
