@@ -6,7 +6,6 @@ from odoo import models, fields, api
 class ProductProduct(models.Model):
     _inherit = 'product.product'
     
-    
     product_uom = fields.Many2one('uom.uom')
     product_uom_qty = fields.Float(string="Cantidad")
 
@@ -97,4 +96,4 @@ class ProductProduct(models.Model):
                 ]).ids
 
             final_list = pricelist_item_product_templ_ids + pricelist_item_global_ids + pricelist_item_categ_ids
-            rec.pricelist_item_ids = [(6,0,final_list)] """
+            rec.pricelist_item_ids = [(6,0,final_list)] 
