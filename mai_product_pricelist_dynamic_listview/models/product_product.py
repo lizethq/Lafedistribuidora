@@ -5,7 +5,8 @@ from odoo import models, fields, api
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
-
+    
+    """ 
     product_uom = fields.Many2one('uom.uom')
     product_uom_qty = fields.Float(string="Cantidad")
 
@@ -16,6 +17,8 @@ class ProductProduct(models.Model):
         'final.product.pricelist.item', 'product_id', compute='_get_pricelist_items_price')
 
     pricelist_name = fields.Char('Pricelist Name', compute='_get_pricelist_items_price')
+
+
 
     def _get_display_price(self, product, pricelist_id, item_id):
         if pricelist_id.discount_policy == 'with_discount':
@@ -28,6 +31,8 @@ class ProductProduct(models.Model):
             base_price = currency._convert(
                 base_price, pricelist_id.currency_id, self.env.company, fields.Date.today())
         return max(base_price, final_price)
+
+
 
     def _get_pricelist_items_price(self):
         fppi_obj = self.env['final.product.pricelist.item']
@@ -68,6 +73,8 @@ class ProductProduct(models.Model):
                 rec.final_pricelist_item_ids = new_rec_list
                 rec.pricelist_name = ', '.join(pricelist_name)
 
+
+
     def _get_pricelist_items(self):
         ppi_obj = self.env['product.pricelist.item']
         for rec in self:
@@ -90,4 +97,4 @@ class ProductProduct(models.Model):
                 ]).ids
 
             final_list = pricelist_item_product_templ_ids + pricelist_item_global_ids + pricelist_item_categ_ids
-            rec.pricelist_item_ids = [(6,0,final_list)]
+            rec.pricelist_item_ids = [(6,0,final_list)] """
