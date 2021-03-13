@@ -7,6 +7,7 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     product_uom = fields.Many2one('uom.uom')
+    product_uom_qty = fields.Float()
 
     pricelist_item_ids = fields.Many2many(
         'product.pricelist.item', 'Pricelist Items', compute='_get_pricelist_items')
