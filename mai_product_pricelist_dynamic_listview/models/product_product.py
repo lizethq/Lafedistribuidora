@@ -18,7 +18,7 @@ class ProductProduct(models.Model):
     pricelist_name = fields.Char('Pricelist Name')
 
 
-    """
+    
     def _get_display_price(self, product, pricelist_id, item_id):
         if pricelist_id.discount_policy == 'with_discount':
             return product.with_context(pricelist=pricelist_id.id).price
