@@ -25,6 +25,14 @@
                     attrs="{'invisible': [('type', 'not in', ['out_invoice', 'out_refund', 'in_invoice', 'in_refund'])]}"
                 />
             </field>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="after">
+                <field name="lot_id" optional="hide" force_save="1"/>
+                <field name="life_date" optional="hide" force_save="1"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/tree/field[@name='payment_id']" position="after">
+                <field name="lot_id" invisible="1" force_save="1"/>
+                <field name="life_date" invisible="1" force_save="1"/>
+            </xpath>
         </field>
     </record>
     <record id="account_invoice_filter_inherit_account_pricelist" model="ir.ui.view">

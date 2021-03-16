@@ -87,13 +87,15 @@ class AccountMove(models.Model):
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
     
-    lot_id = fields.Many2one('stock.production.lot','Lote/N° de Serie', compute="_compute_lot_id")
-    life_date = fields.Datetime('Fecha de vencimiento', related="lot_id.use_date")
+    lot_id = fields.Many2one('stock.production.lot', string='Lote/N° de Serie', compute="_compute_lot_id")
+    life_date = fields.Datetime(string='Fecha de vencimiento', compute="_compute_lot_id")
 
-    @api.depends('move_id','tax_ids')
+    @api.depends('move_id')
     def _compute_lot_id(self):
         for record in self:
-            if record.move_id and record.tax_ids:
+            lot_id = False
+            life_date = False
+            if record.move_id:
                 if record.move_id.invoice_origin:
                     lot_line = self.env['stock.picking'].search([('origin','=',record.move_id.invoice_origin)])
                     if lot_line:
@@ -102,16 +104,11 @@ class AccountMoveLine(models.Model):
                             if lines_picking.lot_id:
                                 logger.info(lines_picking.lot_id.id)
                                 logger.info('***************************AQUI EL TEST DE ASIENTOS*******************1')
-                                record.lot_id = lines_picking.lot_id.id
+                                lot_id = lines_picking.lot_id.id
+                                life_date = lines_picking.lot_id.use_date
                                 #record.sudo().update({'lot_id':lines_picking.lot_id.id})
-                            else:
-                                record.lot_id = False
-                    else:
-                        record.lot_id = False
-                else:
-                    record.lot_id = False
-            else:
-                record.lot_id = False
+            record.lot_id = lot_id
+            record.life_date = life_date
         
     @api.onchange("product_id", "quantity")
     def _onchange_product_id_account_invoice_pricelist(self):
