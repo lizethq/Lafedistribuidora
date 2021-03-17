@@ -99,23 +99,22 @@ class AccountMoveLine(models.Model):
             life_date = []
             if record.move_id:
                 if record.move_id.invoice_origin:
-                    lot_line = self.env['stock.picking'].search([('origin','=',record.move_id.invoice_origin)])
-                    if lot_line:
-                        logger.info('***************************AQUI EL TEST DE ASIENTOS*******************0')
-                        for lines_picking in lot_line.move_line_ids_without_package.filtered(lambda x: x.product_id == record.product_id):
+                    invoice_origin = record.move_id.invoice_origin.split(', ')
+                    pickings = self.env['stock.picking'].search([('origin','in',invoice_origin)])
+                    if pickings:
+                        # for picking in pickings:
+                        # for lines_picking in picking.move_line_ids_without_package.filtered(lambda x: x.product_id == record.product_id):
+                        for lines_picking in pickings.mapped('move_line_ids_without_package').filtered(lambda x: x.product_id == record.product_id):
                             if lines_picking.lot_id:
-                                logger.info(lines_picking.lot_id.id)
-                                logger.info('***************************AQUI EL TEST DE ASIENTOS*******************1')
-                                if len(lot_line.move_line_ids_without_package.filtered(lambda x: x.product_id == record.product_id)) > 1:
+                                if len(pickings.mapped('move_line_ids_without_package').filtered(lambda x: x.product_id == record.product_id)) > 1:
                                     lot_id.append((lines_picking.lot_id.name or '') + ' [' + str(lines_picking.qty_done) + ']')
                                 else:
                                     lot_id.append((lines_picking.lot_id.name or ''))
-                                # lot_id = lines_picking.lot_id.id
+
                                 if lines_picking.lot_id.use_date:
                                     life_date.append(lines_picking.lot_id.use_date.astimezone(timezone(self.env.user.tz)).strftime("%Y-%m-%d"))
                                 else:
                                     life_date.append('')
-                                #record.sudo().update({'lot_id':lines_picking.lot_id.id})
             record.lot_id = ',\n'.join(lot_id)
             record.life_date = ',\n'.join(life_date)
         

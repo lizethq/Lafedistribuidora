@@ -837,8 +837,8 @@ class AccountInvoice(models.Model):
 
 		return invoice_lines
 
-	def action_reverse(self):
-		for record in self:
-			if record.amount_residual == 0.0:
-				raise ValidationError(_('No esta permitido crear Notas Crédito a facturas ya pagadas.'))
-		return super(AccountInvoice, self).action_reverse()
+	# def action_reverse(self):
+	# 	for record in self:
+	# 		if record.amount_residual == 0.0:
+	# 			raise ValidationError(_('No esta permitido crear Notas Crédito a facturas ya pagadas.'))
+	# 	return super(AccountInvoice, self).action_reverse()

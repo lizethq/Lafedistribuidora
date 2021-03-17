@@ -48,7 +48,7 @@ class SaleOrder(models.Model):
             elif not record.partner_id.document_type_id:
                 raise ValidationError("No se ha registrado el tipo de documento en el cliente actual")
             elif not record.partner_id.zip_id:
-                raise ValidationError("No se ha registrado el tipo de documento en el cliente actual")
+                raise ValidationError("No se ha registrado la ubicación completa en el cliente actual")
             elif not record.partner_id.person_type:
                 raise ValidationError("No se ha seleccionado un tipo de persona en el cliente actual")
             elif not record.partner_id.email:
