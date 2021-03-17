@@ -16,19 +16,32 @@
                     <field name="delivery_adress_shipping"/>
                     <field name="zip_shipping_id"/>
                 </xpath>
+
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
+                    <field name="x_cum" optional="hide" force_save="1"/>
+                    <field name="x_invima" optional="hide" force_save="1"/>
+                    <field name="x_atc" optional="hide" force_save="1"/>
+                    <field name="removal_date" optional="hide" force_save="1"/>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='payment_id']" position="after">
+                    <field name="x_cum" invisible="1" force_save="1"/>
+                    <field name="x_invima" invisible="1" force_save="1"/>
+                    <field name="x_atc" invisible="1" force_save="1"/>
+                    <field name="removal_date" invisible="1" force_save="1"/>
+                </xpath>
             </field>
         </record>
     </data>
     <data>
-        <record id="acount_move_line_fields_electronic_invoice" model="ir.ui.view">
+        <!-- <record id="acount_move_line_fields_electronic_invoice" model="ir.ui.view">
             <field name="name">acount.move.line.fields.electronic.invoice</field>
             <field name="model">account.move.line</field>
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="priority">15</field>
             <field name="arch" type="xml">
-                <!--<xpath expr="//page[@name='Invoice Lines']" position="after">
+                <xpath expr="//page[@name='Invoice Lines']" position="after">
                     <field name="sector_id"/>
-                </xpath>-->
+                </xpath>
                 <xpath expr="//field[@name='journal_id']" position="after">
                     <field name="method_la_fe_id"/>
                 </xpath>
@@ -37,11 +50,11 @@
                     <field name="zip_shipping_id"/>
                 </xpath>
             </field>
-        </record>
+        </record> -->
         
-        <record id="acount_payment_register_inherit" model="ir.ui.view">
-            <field name="name">acount.payment.register.inherit</field>
-            <field name="model">acount.payment.register</field>
+        <record id="account_payment_register_inherit" model="ir.ui.view">
+            <field name="name">account.payment.register.inherit</field>
+            <field name="model">account.payment.register</field>
             <field name="inherit_id" ref="account.view_account_payment_form_multi"/>
             <field name="arch" type="xml">
                 <xpath expr="//form/group/group[2]/field[@name='payment_date']" position="after">

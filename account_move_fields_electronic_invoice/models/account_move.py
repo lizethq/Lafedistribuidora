@@ -143,20 +143,13 @@ class AccountMoveLineInherit(models.Model):
             price_unit = self.product_id.uom_id._compute_price(price_unit, self.product_uom_id)
         return price_unit
 
-    @api.onchange('product_id')
+    @api.depends('product_id')
     def _calculate_fields_product(self):
         for record in self: 
             if record.product_id:
-                obj_product = self.env['product.template'].search([('id','=',record.product_id.id)])
-                logger.error(obj_product.id)
-                #record.x_cum = record.product_id
-                record.x_cum = obj_product.x_cum
-                record.x_invima = obj_product.x_invima
-                record.x_atc = obj_product.x_atc
-                logger.error(record.x_cum)
-                logger.error(record.x_invima)
-                logger.error(record.x_atc)
-                
+                record.x_cum = record.product_id.x_cum or ''
+                record.x_invima = record.product_id.x_invima or ''
+                record.x_atc = record.product_id.x_atc or ''
             else:
                 record.x_cum = False
                 record.x_invima = False

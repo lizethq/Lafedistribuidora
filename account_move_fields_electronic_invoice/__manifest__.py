@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account', 'sale_stock'],
+    'depends': ['account', 'sale_stock','sales_la_fe', 'jt_amount_in_words'],
     #
     # always loaded
     'data': [
@@ -32,6 +32,8 @@
         #'viwes/account_move_invoice_electronic_lafe.xml',
         'reports/account_invoice_la_fe.xml',
         'reports/container_factura_electronica_la_fe.xml',
+        'views/product_template_views.xml',
+        'views/product_product_views.xml',
         
     ],
     # only loaded in demonstration mode

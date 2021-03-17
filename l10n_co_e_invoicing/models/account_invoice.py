@@ -114,6 +114,10 @@ class AccountInvoice(models.Model):
 		_logger.info('validatee')
 		_logger.info('validatee')
 		_logger.info('validatee')
+		for record in self:
+			if record.state != 'draft':
+				raise ValidationError(_('Esta factura [%s] no está en borrador, por lo tanto, no se puede publicar. \n' \
+										'Por favor, recargue la página para refrescar el estado de esta factura.') % record.id)
 
 		res = super(AccountInvoice, self).post()
 		for record in self:

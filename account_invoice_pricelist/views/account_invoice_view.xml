@@ -30,8 +30,8 @@
                 <field name="life_date" optional="hide" force_save="1"/>
             </xpath>
             <xpath expr="//field[@name='line_ids']/tree/field[@name='payment_id']" position="after">
-                <field name="lot_id" invisible="1" force_save="1"/>
-                <field name="life_date" invisible="1" force_save="1"/>
+                <field name="lot_id" invisible="1" force_save="1" widget="section_and_note_text"/>
+                <field name="life_date" invisible="1" force_save="1" widget="section_and_note_text"/>
             </xpath>
         </field>
     </record>
