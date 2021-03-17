@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_assign']" position="after">
                     <button name="update_action_assign" attrs="{'invisible': [('show_check_availability', '=', False)]}" string="Check Availability" type="object" class="oe_highlight" groups="base.group_user"/>
+                    <button name="update_qty_done" attrs="{'!invisible': [('show_check_availability', '=', False)]}" string="Asignar Lotes" type="object" class="oe_highlight" groups="base.group_user"/> 
                 </xpath>
                 <xpath expr="//button[@name='action_assign']" position="replace">
                     <button name="action_assign" attrs="{'invisible': ['|',('show_check_availability', '=', False),('picking_type_code','=','outgoing')]}" string="Check Availability" type="object" class="oe_highlight" groups="base.group_user"/>

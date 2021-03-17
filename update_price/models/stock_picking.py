@@ -7,4 +7,9 @@ class StockPicking(models.Model):
         self.action_assign()
         for record in self.move_line_ids_without_package:
             record.qty_done = record.product_uom_qty
+    
+    def update_qty_done(self):
+        self.ensure_one()
+        for record in self.move_line_ids_without_package:
+            record.qty_done = record.product_uom_qty
         
