@@ -19,8 +19,8 @@ class ProductProduct(models.Model):
             return product.with_context(pricelist=pricelist_id.id).price
         product_context = dict(self.env.context, partner_id=self.env.user.partner_id.id, date=fields.Datetime.now())
 
-        #final_price, rule_id = pricelist_id.with_context(product_context).get_product_price_rule(product or self.product_id, self.product_uom_qty or 1.0, self.env.user.partner_id)
-        #base_price, currency = self.with_context(product_context)._get_real_price_currency(product, rule_id, self.product_uom_qty, self.product_uom, pricelist_id.id)
+        final_price, rule_id = pricelist_id.with_context(product_context).get_product_price_rule(product or self.product_id, self.product_uom_qty or 1.0, self.env.user.partner_id)
+        base_price, currency = self.with_context(product_context)._get_real_price_currency(product, rule_id, self.product_uom_qty, self.product_uom, pricelist_id.id)
         if currency != pricelist_id.currency_id:
             base_price = currency._convert(
                 base_price, pricelist_id.currency_id, self.env.company, fields.Date.today())
@@ -45,6 +45,7 @@ class ProductProduct(models.Model):
                         'pricelist_id': new_rec.pricelist_id.id,
                         'label': new_rec.price,
                         'product_id': rec.id,
+                        'product_tmpl_id': rec.product_tmpl_id.id,
                         'final_price': final_price,
                         'pricelist_item_id': new_rec.id
                         })
