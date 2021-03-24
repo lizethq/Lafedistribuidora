@@ -45,7 +45,7 @@ class ProductProduct(models.Model):
                         'pricelist_id': new_rec.pricelist_id.id,
                         'label': new_rec.price,
                         'product_id': rec.id,
-                        'product_tmpl_id': rec.product_tmpl_id.id,
+                        # 'product_tmpl_id': rec.product_tmpl_id.id,
                         'final_price': final_price,
                         'pricelist_item_id': new_rec.id
                         })
