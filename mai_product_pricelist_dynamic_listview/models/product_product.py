@@ -51,13 +51,13 @@ class ProductProduct(models.Model):
                         })
                     
                     new_rec_list.append(new_fppi_id.id)
-                    if new_rec.pricelist_id.id not in pricelist_list_check and new_rec.pricelist_id.allow_in_product_view:
-                        name = 'x_pricelist_' + str(count)
-                        field_id = self.env['ir.model.fields'].search([('model', '=', 'product.product'), ('name', '=', name)])
-                        if field_id:
-                            rec.write({name: new_rec.pricelist_id.name + ' - ' + str(round(final_price, 3))})
-                        count += 1
-                        pricelist_list_check.append(new_rec.pricelist_id.id)
+                    # if new_rec.pricelist_id.id not in pricelist_list_check and new_rec.pricelist_id.allow_in_product_view:
+                    #     name = 'x_pricelist_' + str(count)
+                    #     field_id = self.env['ir.model.fields'].search([('model', '=', 'product.product'), ('name', '=', name)])
+                    #     if field_id:
+                    #         rec.write({name: new_rec.pricelist_id.name + ' - ' + str(round(final_price, 3))})
+                    #     count += 1
+                    #     pricelist_list_check.append(new_rec.pricelist_id.id)
                 fppi_to_remove = fppi_obj.search([('product_id','=',rec.id),
                                                   ('id','not in',new_rec_list)]).ids
                 if fppi_to_remove:

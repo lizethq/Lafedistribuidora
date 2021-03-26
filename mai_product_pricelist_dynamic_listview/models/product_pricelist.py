@@ -14,24 +14,22 @@ class ProductPricelist(models.Model):
     allow_in_product_view = fields.Boolean('Allwed this Pricelist in Product Tree view?')
 
     def delete_common_dynamic(self):
+        field_names = []
+        view_names = []
         count = 1
 #         for pricelist_id in self.search([('allow_in_product_view', '=', True)]):
         for pricelist_id in self.search([]):
             field_name = 'x_pricelist_' + str(count)
-            label_name = 'Pricelist ' + str(count)
-            view_id = self.env['ir.ui.view'].search([('model', '=', 'product.product'), ('type', '=', 'tree'), ('name', '=', str(pricelist_id.id))])
-            if view_id:
-                view_id.unlink()
+            field_names.append(field_name)
+            view_names.append(str(pricelist_id.id))
             count += 1
-
-        count = 1
-#         for pricelist_id in self.search([('allow_in_product_view', '=', True)]):
-        for pricelist_id in self.search([]):
-            field_name = 'x_pricelist_' + str(count)
-            field_id = self.env['ir.model.fields'].search([('model_id.model', '=', 'product.product'), ('name', '=', field_name)])
-            if field_id:
-                field_id.unlink()
-            count += 1
+            # label_name = 'Pricelist ' + str(count)
+        view_ids = self.env['ir.ui.view'].search([('model', '=', 'product.product'), ('type', '=', 'tree'), ('name', 'in', view_names)])
+        field_ids = self.env['ir.model.fields'].search([('model_id.model', '=', 'product.product'), ('name', 'in', field_names)])
+        if view_ids:
+            view_ids.unlink()
+        if field_ids:
+            field_ids.unlink()
 
     def create_common_dynamic(self):
         count = 1
@@ -45,20 +43,20 @@ class ProductPricelist(models.Model):
     def create(self, vals):
         res = super(ProductPricelist, self).create(vals)
         res.delete_common_dynamic()
-        res.create_common_dynamic()
+        # res.create_common_dynamic()
         return res
 
     def write(self, vals):
         res = super(ProductPricelist, self).write(vals)
         self.delete_common_dynamic()
-        self.create_common_dynamic()
+        # self.create_common_dynamic()
         return res
 
     def unlink(self):
         res = super(ProductPricelist, self).unlink()
         for rec in self:
             rec.delete_common_dynamic()
-            rec.create_common_dynamic()
+            # rec.create_common_dynamic()
         return res
 
     def add_new_dynamic_fields(self, field_name, label_name):
