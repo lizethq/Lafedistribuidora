@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account', 'sale', 'dev_customer_credit_limit','product_expiry'],
+    'depends': ['account', 'sale', 'dev_customer_credit_limit','product_expiry','stock_landed_costs'],
     #
     # always loaded
     'data': [
@@ -31,7 +31,9 @@
         'views/product_pivote_view.xml',
         'views/product_template_sales_la_fe.xml',
         'views/sale_order_sales_la_fe_view.xml',
-        'views/stock_production_lot_la_fe.xml'
+        'views/stock_picking_view.xml',
+        'views/stock_production_lot_la_fe.xml',
+        'report/report_sale_note_stock.xml'
         #'views/sale_order_chanel_view.xml',
     ],
     # only loaded in demonstration mode
