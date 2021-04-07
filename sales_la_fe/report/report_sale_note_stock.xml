@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="report_purchase_order_document_inherit" inherit_id="stock.report_delivery_document">
+        <xpath expr="//t/t/div[1]/div[1]/div[2]" position="after">
+            <div t-if="o.state" class="col-auto" name="div_sched_date">
+                <t t-if="o.note_sale ">
+                    <strong style="margin-left: 50px;vertical-align:top;width: 10%">Nota de cotización:</strong>
+                    <p style="margin-left: 50px;text-align: justify; width: 60%" t-field="o.note_sale"/>
+                </t>
+
+            </div>
+        </xpath>
+    </template>
+</odoo>
