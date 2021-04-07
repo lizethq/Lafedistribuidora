@@ -26,5 +26,6 @@
     # always loaded
     'data': [
         'views/product_view.xml',
+        'views/product_product_view.xml',
     ],
 }
