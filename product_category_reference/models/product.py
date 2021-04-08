@@ -30,6 +30,11 @@ class ProductCategory(models.Model):
     sequence_prefix = fields.Char('Category Prefix', related='sequence_id.prefix')
     account_internal_id = fields.Many2one('account.account')
 
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    invima_code = fields.Char('Código Invima')
+
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'

@@ -62,10 +62,14 @@
                                     <div t-if="o.payment_mean_code_id"><!--<div t-if="o.medio_id">-->
                                         <span style="font-size: 11px;">Medio de Pago: </span><span style="font-size: 11px;" t-field="o.payment_mean_code_id.name"/><!--<span style="font-size: 14;" t-field="o.medio_id.name"/>-->
                                     </div>
+                                    <div t-if="o.payment_mean_id">
+                                        <span style="font-size: 11px;">Metodo de Pago:  </span><span style="font-size: 11px;" t-field="o.payment_mean_id.name"/>
+                                    </div>
                                     <div t-if="o.invoice_payment_term_id">
                                         <span style="font-size: 11px;">Forma de pago: </span><span style="font-size: 11px;" t-field="o.method_la_fe_id"/><!--<span style="font-size: 11px;" t-field="o.invoice_payment_term_id.note"/>-->
                                         <!--<br><span t-if="o.type == 'out_invoice'" style="font-size: 10;">Resoluci&#243;n DIAN de facturaci&#243;n por Computador 18763003401217 de Enero 17 de 2020 del FC190001 al FC264640 Autoriza</span></br>-->
                                     </div>
+                                    
                                 </td>
                             </tr>
                             <tr>

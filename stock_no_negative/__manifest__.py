@@ -12,6 +12,7 @@
     "author": "Akretion,Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/stock-logistics-workflow",
     "depends": ["stock"],
-    "data": ["views/product_product_views.xml", "views/stock_location_views.xml"],
+
+    "data": ["views/product_product_views.xml", "views/stock_location_views.xml", "views/stock_picking_view.xml", "wizard/stock_move_view.xml"],
     "installable": True,
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="stock_picking_form_note_view">
+        <field name="name">stock.picking.form.note</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook/page[@name='note']/field[@name='note']" position="after">
+                <group name="note_sale" string="Nota de cotización">
+                    <p>
+                        <field name="note_sale" />
+                    </p>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
