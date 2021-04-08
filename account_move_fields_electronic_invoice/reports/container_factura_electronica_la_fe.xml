@@ -63,7 +63,7 @@
                                         <span style="font-size: 11px;">Medio de Pago: </span><span style="font-size: 11px;" t-field="o.payment_mean_code_id.name"/><!--<span style="font-size: 14;" t-field="o.medio_id.name"/>-->
                                     </div>
                                     <div t-if="o.payment_mean_id">
-                                        <span style="font-size: 11px;">Medio de Pago:  </span><span style="font-size: 11px;" t-field="o.payment_mean_id.name"/>
+                                        <span style="font-size: 11px;">Metodo de Pago:  </span><span style="font-size: 11px;" t-field="o.payment_mean_id.name"/>
                                     </div>
                                     <div t-if="o.invoice_payment_term_id">
                                         <span style="font-size: 11px;">Forma de pago: </span><span style="font-size: 11px;" t-field="o.method_la_fe_id"/><!--<span style="font-size: 11px;" t-field="o.invoice_payment_term_id.note"/>-->
