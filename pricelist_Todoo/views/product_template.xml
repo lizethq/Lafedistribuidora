@@ -12,8 +12,12 @@
 			    <group name="studio_group_">
 			      <group name="studio_left">
 			      	  <field name="item_ids">
-			      	  	 <tree>
-			      	  	 	
+			      	  	 <tree editable="bottom" delete="True">
+			      	  	 	<field name="pricelist_id"/>
+			      	  	 	<field name="price"/>
+			      	  	 	<field name="min_qty"/>
+			      	  	 	<field name="start_date"/>
+			      	  	 	<field name="end_date"/>
 			      	  	 </tree>
 			      	  </field>
 			      </group>

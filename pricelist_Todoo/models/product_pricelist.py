@@ -10,10 +10,15 @@ _logger = logging.getLogger(__name__)
 
 
 class ProductPricelist(models.Model):
-    _inherit = 'product.pricelist.item'
+    _inherit = 'product.pricelist'
 
 
     product_id = fields.Many2one('product.template')
+    pricelist_id = fields.Many2one('product.pricelist.item')
+    price = fields.Float(string="Precio")
+    min_qty = fields.Integer('Cantidad min.')
+    start_date = fields.Date(string="Fecha de Inicio")
+    end_date = fields.Date(string="Fecha de Final")
 
 
    
