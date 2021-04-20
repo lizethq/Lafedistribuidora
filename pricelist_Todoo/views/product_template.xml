@@ -8,6 +8,20 @@
             <xpath expr="//field[(@name='categ_id')]" position="after">
                 
             </xpath>
+            <xpath expr="//group[@name='sale']" position="after">
+			    <group name="studio_group_">
+			      <group name="studio_left">
+			      	  <field name="item_ids">
+			      	  	 <tree>
+			      	  	 	
+			      	  	 </tree>
+			      	  </field>
+			      </group>
+			      <group name="studio_right">
+			      	
+			      </group>
+			    </group>
+  			</xpath>
         </field>
     </record>
 </odoo>     
