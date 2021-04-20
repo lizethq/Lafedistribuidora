@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+manager_model_product_template_pricelist,user_model_product_template_pricelist,model_product_template_pricelist,base.group_system,1,1,1,0
+
+
+
+
+
+
+
+
+
+
