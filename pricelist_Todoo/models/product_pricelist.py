@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 
 
 class ProductPricelist(models.Model):
-    _inherit = 'product.pricelist'
+    _inherit = 'product.pricelist.item'
 
 
     product_id = fields.Many2one('product.template')
