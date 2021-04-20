@@ -1,0 +1,33 @@
+<odoo>
+
+    <!-- Material kanban -->
+    <record id="view_product_product_kanban_material_inherit_tst" model="ir.ui.view">
+        <field name="name">view.product.template.kanban.material.inherit.tst</field>
+        <field name="model">product.product</field>
+        <field name="priority">999</field>
+        <field name="inherit_id" ref="industry_fsm.view_product_product_kanban_material"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='o_kanban_tags_section']" position="after">
+                <ul>
+                    <li><strong>Cantidad: <field name="quantity_tst" ></field></strong></li>
+                </ul>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="stock_product_search_form_view_inherit_tst" model="ir.ui.view">
+        <field name="name">product.product.search.stock.form.inherit.tst</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/group" position="inside">
+                    <filter string="Productos con Existencias" name="filter_to_quant" domain="[('quantity_tst','>',0)]"/>
+                </xpath> 
+        </field>
+    </record>
+    
+    <!--<record id='stock_product_search_filter_tst' model='ir.actions.act_window'>
+        <field name="context">{'search_default_filter_to_quant': 1}</field>
+    </record>-->
+    
+</odoo>
