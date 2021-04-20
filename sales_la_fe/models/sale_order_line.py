@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    last_price1 = fields.Float('Ultimo precio(1)')
-    last_price2 = fields.Float('Ultimo precio(2)')
+    last_price1 = fields.Float('Último precio(1)')
+    last_price2 = fields.Float('Último precio(2)')
     partner_id = fields.Many2one('res.patner')
     check_control_sales = fields.Boolean('')
     
