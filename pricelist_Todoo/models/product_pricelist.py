@@ -39,8 +39,8 @@ class Pricelist(models.Model):
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
         if name and operator == '=' and not args:
-            # search on the name of the pricelist and its currency, opposite of name_get(),
-            # Used by the magic context filter in the product search view.
+            
+            
             query_args = {'name': name, 'limit': limit, 'lang': self._context.get('lang') or 'en_US'}
             query = """SELECT p.id
                        FROM ((
@@ -278,11 +278,8 @@ class Pricelist(models.Model):
         return res[partner_id].id
 
     def _get_partner_pricelist_multi(self, partner_ids, company_id=None):
-        """ Retrieve the applicable pricelist for given partners in a given company.
-            :param company_id: if passed, used for looking up properties,
-                instead of current user's company
-            :return: a dict {partner_id: pricelist}
-        """
+        
+
         Partner = self.env['res.partner']
         Property = self.env['ir.property'].with_context(force_company=company_id or self.env.user.company_id.id)
         Pricelist = self.env['product.pricelist']
