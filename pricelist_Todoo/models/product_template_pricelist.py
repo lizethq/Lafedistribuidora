@@ -15,7 +15,7 @@ class ProductTemplatePricelist(models.Model):
 
 
     product_id = fields.Many2one('product.template')
-    pricelist_id = fields.Many2one('product.pricelist.item')
+    pricelist_id = fields.Many2one('product.pricelist')
     price = fields.Float(string="Precio")
     min_qty = fields.Integer('Cantidad min.')
     start_date = fields.Date(string="Fecha de Inicio")
