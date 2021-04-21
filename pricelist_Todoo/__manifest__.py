@@ -31,6 +31,7 @@
     'data': [     
         
          'views/product_template.xml',
+         'views/product_pricelist.xml',
          'security/ir.model.access.csv',       
               
     ],
