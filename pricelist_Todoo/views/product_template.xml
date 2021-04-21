@@ -9,21 +9,19 @@
            <xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]/page[@name='general_information']/group[1]" position="after">
 			    <group name="studio_group_">
 			      <group name="studio_left" string="Precios">
-			      	<field name="pricelist_item_ids" widget="many2many">
-                        <tree string="Pricelist Items">
-                            <field name="pricelist_id"/>
-                            <field name="name" string="Applicable On"/>
-                            <field name="min_quantity"/>
-                            <field name="date_start"/>
-                            <field name="date_end"/>
-                            <field name="price" string="Price"/>
-                            <field name="base" invisible="1"/>
-                            <field name="sequence" invisible="1"/>
-                            <field name="price_discount" invisible="1"/>
-                            <field name="applied_on" invisible="1"/>
-                            <field name="compute_price" invisible="1"/>
-                        </tree>
-                    </field>
+			      	    <div name="pricelist_item" groups="product.group_product_pricelist">
+                            <separator string="Pricing"/>
+                            <field name="item_ids" nolabel="1" context="{'default_base':'list_price', 'default_applied_on' :'1_product'}">
+                                <tree string="Pricelist Items" editable="bottom">
+                                        <field name="pricelist_id" string="Pricelist" required='1'/>
+                                        <field name="fixed_price" string="Price" required='1'/>
+                                        <field name="min_quantity"/>
+                                        <field name="date_start"/>
+                                        <field name="date_end"/>
+                                        <field name="applied_on" invisible="1"/>
+                                </tree>
+                            </field>
+                        </div>
 			      </group>
 			      <group name="studio_right1">
 			      	
