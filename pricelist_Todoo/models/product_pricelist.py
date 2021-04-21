@@ -427,11 +427,9 @@ class PricelistItem(models.Model):
     percent_price = fields.Float('Percentage Price')
     # functional fields used for usability purposes
     name = fields.Char(
-        'Name', compute='_get_pricelist_item_name_price',
-        help="Explicit rule name for this pricelist line.")
+        'Name',help="Explicit rule name for this pricelist line.")
     price = fields.Char(
-        'Price', compute='_get_pricelist_item_name_price',
-        help="Explicit rule name for this pricelist line.")
+        'Price',help="Explicit rule name for this pricelist line.")
 
 
     @api.constrains('base_pricelist_id', 'pricelist_id', 'base')
