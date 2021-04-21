@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 
 class ProductTemplatePricelist(models.Model):
     _name = 'product.template.pricelist'
+    _description = 'Listas de precios en productos'
 
 
     product_id = fields.Many2one('product.template')
