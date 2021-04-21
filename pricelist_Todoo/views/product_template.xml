@@ -9,19 +9,19 @@
            <xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]/page[@name='general_information']/group[1]" position="after">
 			    <group name="studio_group_">
 			      <group name="studio_left" string="Precios">
-			      	  <field name="item_ids">
-			      	  	 <tree editable="bottom">
-			      	  	 	<field name="sequence" widget="handle" invisible="True"/>
-			      	  	 	<field name="pricelist_id" string="Lista de Precios" invisible="True"/>
-			      	  	 	<field name="sequence" widget="handle"/>
-			      	  	 	<field name="pricelist_id" string="Lista de Precios"/>
-			      	  	 	<field name="pricelist_id" string="Lista de Precios"/>
-			      	  	 	<field name="price"/>
-			      	  	 	<field name="min_qty"/>
-			      	  	 	<field name="start_date"/>
-			      	  	 	<field name="end_date"/>
-			      	  	 </tree>
-			      	  </field>
+			      	    <div name="pricelist_item" groups="product.group_product_pricelist">
+                            <separator string="Pricing"/>
+                            <field name="item_ids" nolabel="1" context="{'default_base':'list_price', 'default_applied_on' :'1_product'}">
+                                <tree string="Pricelist Items" editable="bottom">
+                                        <field name="pricelist_id" string="Pricelist" required='1'/>
+                                        <field name="fixed_price" string="Price" required='1'/>
+                                        <field name="min_quantity"/>
+                                        <field name="date_start"/>
+                                        <field name="date_end"/>
+                                        <field name="applied_on" invisible="1"/>
+                                </tree>
+                            </field>
+                        </div>
 			      </group>
 			      <group name="studio_right1">
 			      	
