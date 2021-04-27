@@ -55,6 +55,9 @@ class sale_order(models.Model):
 
             order = []
             to_invoice_amount = 0.0
+
+            """
+            # comentado 26/04/21 para que no tenga en cuenta lineas de ordenes de venta
             for line in order_lines:
                 not_invoiced = line.product_uom_qty - line.qty_invoiced
                 price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
@@ -72,7 +75,7 @@ class sale_order(models.Model):
                         order.append(line.order_id.id)
 
                 to_invoice_amount += taxes['total_included']
-
+            """
             domain = [
                 ('move_id.partner_id', 'in', partner_ids),
                 ('move_id.state', '=', 'draft'),
