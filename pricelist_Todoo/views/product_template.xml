@@ -10,18 +10,18 @@
 			    <group name="studio_group_">
 			      <group name="studio_left" string="Precios">
 			      	    <div name="pricelist_item" groups="product.group_product_pricelist">
-                            <separator string="Pricing"/>
-                            <field name="item_ids" nolabel="1" context="{'default_base':'list_price', 'default_applied_on' :'1_product'}">
+                            <separator string="Lista de precios"/>
+                            <field name="item_ids" nolabel="1" invisible="True" context="{'default_base':'list_price', 'default_applied_on' :'1_product'}">
                                 <tree string="Pricelist Items" editable="bottom">
                                         <field name="pricelist_id" string="Pricelist" required='1'/>
-                                        <field name="fixed_price" string="Price" required='1'/>
-                                        <field name="min_quantity"/>
-                                        <field name="date_start"/>
-                                        <field name="date_end"/>
-                                        <field name="applied_on" invisible="1"/>
+                                        <field name="fixed_price"  required='1'/>
+                                        <field name="price_surcharge"/>
+                                        <field name="percent_price"/>
+                                        
                                 </tree>
                             </field>
-                        </div>
+                            <field name="pricelist_html"/>
+                      </div>
 			      </group>
 			      <group name="studio_right1">
 			      	
@@ -31,4 +31,4 @@
 
         </field>
     </record>
-</odoo>     
+</odoo>
