@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="inherit_view_product_template_pricelist" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml"> 
+        
+           <xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]/page[@name='general_information']/group[1]" position="after">
+			    <group name="studio_group_">
+			      <group name="studio_left" string="Precios">
+			      	    <div name="pricelist_item" groups="product.group_product_pricelist">
+                            <separator string="Lista de precios"/>
+                            <field name="item_ids" nolabel="1" invisible="True" context="{'default_base':'list_price', 'default_applied_on' :'1_product'}">
+                                <tree string="Pricelist Items" editable="bottom">
+                                        <field name="pricelist_id" string="Pricelist" required='1'/>
+                                        <field name="fixed_price"  required='1'/>
+                                        <field name="price_surcharge"/>
+                                        <field name="percent_price"/>
+                                        
+                                </tree>
+                            </field>
+                            <field name="pricelist_html"/>
+                      </div>
+			      </group>
+			      <group name="studio_right1">
+			      	
+			      </group>
+			    </group>
+  			</xpath>
+
+        </field>
+    </record>
+</odoo>

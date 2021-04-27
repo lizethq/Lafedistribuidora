@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <record id="product_pricelist_item_inherit_form_view" model="ir.ui.view">
+            <field name="name">product.pricelist.item.inherit.form</field>
+            <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml"> 
+           <xpath expr="//form/sheet[1]/group/group/field[@name='product_tmpl_id']" position="attributes">
+               <attribute name="attrs">{'invisible':[('applied_on', 'not in', ['1_product','0_product_variant'])],'required':[('applied_on', 'in', ['1_product','0_product_variant'])]}</attribute>
+
+  			</xpath>
+            <xpath expr="//form/sheet[1]/group/group/field[@name='product_id']" position="attributes">
+               <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    </data>
+</odoo>
