@@ -11,6 +11,7 @@
 
 from itertools import chain
 from odoo import api, fields, models, tools, _
+from odoo.tools import float_repr
 from odoo.exceptions import UserError, ValidationError
 import odoo.addons.decimal_precision as dp
 
