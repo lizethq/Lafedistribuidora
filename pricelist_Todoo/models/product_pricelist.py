@@ -34,7 +34,7 @@ class Pricelist(models.Model):
         return [[0, False, vals]]
     
     name = fields.Char('Pricelist Name', required=True, translate=True)
-    discount_policy = fields.Integer('Descuento')
+   
     active = fields.Boolean('Active', default=True, help="If unchecked, it will allow you to hide the pricelist without removing it.")
     item_ids = fields.One2many(
         'product.pricelist.item', 'pricelist_id', 'Pricelist Items',
@@ -45,8 +45,10 @@ class Pricelist(models.Model):
     sequence = fields.Integer(default=16)
     country_group_ids = fields.Many2many('res.country.group', 'res_country_group_pricelist_rel',
                                          'pricelist_id', 'res_country_group_id', string='Country Groups')
-
-
+    discount_policy = fields.Selection([
+        ('with_discount', 'Discount included in the price'),
+        ('without_discount', 'Show public price & discount to the customer')],
+        default='with_discount')
 
 
     @api.model
