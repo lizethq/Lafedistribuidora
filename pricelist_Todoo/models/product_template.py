@@ -25,7 +25,7 @@ class ProductTemplate(models.Model):
         html = '<table class="table"><thead><tr><th scope="col">Lista de Precio</th><th scope="col">Precio</th></tr></thead><tbody>'
         for record in self.item_ids:
             html+='<tr><td>'
-            html+= str(record.name)
+            html+= str(record.pricelist_id.name)
             html+='</td>'
             html+='<td>'
             
