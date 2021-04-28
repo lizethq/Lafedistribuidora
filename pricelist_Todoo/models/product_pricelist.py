@@ -363,7 +363,11 @@ class PricelistItem(models.Model):
     _name = "product.pricelist.item"
     _description = "Pricelist item"
     _order = "applied_on, min_quantity desc, categ_id desc, id"
-
+    
+    name = fields.Char(
+        'Name', compute='_get_pricelist_item_name_price',
+        help="Explicit rule name for this pricelist line.")
+    
     product_tmpl_id = fields.Many2one(
         'product.template', 'Product Template', ondelete='cascade',
         help="Specify a template if this rule only applies to one product template. Keep empty otherwise.")
