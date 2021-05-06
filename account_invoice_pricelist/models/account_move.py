@@ -5,6 +5,7 @@ from datetime import datetime
 from pytz import timezone
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.misc import formatLang, format_date, get_lang
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,7 @@ class AccountMove(models.Model):
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
+    
     
     """
     def action_post(self):
@@ -35,7 +37,7 @@ class AccountMove(models.Model):
         result = super(AccountMove, self).action_post()
         return result
     """
-        
+    
     
     @api.constrains("pricelist_id", "currency_id")
     def _check_currency(self):
@@ -89,34 +91,176 @@ class AccountMove(models.Model):
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
     
-    lot_id = fields.Char(string='Lote/N° de Serie', compute="_compute_lot_id")
-    life_date = fields.Char(string='Fecha Venc. Lote', compute="_compute_lot_id")
+    #lot_id = fields.Char(string='Lote/N° de Serie', compute="_compute_lot_id")
+    #life_date = fields.Char(string='Fecha Venc. Lote', compute="_compute_lot_id")
+    lot_id = fields.Char(string='Lote/N° de Serie')
+    life_date = fields.Char(string='Fecha Venc. Lote')
+    
+    
+    
+    def write(self, values):
+        res = super(AccountMoveLine, self).write(values)
+        if 'lot_id' not in values and 'life_date' not in values:
+            acumulador = 0
+            sum_lot = 0
+            residue = 0
+            for line in self.move_id.invoice_line_ids.filtered(lambda line: line.exclude_from_invoice_tab is False):
+                lot_id = []
+                life_date = []
+                if line.move_id.invoice_origin:
+                    logger.error(line)
+                    invoice_origin = line.move_id.invoice_origin.split(', ')
+                    pickings = self.env['stock.picking'].search([('origin','in',invoice_origin)])
+                    
+                    if residue:
+                        """ El residuo se resta a la suma total de cantidades de lote """
+                        sum_lot -= residue
+                    
+                    local_sum = 0
+                    for lines_picking in pickings.mapped('move_line_ids_without_package').filtered(lambda x: x.product_id == line.product_id):
+                        sum_lot += lines_picking.qty_done
+                        local_sum += lines_picking.qty_done
+                        logger.error('Cantidad del lote: %s' % (lines_picking.qty_done))
+                        logger.error('suma de lotes: %s' % (sum_lot))
+                        logger.error('Acumulador: %s' % (acumulador))
+                        logger.error('Residuo: %s' % (residue))
+                        logger.error('cantidad de la linea evaluada: %s' % (line.quantity))
+                        logger.error('Suma lotes local: %s' % (local_sum))
+                        #logger.error(acumulador)
+                        if local_sum > acumulador and local_sum <= acumulador + line.quantity:
+                            """ Cuando la sumatoria de cantidad de lotes recorrtido esta en el rango de cantidades de linea de factura """
+                            if residue:
+                                lot_id.append((lines_picking.lot_id.name or '') + ' [' + str(residue) + ']')
+                                life_date.append((str(lines_picking.lot_id.use_date) or ''))
+                            else:
+                                lot_id.append((lines_picking.lot_id.name or '') + ' [' + str(lines_picking.qty_done) + ']')
+                                life_date.append((str(lines_picking.lot_id.use_date) or ''))
+                            residue = 0
+                            
+                        elif local_sum > acumulador:
+                            """ Cuando solo se debe poner una cantidad menor a lo que trae lote """
+                            if (acumulador + line.quantity) - (sum_lot - lines_picking.qty_done) > 0:
+                                lot_id.append((lines_picking.lot_id.name or '') + ' [' + str((acumulador + line.quantity) - (sum_lot - lines_picking.qty_done)) + ']')
+                                life_date.append((str(lines_picking.lot_id.use_date) or ''))
+                                residue = sum_lot - (acumulador + line.quantity)
+                                break
+                        else:
+                            logger.error('**********paso2')                        
+                            #break
+    
+                    acumulador += line.quantity  
+                    
 
-    @api.depends('move_id')
+            
+            #if line.move_id.invoice_origin:
+            #    invoice_origin = rec.move_id.invoice_origin.split(', ')
+                #logger.error('******************++++++++++****************+RRRRRRRRR')    pickings = self.env['stock.picking'].search([('origin','in',invoice_origin)])
+                #logger.error('******************++++++++++****************+RRRRRRRRR')    pickings = self.env['stock.picking'].search([('origin','in',invoice_origin)])
+                line.lot_id = str(lot_id)
+                line.life_date = str(life_date)
+        return res
+        
+    
+
+    @api.depends('move_id.invoice_line_ids')
     def _compute_lot_id(self):
+        logger.info("\n\n\nel compute se calcula por cada linea de la factura")
+        lot_id = []
+        
+        acumulador = 0
+        #logger.error(self.filtered(lambda line: line.exclude_from_invoice_tab is False))
+        #logger.error(len(self.filtered(lambda line: line.exclude_from_invoice_tab is False)))
+    
+        for rec in self:
+            rec.lot_id = ''
+            rec.life_date = ''
+    
+        for rec in self.filtered(lambda line: line.exclude_from_invoice_tab is False):
+            logger.error("****************** recorriendo cada line de factura *****************")
+            logger.error(rec)
+            
+            if rec.move_id.invoice_origin:
+                logger.error("****************** entranda al if de origin")
+                invoice_origin = rec.move_id.invoice_origin.split(', ')
+                logger.error(invoice_origin)
+                pickings = self.env['stock.picking'].search([('origin','in',invoice_origin)])
+                #logger.error(pickings.mapped('move_line_ids_without_package').filtered(lambda x: x.product_id == rec.product_id))
+                logger.error(pickings)
+                for lines_picking in pickings.mapped('move_line_ids_without_package').filtered(lambda x: x.product_id == rec.product_id):
+                    logger.error("****************** entrando al linea de picking")
+                
+                """
+                
+                sum_lot = 0
+                logger.error(sum_lot)
+                
+                
+                for lines_picking in pickings.mapped('move_line_ids_without_package').filtered(lambda x: x.product_id == rec.product_id):
+                    sum_lot += lines_picking.qty_done
+                    #logger.error(lines_picking.qty_done)
+                    #logger.error(sum_lot)
+                    logger.error("****************** recorriendo cada linea de picking *****************")
+                    
+                    
+                    #logger.error(acumulador)
+                    #logger.error(rec.quantity)
+                    if sum_lot > acumulador and sum_lot <= acumulador + rec.quantity:
+                        lot_id.append((lines_picking.lot_id.name or '') + ' [' + str(lines_picking.qty_done) + ']')
+                    else:
+                        lot_id.append((lines_picking.lot_id.name or '') + ' [' + str(rec.quantity) + ']')
+                """
+            acumulador += rec.quantity    
+                
+    
+                            
+                            
+                            
+            rec.lot_id = str(lot_id)
+            rec.life_date = ',\n'
+
+
+            
+        
+        
+        
+        """
         for record in self:
+            logger.error("****************** recorriendo record *****************")
             lot_id = []
             life_date = []
             if record.move_id:
+                #logger.info("******************1*************")
+                items_invoices_number = len(record.move_id.invoice_line_ids)
+                
                 if record.move_id.invoice_origin:
+                    #logger.info("******************2*************")
                     invoice_origin = record.move_id.invoice_origin.split(', ')
                     pickings = self.env['stock.picking'].search([('origin','in',invoice_origin)])
-                    if pickings:
-                        # for picking in pickings:
-                        # for lines_picking in picking.move_line_ids_without_package.filtered(lambda x: x.product_id == record.product_id):
-                        for lines_picking in pickings.mapped('move_line_ids_without_package').filtered(lambda x: x.product_id == record.product_id):
-                            if lines_picking.lot_id:
-                                if len(pickings.mapped('move_line_ids_without_package').filtered(lambda x: x.product_id == record.product_id)) > 1:
+                    
+                            
+                    acumulador = 0
+                    for line_invoices in self.move_id.invoice_line_ids:
+                        logger.error("****************** recorriendo cada line a de factura *****************")
+                        logger.error(record)
+                        logger.error(line_invoices)
+                        if line_invoices == self:
+                            #logger.info("******************encontrada linea de la factura a tratar *****************")
+                            #logger.info(self)
+                            acumulador2 = 0
+                            for lines_picking in pickings.mapped('move_line_ids_without_package').filtered(lambda x: x.product_id == record.product_id):
+                                acumulador2 = lines_picking.qty_done
+                                if acumulador2 > acumulador and acumulador2<= (acumulador + line_invoices.quantity):
+                                    #logger.info("PICKINGS GENERADOS*************")
+                                    #logger.info(lines_picking.lot_id.name)
                                     lot_id.append((lines_picking.lot_id.name or '') + ' [' + str(lines_picking.qty_done) + ']')
-                                else:
-                                    lot_id.append((lines_picking.lot_id.name or ''))
-
-                                if lines_picking.lot_id.use_date:
-                                    life_date.append(lines_picking.lot_id.use_date.astimezone(timezone(self.env.user.tz)).strftime("%Y-%m-%d"))
-                                else:
-                                    life_date.append('')
-            record.lot_id = ',\n'.join(lot_id)
-            record.life_date = ',\n'.join(life_date)
+                                
+                        acumulador += line_invoices.quantity
+                        
+                                        
+                record.lot_id = str(lot_id)
+                record.life_date = ',\n'
+        """
+            
         
     @api.onchange("product_id", "quantity")
     def _onchange_product_id_account_invoice_pricelist(self):
