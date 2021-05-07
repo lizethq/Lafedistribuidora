@@ -39,6 +39,8 @@
                                         <br><span style="font-size: 11px;" t-field="o.partner_id.city"/> - <span style="font-size: 11;" t-field="o.partner_id.state_id.name"/></br>
                                     </div> 
                                 </td>
+                                
+                                
                                 <td colspan="8" align="right" style="border-top-color: white;">
                                     <b><span style="font-size: 16;" t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">FACTURA DE VENTA</span></b>
                                     <span t-if="o.type == 'out_invoice' and o.state == 'proforma2'">PRO-FORMA</span>
@@ -72,6 +74,20 @@
                                     
                                 </td>
                             </tr>
+                            <td colspan="4" align="left" style="border-top-color: white;">
+                                    <b><span style="font-size: 14;">DATOS DE ENTREGA:</span></b>
+                                    <div name="delivery_address" style="font-size: 11px;">
+                                        <span style="font-size: 11px;" t-field="o.partner_shipping_id.name"/>
+                                        Dirección: <span style="font-size: 11px;" t-field="o.partner_shipping_id.street"/>
+                                        <div t-if="o.partner_shipping_id.street2">
+                                        <br><span style="font-size: 11px;" t-field="o.partner_shipping_id.street2"/></br>
+                                        </div>
+                                        <br>Telf.: <span style="font-size: 11px;" t-field="o.partner_shipping_id.mobile"/> - <span style="font-size: 11;" t-field="o.partner_id.phone"/></br>
+                                        <br><span style="font-size: 11px;" t-field="o.partner_shipping_id.city"/> - <span style="font-size: 11;" t-field="o.partner_shipping_id.state_id.name"/></br>
+                                        <br></br>
+                                        <br></br>
+                                    </div> 
+                            </td>
                             <tr>
                                 <th class="text-left" style="font-size: 11px; white-space:nowrap;">DESCRIPCION DEL PRODUCTO</th>
                                 <th style="font-size: 11px;">CUM</th>
