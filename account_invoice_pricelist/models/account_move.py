@@ -131,17 +131,17 @@ class AccountMoveLine(models.Model):
                             """ Cuando la sumatoria de cantidad de lotes recorrtido esta en el rango de cantidades de linea de factura """
                             if residue:
                                 lot_id.append((lines_picking.lot_id.name or '') + ' [' + str(residue) + ']')
-                                life_date.append((str(lines_picking.lot_id.use_date) or ''))
+                                life_date.append((str(lines_picking.lot_id.use_date.date()) or ''))
                             else:
                                 lot_id.append((lines_picking.lot_id.name or '') + ' [' + str(lines_picking.qty_done) + ']')
-                                life_date.append((str(lines_picking.lot_id.use_date) or ''))
+                                life_date.append((str(lines_picking.lot_id.use_date.date()) or ''))
                             residue = 0
                             
                         elif local_sum > acumulador:
                             """ Cuando solo se debe poner una cantidad menor a lo que trae lote """
                             if (acumulador + line.quantity) - (sum_lot - lines_picking.qty_done) > 0:
                                 lot_id.append((lines_picking.lot_id.name or '') + ' [' + str((acumulador + line.quantity) - (sum_lot - lines_picking.qty_done)) + ']')
-                                life_date.append((str(lines_picking.lot_id.use_date) or ''))
+                                life_date.append((str(lines_picking.lot_id.use_date.date()) or ''))
                                 residue = sum_lot - (acumulador + line.quantity)
                                 break
                         else:
