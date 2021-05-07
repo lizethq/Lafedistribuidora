@@ -78,7 +78,7 @@
                                     <b><span style="font-size: 14;">DATOS DE ENTREGA:</span></b>
                                     <div name="delivery_address" style="font-size: 11px;">
                                         <span style="font-size: 11px;" t-field="o.partner_shipping_id.name"/>
-                                        Dirección: <span style="font-size: 11px;" t-field="o.partner_shipping_id.street"/>
+                                        <br>Dirección: <span style="font-size: 11px;" t-field="o.partner_shipping_id.street"/></br>
                                         <div t-if="o.partner_shipping_id.street2">
                                         <br><span style="font-size: 11px;" t-field="o.partner_shipping_id.street2"/></br>
                                         </div>
