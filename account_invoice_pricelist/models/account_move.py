@@ -97,29 +97,37 @@ class AccountMoveLine(models.Model):
     life_date = fields.Char(string='Fecha Venc. Lote')
     
     
-    
     def write(self, values):
-        res = super(AccountMoveLine, self).write(values)
+        res = super(AccountMoveLine, self).write(values)   
         if 'lot_id' not in values and 'life_date' not in values:
             acumulador = 0
             sum_lot = 0
             residue = 0
-            for line in self.move_id.invoice_line_ids.filtered(lambda line: line.exclude_from_invoice_tab is False):
+            product = 0
+            for line in self.move_id.invoice_line_ids.filtered(lambda line: line.exclude_from_invoice_tab is False).sorted(key=lambda p: p.product_id):
+                if not product:
+                    product = line.product_id.id
+                elif product != line.product_id.id:
+                    acumulador = 0
+                    sum_lot = 0
+                    residue = 0
+                    
                 lot_id = []
                 life_date = []
                 if line.move_id.invoice_origin:
-                    logger.error(line)
+                    #logger.error(line.move_id.invoice_origin)
                     invoice_origin = line.move_id.invoice_origin.split(', ')
                     pickings = self.env['stock.picking'].search([('origin','in',invoice_origin)])
-                    
                     if residue:
                         """ El residuo se resta a la suma total de cantidades de lote """
                         sum_lot -= residue
-                    
+
                     local_sum = 0
                     for lines_picking in pickings.mapped('move_line_ids_without_package').filtered(lambda x: x.product_id == line.product_id):
                         sum_lot += lines_picking.qty_done
                         local_sum += lines_picking.qty_done
+                        """
+                        logger.error('lines_picking: %s' % (lines_picking))
                         logger.error('Cantidad del lote: %s' % (lines_picking.qty_done))
                         logger.error('suma de lotes: %s' % (sum_lot))
                         logger.error('Acumulador: %s' % (acumulador))
@@ -127,6 +135,7 @@ class AccountMoveLine(models.Model):
                         logger.error('cantidad de la linea evaluada: %s' % (line.quantity))
                         logger.error('Suma lotes local: %s' % (local_sum))
                         #logger.error(acumulador)
+                        """
                         if local_sum > acumulador and local_sum <= acumulador + line.quantity:
                             """ Cuando la sumatoria de cantidad de lotes recorrtido esta en el rango de cantidades de linea de factura """
                             if lines_picking.lot_id:
@@ -153,12 +162,6 @@ class AccountMoveLine(models.Model):
     
                     acumulador += line.quantity  
                     
-
-            
-            #if line.move_id.invoice_origin:
-            #    invoice_origin = rec.move_id.invoice_origin.split(', ')
-                #logger.error('******************++++++++++****************+RRRRRRRRR')    pickings = self.env['stock.picking'].search([('origin','in',invoice_origin)])
-                #logger.error('******************++++++++++****************+RRRRRRRRR')    pickings = self.env['stock.picking'].search([('origin','in',invoice_origin)])
                 line.lot_id = str(lot_id)
                 line.life_date = str(life_date)
         return res
