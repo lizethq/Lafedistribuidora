@@ -7,7 +7,7 @@ class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
 
-    def write(self, vals):    
+    def write(self, vals):
         user = self.env['res.users'].browse(self.env.uid)
         for line in self:
             if line.picking_id.state == 'done' and not user.has_group('base.group_system'):
