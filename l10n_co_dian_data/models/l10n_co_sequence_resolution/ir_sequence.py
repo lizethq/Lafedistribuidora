@@ -173,21 +173,21 @@ class IrSequence(models.Model):
                 raise ValidationError(msg6)
 
     def _next(self, sequence_date=None):
-        _logger.info('next 3')
-        _logger.info('next 3')
-        _logger.info('entroooo 3')
+        """ Returns the next number in the preferred sequence in all the ones given in self."""
+        if not self.use_date_range:
+            return self._next_do()
+        # date mode
+        dt = sequence_date or self._context.get('ir_sequence_date', fields.Date.today())
+        seq_date = self.env['ir.sequence.date_range'].search([('sequence_id', '=', self.id), ('date_from', '<=', dt), ('date_to', '>=', dt)], limit=1)
         msg = _('There is no active authorized invoicing resolution.')
         date_ranges = self.date_range_ids.search([('active_resolution', '=', True)])
-
-
-
-
         if self.use_dian_control and not date_ranges:
             raise ValidationError(msg)
 
-        res = super(IrSequence, self)._next()
+        if not seq_date:
+            seq_date = self._create_date_range_seq(dt)
 
         if self.use_dian_control:
             self.check_active_resolution()
 
-        return res
+        return seq_date.with_context(ir_sequence_date_range=seq_date.date_from)._next()
