@@ -55,7 +55,7 @@
 	<cbc:UBLVersionID>UBL 2.1</cbc:UBLVersionID>
     <cbc:CustomizationID>{{CustomizationID}}</cbc:CustomizationID>
 <!--TODO 2.0: anexo tecnico dice que va ":Nota Débito de Factura Electrónica de Venta""-->
-	<cbc:ProfileID>DIAN 2.1</cbc:ProfileID>
+	<cbc:ProfileID>DIAN 2.1: Nota Débito de Factura Electrónica de Venta</cbc:ProfileID>
 	<cbc:ProfileExecutionID>{{ProfileExecutionID}}</cbc:ProfileExecutionID>
 	<cbc:ID>{{ID}}</cbc:ID>
 	<cbc:UUID schemeID="{{ProfileExecutionID}}" schemeName="CUDE-SHA384">{{UUID}}</cbc:UUID>
@@ -80,7 +80,7 @@
     </cac:DiscrepancyResponse>
 <!--TODO 1.0 TODAS LAS FACTURAS DEBEN SER DEL MISMO ADQUIRIENTE-->
 <!--Si DebitNoteTypeCode igual a 30 es obligatorio-->
-{% if BillingReference.ID %}
+	{% if BillingReference.ID %}
 	<cac:BillingReference>
 		<cac:InvoiceDocumentReference>
 			<cbc:ID>{{BillingReference.ID}}</cbc:ID>
@@ -88,7 +88,7 @@
 			<cbc:IssueDate>{{BillingReference.IssueDate}}</cbc:IssueDate>
 		</cac:InvoiceDocumentReference>
 	</cac:BillingReference>
-{% endif %}
+	{% endif %}
 <!--TODO 2.0: Creo que esto para colocar el numero de la orden, en nuestro caso, seria la cotizacion>
 	<cac:OrderReference>
 		<cbc:ID>{{OrderReferenceID}}</cbc:ID>
