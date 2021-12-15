@@ -9,7 +9,6 @@ class AdjustmentLines(models.Model):
 
     cost_per_unit = fields.Float('Costo adicional por unidad', compute='_compute_cost_per_unit')
     
-    #def create(self):
     @api.onchange('product_id')
     def _compute_cost_per_unit(self):
         for record in self:

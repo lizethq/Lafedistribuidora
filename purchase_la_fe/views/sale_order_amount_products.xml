@@ -1,10 +1,9 @@
-<odoo>	
+<odoo>
     <data>
-        <record id="module_example_total_amount_sale_la_fe" model="ir.ui.view">	
+        <record id="module_example_total_amount_sale_la_fe" model="ir.ui.view">
             <field name="name">module.example.total.amount.sale.la.fe</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
-            <!--<field name="priority">15</field>-->
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='order_line']" position="after">
                     <group>
@@ -18,11 +17,10 @@
                 </xpath>
             </field>
         </record>
-        <record id="module_example_total_amount_sale_la_fe_tree" model="ir.ui.view">	
+        <record id="module_example_total_amount_sale_la_fe_tree" model="ir.ui.view">
             <field name="name">module.example.total.amount.sale.la.fe.tree</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
-            <!--<field name="priority">15</field>-->
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="before">
                     <field name="delivery_percentage" widget="progressbar"/>
@@ -31,4 +29,4 @@
             </field>
         </record>
     </data>
-</odoo>  <!--invisible="context.get('set_visible',False)"-->
+</odoo>

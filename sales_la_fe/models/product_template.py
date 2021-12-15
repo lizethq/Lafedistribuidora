@@ -12,27 +12,27 @@ class ProductTemplate(models.Model):
     rack = fields.Char('Rack')
     file = fields.Char('Fila')
     case = fields.Char('Caso')
-    #modify by Livingston
+
     purchase_product_qty=fields.Float(compute="_compute_purchase_product_qty",string='Purchased')
     sales_counts = fields.Float(compute='_compute_sales_counts', string='Sold')
-    
+
     @api.depends('product_variant_ids.sales_counts')
     def _compute_sales_counts(self):
         for product in self:
             product.sales_counts = float_round(sum([p.sales_counts for p in product.with_context(active_test=False).product_variant_ids]), precision_rounding=product.uom_id.rounding)
 
-    
+
     def _compute_purchase_product_qty(self):
         for template in self:
             template.purchase_product_qty = float_round(sum([p.purchase_product_qty for p in template.product_variant_ids]), precision_rounding=template.uom_id.rounding)
-         
-        
+
+
 class ProductProduct(models.Model):
     _inherit = 'product.product'
-    
+
     purchase_product_qty=fields.Float(compute="_compute_purchase_product_qty",string='Purchased')
     sales_counts = fields.Float(compute='_compute_sales_counts', string='Sold')
-    
+
     def _compute_sales_counts(self):
         r = {}
         self.sales_counts = 0
@@ -55,7 +55,7 @@ class ProductProduct(models.Model):
                 continue
             product.sales_counts = float_round(r.get(product.id, 0), precision_rounding=product.uom_id.rounding)
         return r
-    
+
     def _compute_purchase_product_qty(self):
         date_from = fields.Datetime.to_string(fields.datetime.now() - timedelta(days=365))
         domain = [

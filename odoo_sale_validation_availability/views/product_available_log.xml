@@ -1,0 +1,33 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="product_available_log_view">
+      <field name="name">Product Available Log View</field>
+      <field name="model">product.available.log</field>
+      <field name="arch" type="xml">
+        <tree 
+              decoration-danger="quantity_available &lt;=0 and quantity_on_hand &lt;=0" 
+              decoration-warning="product_uom_qty &gt; quantity_on_hand" 
+              decoration-success="quantity_on_hand &gt;= product_uom_qty" 
+              string="Registro de Disponibilidad de Productos">
+            <field name="product_id"/>
+            <field name="sale_order_id"/>
+            <field name="user_id"/>
+            <field name="date"/>
+            <field name="quantity_available" string="Cantidad Disponible"/>
+            <field name="quantity_on_hand" string="Cantidad a la Mano"/>
+            <field name="quantity_forecasted" string="Cantidad Proyectada"/>
+            <field name="product_uom_qty" string="Cantidad Solicitada"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_product_available_log">
+      <field name="name">Registro de Disponibilidad de Productos</field>
+      <field name="res_model">product.available.log</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Registro de Disponibilidad de Productos" id="odoo_product_available_log" parent="sale.menu_sale_report"
+              action="action_product_available_log" sequence="12"/>
+  </data>
+</odoo>
