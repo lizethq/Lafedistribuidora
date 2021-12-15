@@ -4,10 +4,10 @@
       <field name="name">Product Available Log View</field>
       <field name="model">product.available.log</field>
       <field name="arch" type="xml">
-        <tree 
-              decoration-danger="quantity_available &lt;=0 and quantity_on_hand &lt;=0" 
-              decoration-warning="product_uom_qty &gt; quantity_on_hand" 
-              decoration-success="quantity_on_hand &gt;= product_uom_qty" 
+        <tree
+              decoration-danger="quantity_available &lt;=0 and quantity_on_hand &lt;=0"
+              decoration-warning="product_uom_qty &gt; quantity_on_hand"
+              decoration-success="quantity_on_hand &gt;= product_uom_qty"
               string="Registro de Disponibilidad de Productos">
             <field name="product_id"/>
             <field name="sale_order_id"/>

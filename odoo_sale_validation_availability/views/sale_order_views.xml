@@ -20,10 +20,10 @@
         </xpath>
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree" position="attributes">
             <attribute name="decoration-success">quantity_on_hand &gt;= product_uom_qty</attribute>
-        </xpath>    
+        </xpath>
       </field>
     </record>
-      
+
     <!--<record id="view_sale_order_confirm_inherit_form" model="ir.ui.view">
             <field name="name">sale.order.confirm.inherit.form</field>
             <field name="model">sale.order</field>
@@ -36,26 +36,26 @@
                     <attribute name="attrs">{'invisible': [('is_possible_confirm', '=', False)]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='action_sale_ok']" position="replace">
-                     <button name="action_sale_ok" 
-                             states="sent" 
-                             string="Confirm Sales" 
-                             class="btn-primary" 
-                             type="object" 
+                     <button name="action_sale_ok"
+                             states="sent"
+                             string="Confirm Sales"
+                             class="btn-primary"
+                             type="object"
                              attrs="{'invisible': [('is_possible_confirm', '=', False)]}"
                              context="{'show_sale': True}"/>
                 </xpath>
                 <xpath expr="//button[@name='action_confirm']" position="replace">
-                     <button name="action_confirm" 
-                             states="credit_limit" 
-                             string="Confirm Sale" 
-                             class="btn-primary" 
-                             type="object" 
-                             context="{'show_sale': True}" 
+                     <button name="action_confirm"
+                             states="credit_limit"
+                             string="Confirm Sale"
+                             class="btn-primary"
+                             type="object"
+                             context="{'show_sale': True}"
                              groups="sales_team.group_sale_manager"/>
                 </xpath>
             </field>
         </record>-->
-      
-      
+
+
   </data>
 </odoo>

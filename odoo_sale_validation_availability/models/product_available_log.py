@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 class ProductAvailableLog(models.Model):
     _name = 'product.available.log'
     _order = 'date desc'
-              
+
     product_id = fields.Many2one('product.product', 'Producto', readonly=True)
     sale_order_id = fields.Many2one('product.product', 'Orden de Venta', readonly=True)
     user_id = fields.Many2one('res.users', 'Usuario', readonly=True)
@@ -27,4 +27,3 @@ class ProductAvailableLog(models.Model):
     product_uom_qty = fields.Float(
         string="Forecasted Quantity", readonly=True
     )
-    

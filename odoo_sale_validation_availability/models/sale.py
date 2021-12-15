@@ -16,27 +16,27 @@ _logger = logging.getLogger(__name__)
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-              
+
     def action_sale_ok(self):
         for record in self:
             if any([line <= 0 for line in record.order_line.mapped('quantity_on_hand')]):
                 raise ValidationError("No se puede confirmar la orden por lineas de producto sin disponibilidad")
-    
+
         return super(SaleOrder, self).action_sale_ok()
-    
+
     def _action_confirm(self):
         for record in self:
             if any([line <= 0 for line in record.order_line.mapped('quantity_on_hand')]):
                 raise ValidationError("No se puede confirmar la orden por lineas de producto sin disponibilidad")
-                
+
         return super(SaleOrder, self)._action_confirm()
-    
-    
+
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    
+
     quantity_available = fields.Float(
         string="Available Quantity"
     )
@@ -46,7 +46,7 @@ class SaleOrderLine(models.Model):
     quantity_forecasted = fields.Float(
         string="Forecasted Quantity"
     )
-    
+
     def _create_available_log(self):
         log = self.env['product.available.log']
         vals = []
@@ -62,12 +62,12 @@ class SaleOrderLine(models.Model):
         })
         res = log.create(vals)
         return res
-    
+
     @api.onchange('product_uom_qty')
     def _onchange_product_uom_qty_log(self):
         if self.product_uom_qty and self.product_id:
             self._create_available_log()
-    
+
     @api.onchange('product_id')
     def _onchange_product_valid_avail(self):
         self.product_uom_qty = 0
@@ -76,14 +76,14 @@ class SaleOrderLine(models.Model):
             self.quantity_forecasted = self.product_id.virtual_available
             #self._create_available_log()
 
-    
+
     @api.onchange('product_id', 'product_uom_qty')
     def _onchange_product_available(self):
         if self.product_id:
             if self.order_id.state == 'draft':
                 self.quantity_available = self.product_id.qty_available - self.product_uom_qty
-                
-    
+
+
     """Overwrite"""
     @api.onchange('product_id')
     def product_id_change(self):
