@@ -875,3 +875,18 @@ class AccountInvoice(models.Model):
 	# 		if record.amount_residual == 0.0:
 	# 			raise ValidationError(_('No esta permitido crear Notas Crédito a facturas ya pagadas.'))
 	# 	return super(AccountInvoice, self).action_reverse()
+
+	def cron_get_status_dian(self):
+		inicio = datetime.now()
+		domain = [
+			('state', '=', 'draft'),
+			('type', '=', 'out_invoice'),
+		]
+		draft_invoices = self.env['account.move'].search(domain, limit=5)
+		for inv in draft_invoices:
+			inv.post()
+
+		_logger.info('************* INICIO +++')
+		_logger.info('INICIO GET STATUS: ' + str(inicio))
+		_logger.info('FIN GET STATUS: ' + str(datetime.now()))
+		_logger.info('************* FIN +++')

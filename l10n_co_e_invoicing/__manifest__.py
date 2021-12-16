@@ -35,6 +35,7 @@
         "report/account_move_reports.xml",
         "report/account_move_templates.xml",
         "data/product_scheme_data.xml",
+        "data/update_invoice_api_dian.xml",
     ],
     "installable": True,
 }
