@@ -36,7 +36,7 @@ class AccountInvoice(models.Model):
 					warn_pfx = True
 			else:
 				warn_pfx = True
-		
+
 		self.warn_pfx = warn_pfx
 		self.pfx_available_days = days
 
@@ -76,7 +76,7 @@ class AccountInvoice(models.Model):
 											 ('99', 'Validaciones contienen errores en campos mandatorios'),
 											 ('111', 'Tiene más de un documento DIAN'),
 											 ('other', 'Other')], string='Estado doc. DIAN', compute="_get_status_doc_dian", default=False, tracking=True)
-	
+
 	@api.depends('dian_document_lines')
 	def _get_status_doc_dian(self):
 		for record in self:
@@ -98,7 +98,7 @@ class AccountInvoice(models.Model):
 		data_map = {datum['reversed_entry_id'][0]: datum['reversed_entry_id_count'] for datum in credit_data}
 		for inv in self:
 			inv.credit_note_count = data_map.get(inv.id, 0.0)
-	
+
 	def action_view_credit_notes(self):
 		self.ensure_one()
 		return {
@@ -126,7 +126,7 @@ class AccountInvoice(models.Model):
 					raise ValidationError(_('No está permitido publicar varias facturas electrónicas a la vez.'))
 				if record._get_warn_pfx_state():
 					raise ValidationError(_('Factura electrónica bloqueada. \n\n El Certificado .pfx de la compañia %s está vencido.') % record.company_id.name)
-	
+
 				if record.type in ("out_invoice", "out_refund"):
 					company_currency = record.company_id.currency_id
 					rate = 1
@@ -136,7 +136,7 @@ class AccountInvoice(models.Model):
 						currency = record.currency_id
 						rate = currency._convert(rate, company_currency, record.company_id, date)
 						record.trm = rate
-					
+
 					if record.type == 'out_invoice' and record.refund_type == 'debit':
 						type_account = 'debit'
 					elif record.type == 'out_refund' and record.refund_type != 'debit':
@@ -296,7 +296,7 @@ class AccountInvoice(models.Model):
 				raise UserError(_('No puede cancelar una factura procesada en la DIAN'))
 
 		return res
-	
+
 	def button_draft(self):
 		res = super(AccountInvoice, self).button_draft()
 
@@ -595,7 +595,7 @@ class AccountInvoice(models.Model):
 		msg2 = _("Your withholding tax: '%s', has positive amount, the withholding " +
 				 "taxes must have negative amount, contact with your administrator.")
 
-		msg3 = _("Your tax: '%s', has negative amount, the taxes must have " + 
+		msg3 = _("Your tax: '%s', has negative amount, the taxes must have " +
 		         "positive amount, contact with your administrator.")
 		invoice_lines = {}
 		count = 1
@@ -876,7 +876,7 @@ class AccountInvoice(models.Model):
 	# 			raise ValidationError(_('No esta permitido crear Notas Crédito a facturas ya pagadas.'))
 	# 	return super(AccountInvoice, self).action_reverse()
 
-	def cron_get_status_dian(self):
+	def cron_posting_invoices(self):
 		inicio = datetime.now()
 		domain = [
 			('state', '=', 'draft'),
@@ -886,6 +886,25 @@ class AccountInvoice(models.Model):
 		for inv in draft_invoices:
 			inv.post()
 
+		_logger.info('************* INICIO +++')
+		_logger.info('INICIO GET STATUS: ' + str(inicio))
+		_logger.info('FIN GET STATUS: ' + str(datetime.now()))
+		_logger.info('************* FIN +++')
+
+
+	def cron_get_status_dian(self):
+		inicio = datetime.now()
+		move_obj = self.env['account.move']
+		dian_doc_obj = self.env['account.invoice.dian.document']
+		domain_dian = [('state', '=', 'sent'),
+						#('output_comfiar_status_code', 'in', (False, 'TransaccionSinTerminar')),
+						('invoice_id.state', '=', 'posted')]
+		dian_doc_ids = dian_doc_obj.search(domain_dian, limit=5)
+		for dian_doc_id in dian_doc_ids:
+			#states_dian_lines = dian_doc_id.invoice_id.dian_document_lines.filtered(lambda x: x.state != 'cancel').mapped('output_comfiar_status_code')
+			#if any([x not in (False, 'TransaccionSinTerminar') for x in states_dian_lines]):
+			#	pass
+			dian_doc_id.action_GetStatus()
 		_logger.info('************* INICIO +++')
 		_logger.info('INICIO GET STATUS: ' + str(inicio))
 		_logger.info('FIN GET STATUS: ' + str(datetime.now()))
