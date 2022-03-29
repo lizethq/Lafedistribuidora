@@ -123,7 +123,7 @@ def get_xml_with_signature(
         signature,
         xmlsig.constants.TransformSha512,
         uri="#" + signature_id + "-signedprops",
-        uri_type="http://uri.etsi.org/01903#SignedProperties")
+        uri_type="http://uri.etsi.org/01903/v1.3.2#SignedProperties")
     ki = xmlsig.template.ensure_key_info(
         signature,
         name=signature_id + "-keyinfo")
@@ -147,12 +147,12 @@ def get_xml_with_signature(
     ctx.load_pkcs12(get_pkcs12(certificate_file, certificate_password))
     #with patch("xades.policy.urllib.urlopen") as mock:
     #    mock.return_value = b64decode(signature_policy_file).read()
-    #ctx.sign(signature)
+    ctx.sign(signature)
     #ctx.verify(signature)
 
     #Se debe firmar en un paso anterior, y luego remover el signature para
     #ubicarlo en posicion necesaria
-    #root.remove(signature)
+    root.remove(signature)
     ext = "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
     ds = "http://www.w3.org/2000/09/xmldsig#"
     position = 0
