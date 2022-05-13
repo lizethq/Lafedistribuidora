@@ -18,7 +18,8 @@
     'data': [
         'security/ir.model.access.csv',
         'views/sale_order_views.xml',
-        'views/product_available_log.xml'
+        'views/product_available_log.xml',
+        'wizard/xls_partner_balance_report.xml',
     ],
     'installable': True,
     'application': True,

@@ -16,14 +16,14 @@ class ProductAvailableLog(models.Model):
     user_id = fields.Many2one('res.users', 'Usuario', readonly=True)
     date = fields.Datetime('Fecha y Hora', readonly=True)
     quantity_available = fields.Float(
-        string="Available Quantity", readonly=True
+        string="Cantidad Disponible", readonly=True
     )
     quantity_on_hand = fields.Float(
-        string="Quantity On Hand", readonly=True
+        string="Cantidad a la Mano", readonly=True
     )
     quantity_forecasted = fields.Float(
-        string="Forecasted Quantity", readonly=True
+        string="Cantidad Proyectada", readonly=True
     )
     product_uom_qty = fields.Float(
-        string="Forecasted Quantity", readonly=True
+        string="Cantidad Solicitada", readonly=True
     )

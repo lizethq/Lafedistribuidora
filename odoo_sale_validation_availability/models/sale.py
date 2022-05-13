@@ -38,13 +38,13 @@ class SaleOrderLine(models.Model):
 
 
     quantity_available = fields.Float(
-        string="Available Quantity"
+        string="Cantidad Disponible"
     )
     quantity_on_hand = fields.Float(
-        string="Quantity On Hand"
+        string="Cantidad a la Mano"
     )
     quantity_forecasted = fields.Float(
-        string="Forecasted Quantity"
+        string="Cantidad Proyectada"
     )
 
     def _create_available_log(self):
