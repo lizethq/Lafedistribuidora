@@ -69,7 +69,7 @@
                     <field name="virtual_available" readonly="1" force_save="1"/>
                     <!--<field name="last_price1" readonly="1"/>-->
                     <field name="last_price1" readonly="1"/>
-                    <field name="last_price2" readonly="1"/>
+                    <!--<field name="last_price2" readonly="1"/>-->
                 </xpath>
                 <xpath expr="//field[@name='order_line']" position="after">
                     <group>
