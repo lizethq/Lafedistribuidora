@@ -65,10 +65,10 @@
                 </xpath>
                 
                 <xpath expr="//sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="before">
-                    <field name="inventory_quantity" readonly="1" force_save="1"/>
-                    <field name="virtual_available" readonly="1" force_save="1"/>
+                    <field name="inventory_quantity" readonly="1" force_save="1" width="0.5%"/>
+                    <field name="virtual_available" readonly="1" force_save="1" width="0.5%"/>
                     <!--<field name="last_price1" readonly="1"/>-->
-                    <field name="last_price1" readonly="1"/>
+                    <field name="last_price1" readonly="1" width="0.5%"/>
                     <!--<field name="last_price2" readonly="1"/>-->
                 </xpath>
                 <xpath expr="//field[@name='order_line']" position="after">

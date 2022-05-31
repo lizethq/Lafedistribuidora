@@ -103,7 +103,7 @@ class SaleOrderLine(models.Model):
         vals = {}
         if not self.product_uom or (self.product_id.uom_id.id != self.product_uom.id):
             vals['product_uom'] = self.product_id.uom_id
-            vals['product_uom_qty'] = self.product_uom_qty or 0
+            vals['product_uom_qty'] = self.product_uom_qty or 1
 
         product = self.product_id.with_context(
             lang=get_lang(self.env, self.order_id.partner_id.lang).code,

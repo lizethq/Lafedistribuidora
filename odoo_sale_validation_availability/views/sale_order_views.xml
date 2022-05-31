@@ -14,7 +14,7 @@
         </xpath>
         
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="replace">
-            <field name="product_uom_qty" width="3%%" context="{
+            <field name="product_uom_qty" width="0.8%" context="{
                                                    'partner_id': parent.partner_id, 
                                                    'quantity': product_uom_qty, 
                                                    'pricelist': parent.pricelist_id, 
@@ -22,7 +22,16 @@
                                                    'company_id': parent.company_id
                                                    }"/>
         </xpath>
-          
+        
+        
+        <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom']" position="replace">
+            <field name="product_uom" width="0.8%" force_save="1" groups="uom.group_uom" class="oe_no_button" attrs="{
+                                                  'readonly': [('state', 'in', ('sale', 'done', 'cancel'))],
+                                                  'required': [('display_type', '=', False)],
+                                                  }"/>
+        </xpath>
+        
+        
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='tax_id']" position="replace">
             <field name="tax_id" width="0.8%%"
                    widget="many2many_tags" 
@@ -42,7 +51,7 @@
                     }"
                     force_save="1"
                     widget="many2one_barcode"
-                    width="4%%"
+                    width="1%%"
                    />
         </xpath>
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='tax_id']" position="replace">
@@ -53,11 +62,11 @@
                 domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
                 attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"
                 optional="show"
-                width="4%%"
+                width="0.7%%"
             />
         </xpath>
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='name']" position="replace">
-          <field name="name" width="8%%"/>
+          <field name="name" width="1%%"/>
         </xpath>
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree" position="attributes">
             <!--<attribute name="decoration-danger">product_uom_qty >= quantity_available</attribute>-->
