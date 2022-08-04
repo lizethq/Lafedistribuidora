@@ -84,6 +84,6 @@
 		"data/l10n_co_product_uom/product.uom.code.csv",
 		"views/l10n_co_product_uom/product_uom_views.xml",
 
-        #"views/l10n_co_account_invoice_discount/account_invoice_discount_views.xml",
+        "views/l10n_co_account_invoice_discount/account_invoice_discount_views.xml",
     ],
 }
