@@ -245,6 +245,7 @@ class AccountInvoice(models.Model):
 		# template = self.env.ref('account.email_template_edi_invoice', raise_if_not_found=False)
 
 		xml_attachment_file = False
+		name_xlm = False
 		for item in self.dian_document_lines:
 			name_xlm = item.xml_filename.replace('.xml', '')
 		if not name_xlm:
