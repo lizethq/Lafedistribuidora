@@ -19,7 +19,7 @@
     },
     "data": [
         'security/ir.model.access.csv',
-        #"views/account_invoice_views.xml",
+        "views/account_invoice_views.xml",
         "views/account_invoice_dian_document_views.xml",
         "views/account_journal_views.xml",
         "views/ir_sequence_views.xml",
