@@ -225,11 +225,11 @@ class AccountInvoice(models.Model):
 
 	def _get_pdf_file(self):
 		template = self.env['ir.actions.report'].browse(self.dian_document_lines.company_id.report_template.id)
-		# pdf = self.env.ref('account.move')._render_qweb_pdf([self.invoice_id.id])[0]
+		# pdf = self.env.ref('account.move').render_qweb_pdf([self.invoice_id.id])[0]
 		if template:
-			pdf = template._render_qweb_pdf(self.id)[0]
+			pdf = template.render_qweb_pdf(self.id)[0]
 		else:
-			pdf = self.env.ref('account.account_invoices')._render_qweb_pdf(self.id)[0]
+			pdf = self.env.ref('account.account_invoices').render_qweb_pdf(self.id)[0]
 		pdf_name = re.sub(r'\W+', '', self.name) + '.pdf'
 
 		return pdf
