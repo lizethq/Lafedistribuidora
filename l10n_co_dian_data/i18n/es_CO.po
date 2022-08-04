@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-28 15:20+0000\n"
-"PO-Revision-Date: 2020-12-28 15:20+0000\n"
+"POT-Creation-Date: 2020-09-15 15:49+0000\n"
+"PO-Revision-Date: 2020-09-15 15:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -422,6 +422,24 @@ msgstr "Fecha de Facturación"
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_ir_sequence_date_range__active_resolution
 msgid "Active Resolution?"
 msgstr "Resolución activa?"
+
+#. module: l10n_co_dian_data
+#: model:ir.model,name:l10n_co_dian_data.model_address_code
+#: model_terms:ir.ui.view,arch_db:l10n_co_dian_data.view_address_code_form
+msgid "Address Code"
+msgstr "Código dirección"
+
+#. module: l10n_co_dian_data
+#: model:ir.actions.act_window,name:l10n_co_dian_data.action_address_code
+#: model:ir.ui.menu,name:l10n_co_dian_data.address_code_menu
+#: model_terms:ir.ui.view,arch_db:l10n_co_dian_data.view_address_code_tree
+msgid "Address Codes"
+msgstr "Códigos de dirección"
+
+#. module: l10n_co_dian_data
+#: model_terms:ir.ui.view,arch_db:l10n_co_dian_data.view_res_partner_form_inherit_address_config
+msgid "Address fields"
+msgstr "Campos de dirección"
 
 #. module: l10n_co_dian_data
 #: model:res.city,name:l10n_co_dian_data.res_city_co_27073
@@ -1144,6 +1162,26 @@ msgid "CIENEGA"
 msgstr ""
 
 #. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__ciiu
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__ciiu
+#: model_terms:ir.ui.view,arch_db:l10n_co_dian_data.view_res_partner_form_inherit_address_config
+msgid "CIIU"
+msgstr ""
+
+#. module: l10n_co_dian_data
+#: model:ir.model,name:l10n_co_dian_data.model_ciiu_value
+#: model_terms:ir.ui.view,arch_db:l10n_co_dian_data.view_ciiu_value_form
+msgid "CIIU Optional Value"
+msgstr "Valor opcional de CIIU"
+
+#. module: l10n_co_dian_data
+#: model:ir.actions.act_window,name:l10n_co_dian_data.action_ciiu_value
+#: model:ir.ui.menu,name:l10n_co_dian_data.ciiu_value_menu
+#: model_terms:ir.ui.view,arch_db:l10n_co_dian_data.view_ciiu_value_tree
+msgid "CIIU Optional Values"
+msgstr "Valores opcionales de CIIU"
+
+#. module: l10n_co_dian_data
 #: model:res.city,name:l10n_co_dian_data.res_city_co_68190
 msgid "CIMITARRA"
 msgstr ""
@@ -1437,12 +1475,12 @@ msgstr "Concentración efectivo / Desembolso Débito plus (CCD+)"
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_035
 msgid "Cash concentration savings / Credit Disbursement (CCD)"
-msgstr "Concentración efectivo ahorros / Desembolso Crédito (CCD)"
+msgstr "Concentración efectivo ahorros / Desembolso Crédito (CCD))"
 
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_036
 msgid "Cash concentration savings / Debit Disbursement (CCD)"
-msgstr "Concentración efectivo ahorros / Desembolso Débito (CCD)"
+msgstr "Concentración efectivo ahorros / Desembolso Drédito (CCD)"
 
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_017
@@ -1499,7 +1537,7 @@ msgstr "Ciudad"
 #. module: l10n_co_dian_data
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_company__city_id
 msgid "City ID"
-msgstr ""
+msgstr "Ciudad"
 
 #. module: l10n_co_dian_data
 #: model_terms:ir.ui.view,arch_db:l10n_co_dian_data.view_company_form_city
@@ -1524,10 +1562,13 @@ msgstr "Clearing entre partners"
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean__code
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean_code__code
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_tax_group_type__code
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_address_code__code
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_ciiu_value__code
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_product_uom_code__code
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__document_type_code
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner_document_type__code
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__document_type_code
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_street_code__code
 msgid "Code"
 msgstr "Código"
 
@@ -1557,6 +1598,13 @@ msgstr "Nombre Commercial"
 #: model:ir.model,name:l10n_co_dian_data.model_res_company
 msgid "Companies"
 msgstr "Compañías"
+
+#. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_address_code__company_id
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_ciiu_value__company_id
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_street_code__company_id
+msgid "Company"
+msgstr "Compañía"
 
 #. module: l10n_co_dian_data
 #: model:ir.model.fields.selection,name:l10n_co_dian_data.selection__ir_sequence__dian_type__computer_generated_invoice
@@ -1633,7 +1681,22 @@ msgstr "Crear Nota Débito"
 #. module: l10n_co_dian_data
 #: model:ir.model.fields.selection,name:l10n_co_dian_data.selection__account_invoice_debit_note__filter_debit_note__debit
 msgid "Create a draft debit note"
-msgstr "Crear un borrador de nota débito"
+msgstr "Crear un borrador de nota de débito"
+
+#. module: l10n_co_dian_data
+#: model_terms:ir.actions.act_window,help:l10n_co_dian_data.action_address_code
+msgid "Create a new Address Code"
+msgstr "Cree un nuevo código de dirección"
+
+#. module: l10n_co_dian_data
+#: model_terms:ir.actions.act_window,help:l10n_co_dian_data.action_ciiu_value
+msgid "Create a new CIIU Optional Value"
+msgstr "Crear un nuevo valor opcional de CIIU"
+
+#. module: l10n_co_dian_data
+#: model_terms:ir.actions.act_window,help:l10n_co_dian_data.action_street_code
+msgid "Create a new Street Code"
+msgstr "Crear un nuevo código de calle"
 
 #. module: l10n_co_dian_data
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_fiscal_position_tax_level_code__create_uid
@@ -1643,11 +1706,14 @@ msgstr "Crear un borrador de nota débito"
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean__create_uid
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean_code__create_uid
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_tax_group_type__create_uid
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_address_code__create_uid
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_ciiu_value__create_uid
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_product_uom_code__create_uid
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_city_zip__create_uid
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner_document_type__create_uid
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_street_code__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creado por"
 
 #. module: l10n_co_dian_data
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_fiscal_position_tax_level_code__create_date
@@ -1657,11 +1723,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean__create_date
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean_code__create_date
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_tax_group_type__create_date
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_address_code__create_date
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_ciiu_value__create_date
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_product_uom_code__create_date
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_city_zip__create_date
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner_document_type__create_date
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_street_code__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creado el"
 
 #. module: l10n_co_dian_data
 #: model:account.payment.mean,name:l10n_co_dian_data.account_payment_mean_2
@@ -1699,7 +1768,7 @@ msgstr "Secuencia Nota Crédito"
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_030
 msgid "Credit Transfer"
-msgstr "Transferencia Crédito"
+msgstr "Transferecia Crédito"
 
 #. module: l10n_co_dian_data
 #: model:res.city,name:l10n_co_dian_data.res_city_co_05234
@@ -1781,10 +1850,9 @@ msgid "Debit Note Date"
 msgstr "Fecha Nota Débito"
 
 #. module: l10n_co_dian_data
-#: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_bank_statement_import_journal_creation__debit_note_sequence_id
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_journal__debit_note_sequence_id
 msgid "Debit Note Entry Sequence"
-msgstr "Secuencia de entrada de notas débito"
+msgstr "Secuencia de entrada de notas de débito"
 
 #. module: l10n_co_dian_data
 #: code:addons/l10n_co_dian_data/wizards/l10n_co_account_invoice_discrepancy_response/account_invoice_debit_note.py:0
@@ -1792,12 +1860,12 @@ msgstr "Secuencia de entrada de notas débito"
 #: model_terms:ir.ui.view,arch_db:l10n_co_dian_data.invoice_form_discrepancy_response
 #, python-format
 msgid "Debit Note Invoice"
-msgstr "Factura de nota débito"
+msgstr "Factura de nota de débito"
 
 #. module: l10n_co_dian_data
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_invoice_debit_note__filter_debit_note
 msgid "Debit Note Method"
-msgstr "Método de nota débito"
+msgstr "Método de nota de débito"
 
 #. module: l10n_co_dian_data
 #: code:addons/l10n_co_dian_data/models/l10n_co_account_invoice_discrepancy_response/account_journal.py:0
@@ -1810,7 +1878,7 @@ msgstr "Secuencia Nota Débito - "
 msgid ""
 "Debit Note base on this type. You can not Modify and Cancel if the invoice "
 "is already reconciled"
-msgstr "Nota débito basada en este tipo. No puede Modificar y Cancelar si la factura ya está conciliada"
+msgstr "Nota de débito basada en este tipo. No puede Modificar y Cancelar si la factura ya está conciliada"
 
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_031
@@ -1821,10 +1889,13 @@ msgstr "Transferencia Débito"
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_bank_statement_import_journal_creation__debit_note_sequence
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_journal__debit_note_sequence
 msgid "Dedicated Debit Note Sequence"
-msgstr "Secuencia de notas débito dedicada"
+msgstr "Secuencia de notas de débito dedicada"
 
 #. module: l10n_co_dian_data
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_tax_group_type__description
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_address_code__name
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_ciiu_value__name
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_street_code__name
 msgid "Description"
 msgstr "Descripción"
 
@@ -1836,9 +1907,12 @@ msgstr "Descripción"
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean__display_name
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean_code__display_name
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_tax_group_type__display_name
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_address_code__display_name
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_ciiu_value__display_name
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_product_uom_code__display_name
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_city_zip__display_name
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner_document_type__display_name
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_street_code__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -2259,6 +2333,78 @@ msgid "FUSAGASUGA"
 msgstr ""
 
 #. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__field_1
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__field_1
+msgid "Field 1"
+msgstr "Campo 1"
+
+#. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__field_10
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__field_10
+msgid "Field 10"
+msgstr "Campo 10"
+
+#. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__field_11
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__field_11
+msgid "Field 11"
+msgstr "Campo 11"
+
+#. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__field_12
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__field_12
+msgid "Field 12"
+msgstr "Campo 12"
+
+#. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__field_2
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__field_2
+msgid "Field 2"
+msgstr "Campo 2"
+
+#. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__field_3
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__field_3
+msgid "Field 3"
+msgstr "Campo 3"
+
+#. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__field_4
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__field_4
+msgid "Field 4"
+msgstr "Campo 4"
+
+#. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__field_5
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__field_5
+msgid "Field 5"
+msgstr "Campo 5"
+
+#. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__field_6
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__field_6
+msgid "Field 6"
+msgstr "Campo 6"
+
+#. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__field_7
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__field_7
+msgid "Field 7"
+msgstr "Campo 7"
+
+#. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__field_8
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__field_8
+msgid "Field 8"
+msgstr "Campo 8"
+
+#. module: l10n_co_dian_data
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__field_9
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__field_9
+msgid "Field 9"
+msgstr "Campo 9"
+
+#. module: l10n_co_dian_data
 #: code:addons/l10n_co_dian_data/models/l10n_co_sequence_resolution/ir_sequence.py:0
 #, python-format
 msgid "Final Date must be greater or equal than Initial Date."
@@ -2273,7 +2419,7 @@ msgstr "Número Final"
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__firstname
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__firstname
 msgid "First name"
-msgstr "Número inicial"
+msgstr "Primer Nombre"
 
 #. module: l10n_co_dian_data
 #: model:ir.model,name:l10n_co_dian_data.model_account_fiscal_position
@@ -2664,9 +2810,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean__id
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean_code__id
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_tax_group_type__id
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_address_code__id
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_ciiu_value__id
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_product_uom_code__id
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_city_zip__id
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner_document_type__id
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_street_code__id
 msgid "ID"
 msgstr ""
 
@@ -2740,7 +2889,7 @@ msgstr ""
 #. module: l10n_co_dian_data
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_ir_sequence_date_range__number_from
 msgid "Initial Number"
-msgstr "Número inicial"
+msgstr ""
 
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_001
@@ -2750,7 +2899,7 @@ msgstr "Instrumento no definido"
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_046
 msgid "Interbanking Credit Transfer"
-msgstr "Transferencia Crédito Interbancario"
+msgstr "Transferencia Débito Interbancario"
 
 #. module: l10n_co_dian_data
 #: code:addons/l10n_co_dian_data/wizards/l10n_co_account_invoice_discrepancy_response/account_invoice_refund.py:0
@@ -3169,11 +3318,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean____last_update
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean_code____last_update
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_tax_group_type____last_update
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_address_code____last_update
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_ciiu_value____last_update
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_product_uom_code____last_update
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_city_zip____last_update
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner_document_type____last_update
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_street_code____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Ultima modificación el"
 
 #. module: l10n_co_dian_data
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_fiscal_position_tax_level_code__write_uid
@@ -3183,11 +3335,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean__write_uid
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean_code__write_uid
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_tax_group_type__write_uid
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_address_code__write_uid
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_ciiu_value__write_uid
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_product_uom_code__write_uid
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_city_zip__write_uid
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner_document_type__write_uid
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_street_code__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultima actualización por"
 
 #. module: l10n_co_dian_data
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_fiscal_position_tax_level_code__write_date
@@ -3197,22 +3352,30 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean__write_date
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_payment_mean_code__write_date
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_account_tax_group_type__write_date
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_address_code__write_date
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_ciiu_value__write_date
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_product_uom_code__write_date
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_city_zip__write_date
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner_document_type__write_date
+#: model:ir.model.fields,field_description:l10n_co_dian_data.field_street_code__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultima actualización el"
 
 #. module: l10n_co_dian_data
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__lastname
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__lastname
 msgid "Last name"
-msgstr "Apellido"
+msgstr "Primer Apellido"
 
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_026
 msgid "Local Check"
 msgstr "Cheque Local"
+
+#. module: l10n_co_dian_data
+#: model:ir.ui.menu,name:l10n_co_dian_data.root_localization_menu
+msgid "Localization"
+msgstr "Localización"
 
 #. module: l10n_co_dian_data
 #: model_terms:ir.ui.view,arch_db:l10n_co_dian_data.view_partner_form_base_location
@@ -3819,7 +3982,7 @@ msgstr "Orden para redactar el nombre completo del socio"
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_partner__othernames
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_res_users__othernames
 msgid "Other Names"
-msgstr "Otros nombres"
+msgstr "Segundo nombre"
 
 #. module: l10n_co_dian_data
 #: model:res.city,name:l10n_co_dian_data.res_city_co_15511
@@ -4401,7 +4564,7 @@ msgstr "Pago y depósito pre acordado (PPD)"
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_096
 msgid "Payment method requested not used"
-msgstr "Método de pago solicitado no usado"
+msgstr "Método de pago solicitado no usuado"
 
 #. module: l10n_co_dian_data
 #: model:ir.model,name:l10n_co_dian_data.model_account_payment_mean_code
@@ -4447,7 +4610,7 @@ msgstr "Nota promisoria firmada por un tercero avalada por un banco"
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_064
 msgid "Promissory note signed by the bank"
-msgstr "Nota promisoria firmada por el banco"
+msgstr "Nota promisoria firmada pro el banco"
 
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_061
@@ -4706,12 +4869,12 @@ msgstr "Retiro de nota por el acreedor, sobre un banco avalada por un tercero"
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_070
 msgid "Retirement of note by the creditor"
-msgstr "Retiro de nota por parte del acreedor"
+msgstr "Retiro de nota por el por el acreedor"
 
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_074
 msgid "Retirement of note by the creditor about a bank"
-msgstr "Retiro de nota por parte del acreedor sobre un banco"
+msgstr "Retiro de nota por el por el acreedor sobre un banco"
 
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_075
@@ -5639,6 +5802,19 @@ msgid "Signed promissory note"
 msgstr "Nota promisoria firmada"
 
 #. module: l10n_co_dian_data
+#: model:ir.model,name:l10n_co_dian_data.model_street_code
+#: model_terms:ir.ui.view,arch_db:l10n_co_dian_data.view_street_code_form
+msgid "Street Code"
+msgstr "Código de calle"
+
+#. module: l10n_co_dian_data
+#: model:ir.actions.act_window,name:l10n_co_dian_data.action_street_code
+#: model:ir.ui.menu,name:l10n_co_dian_data.street_code_menu
+#: model_terms:ir.ui.view,arch_db:l10n_co_dian_data.view_street_code_tree
+msgid "Street Codes"
+msgstr "Códigos de calle"
+
+#. module: l10n_co_dian_data
 #: model:res.city,name:l10n_co_dian_data.res_city_co_25785
 msgid "TABIO"
 msgstr ""
@@ -6121,7 +6297,7 @@ msgstr "Nota bancaria tranferible"
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_092
 msgid "Transferable local check"
-msgstr "Cheque local transferible"
+msgstr "Cheque local traferible"
 
 #. module: l10n_co_dian_data
 #: model:ir.model,name:l10n_co_dian_data.model_account_tax_group_type
@@ -6217,7 +6393,7 @@ msgstr ""
 #. module: l10n_co_dian_data
 #: model:ir.model.fields,field_description:l10n_co_dian_data.field_uom_uom__product_uom_code_id
 msgid "Unit of Measure Code"
-msgstr "Código de Unidad de Medida"
+msgstr "Código de Unidad de Medidad"
 
 #. module: l10n_co_dian_data
 #: model:account.payment.mean.code,name:l10n_co_dian_data.account_payment_mean_code_053

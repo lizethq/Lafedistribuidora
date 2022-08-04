@@ -40,7 +40,7 @@ class AccountInvoice(models.Model):
 			'view_mode': 'tree,form',
 			'domain': [('debit_origin_id', '=', self.id)],
 		}
-
+	
 	def _get_sequence(self):
 		''' Return the sequence to be used during the post of the current move.
 		:return: An ir.sequence record or False.

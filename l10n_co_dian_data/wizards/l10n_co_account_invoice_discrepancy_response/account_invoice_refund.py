@@ -15,7 +15,7 @@ class AccountInvoiceRefund(models.TransientModel):
     discrepancy_response_code_id = fields.Many2one(
         comodel_name='account.invoice.discrepancy.response.code',
         string='Correction concept for Refund Invoice')
-
+    
     # @api.multi
     # def compute_refund(self, mode='refund'):
     #     inv_obj = self.env['account.invoice']

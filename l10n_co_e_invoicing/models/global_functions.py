@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2019 Joan Marín <Github@joanmarin>
-# Copyright 2019 Diego Carvajal <Github@diegoivanc>
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# Copyright 2021 Diego Carvajal <Github@diegoivanc>
+
 
 import hashlib
 from os import path
@@ -123,7 +122,7 @@ def get_xml_with_signature(
         signature,
         xmlsig.constants.TransformSha512,
         uri="#" + signature_id + "-signedprops",
-        uri_type="http://uri.etsi.org/01903/v1.3.2#SignedProperties")
+        uri_type="http://uri.etsi.org/01903#SignedProperties")
     ki = xmlsig.template.ensure_key_info(
         signature,
         name=signature_id + "-keyinfo")
@@ -192,7 +191,6 @@ def get_xml_soap_values(certificate_file, certificate_password):
     Created = Created.strftime('%Y-%m-%dT%H:%M:%S.001Z')
     #https://github.com/mit-dig/idm/blob/master/idm_query_functions.py#L151
     pkcs12 = get_pkcs12(certificate_file, certificate_password)
-    _logger.info('certificado')
     cert = pkcs12.get_certificate()
     der = b64encode(crypto.dump_certificate(
         crypto.FILETYPE_ASN1,

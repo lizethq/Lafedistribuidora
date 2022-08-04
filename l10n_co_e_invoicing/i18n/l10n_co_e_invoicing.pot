@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-28 16:39+0000\n"
-"PO-Revision-Date: 2020-12-28 16:39+0000\n"
+"POT-Creation-Date: 2020-12-24 20:59+0000\n"
+"PO-Revision-Date: 2020-12-24 20:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -100,8 +100,170 @@ msgid "'%s' does not have a verification digit established."
 msgstr ""
 
 #. module: l10n_co_e_invoicing
+#: model:ir.actions.report,print_report_name:l10n_co_e_invoicing.account_e_invoices
+msgid "(object._get_report_base_filename())"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid ""
+"<span groups=\"account.group_show_line_subtotals_tax_excluded\">Amount</span>\n"
+"                                <span groups=\"account.group_show_line_subtotals_tax_included\">Total Price</span>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<span>Description</span>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<span>Disc.%</span>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<span>IVA</span>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<span>Item</span>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<span>P. con IVA</span>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<span>P. sin IVA</span>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<span>Quantity</span>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<span>Source Document</span>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<span>UdM</span>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong class=\"mr16\">Subtotal</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
 #: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.account_invoice_report_template_with_qr
 msgid "<strong>CUFE/CUDE:</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>CUFE: </strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Ciudad:</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Departamento:</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Direccion:</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_layout
+msgid "<strong>FACTURA DE VENTA N°</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Fecha De Facturacion:</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Fecha De Vencimiento:</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_layout
+msgid "<strong>NOTA CREDITO</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_layout
+msgid "<strong>NOTA DEBITO</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Nit:</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Nombre:</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Pais:</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Plazo De Pago:</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Puntos de lealtad: </strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Subtotal</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Telefono:</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Total en letras: </strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Total</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Vendedor:</strong>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "<strong>Zona:</strong>"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
@@ -294,6 +456,11 @@ msgid "Dian Document Lines"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_layout
+msgid "Dir:"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
 #: model:ir.model.fields,field_description:l10n_co_e_invoicing.field_account_invoice_dian_document__display_name
 #: model:ir.model.fields,field_description:l10n_co_e_invoicing.field_account_invoice_dian_document_line__display_name
 #: model:ir.model.fields,field_description:l10n_co_e_invoicing.field_einvoice_notification_group__display_name
@@ -348,8 +515,18 @@ msgid "E-invoice Email From"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
+#: model:ir.actions.report,name:l10n_co_e_invoicing.account_e_invoices
+msgid "Electronic Invoice"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
 #: model:ir.model.fields,field_description:l10n_co_e_invoicing.field_einvoice_notification_group__email
 msgid "Email"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_layout
+msgid "Email:"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
@@ -382,6 +559,11 @@ msgstr ""
 #. module: l10n_co_e_invoicing
 #: model:ir.model.fields.selection,name:l10n_co_e_invoicing.selection__account_move__invoice_type_code__03
 msgid "Factura por Contingencia Facturador"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "Factura:"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
@@ -462,6 +644,11 @@ msgid "Invoice Url"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
+#: model:ir.model,name:l10n_co_e_invoicing.model_account_journal
+msgid "Journal"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
 #: model:ir.model,name:l10n_co_e_invoicing.model_account_move
 msgid "Journal Entries"
 msgstr ""
@@ -496,6 +683,11 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_layout
+msgid "Logo"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
 #: model:ir.model.fields,field_description:l10n_co_e_invoicing.field_account_invoice_dian_document__mail_sent
 msgid "Mail Sent?"
 msgstr ""
@@ -504,6 +696,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_co_e_invoicing.field_product_product__margin_percentage
 #: model:ir.model.fields,field_description:l10n_co_e_invoicing.field_product_template__margin_percentage
 msgid "Margin Percentage"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_layout
+msgid "NIT:"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
@@ -534,6 +731,21 @@ msgstr ""
 #. module: l10n_co_e_invoicing
 #: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.account_invoice_report_template_with_qr
 msgid "PRO-FORMA"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_layout
+msgid "Page: <span class=\"page\"/> / <span class=\"topage\"/>"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_layout
+msgid "Phone:"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "Please use the following communication for your payment :"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
@@ -596,6 +808,12 @@ msgstr ""
 #. module: l10n_co_e_invoicing
 #: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.account_invoice_dian_document_view_form
 msgid "Reprocess"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model:ir.model.fields,field_description:l10n_co_e_invoicing.field_account_bank_statement_import_journal_creation__resolution_text
+#: model:ir.model.fields,field_description:l10n_co_e_invoicing.field_account_journal__resolution_text
+msgid "Resolución"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
@@ -765,6 +983,11 @@ msgid "TrackId no encontrado"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
+#: model:ir.model.fields,field_description:l10n_co_e_invoicing.field_res_company__tributary_information
+msgid "Tributary Information"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
 #: model:ir.model.fields,field_description:l10n_co_e_invoicing.field_account_move__trm
 msgid "Trm"
 msgstr ""
@@ -844,6 +1067,11 @@ msgstr ""
 #. module: l10n_co_e_invoicing
 #: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.account_invoice_report_template_with_qr
 msgid "Vendor Refund"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_layout
+msgid "Web:"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
@@ -999,6 +1227,11 @@ msgstr ""
 #. module: l10n_co_e_invoicing
 #: model:ir.model.fields,field_description:l10n_co_e_invoicing.field_res_company__in_refund_sent
 msgid "in_refund Sent"
+msgstr ""
+
+#. module: l10n_co_e_invoicing
+#: model_terms:ir.ui.view,arch_db:l10n_co_e_invoicing.report_e_invoice_document
+msgid "on"
 msgstr ""
 
 #. module: l10n_co_e_invoicing
