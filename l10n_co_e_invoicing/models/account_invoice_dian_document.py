@@ -174,7 +174,7 @@ class AccountInvoiceDianDocument(models.Model):
         template = self.env['ir.actions.report'].browse(self.company_id.report_template.id)
         #pdf = self.env.ref('account.move').render_qweb_pdf([self.invoice_id.id])[0]
         if template:
-            pdf = template._render_qweb_pdf(self.invoice_id.id)
+            pdf = template.render_qweb_pdf(self.invoice_id.id)
         else:
             pdf = self.env.ref('account.account_invoices').render_qweb_pdf(self.invoice_id.id)
         pdf = pdf[0]
