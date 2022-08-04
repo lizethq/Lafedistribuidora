@@ -290,7 +290,7 @@ class AccountInvoice(models.Model):
 
 		lang = False
 		if template:
-			lang = template._render_lang(self.ids)[self.id]
+			lang = template.render_lang(self.ids)[self.id]
 		if not lang:
 			lang = get_lang(self.env).code
 
