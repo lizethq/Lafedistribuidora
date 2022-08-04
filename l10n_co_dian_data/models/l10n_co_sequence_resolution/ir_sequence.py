@@ -30,9 +30,9 @@ class IrSequence(models.Model):
 
     @api.model
     def create(self, vals):
-        _logger.info('entroooo create')
-        _logger.info('entroooo 2')
-        _logger.info('entroooo 2')
+        #_logger.info('entroooo create')
+        #_logger.info('entroooo 2')
+        #_logger.info('entroooo 2')
 
         rec = super(IrSequence, self).create(vals)
 
@@ -45,9 +45,9 @@ class IrSequence(models.Model):
         return rec
 
     def write(self, vals):
-        _logger.info('entroooo write')
-        _logger.info('entroooo 2')
-        _logger.info('entroooo 2')
+        #_logger.info('entroooo write')
+        #_logger.info('entroooo 2')
+        #_logger.info('entroooo 2')
         res = super(IrSequence, self).write(vals)
 
         for sequence_id in self:
@@ -60,9 +60,9 @@ class IrSequence(models.Model):
 
     @api.onchange('use_dian_control')
     def onchange_active_resolution(self):
-        _logger.info('entroooo 2')
-        _logger.info('entroooo 2')
-        _logger.info('entroooo 2')
+        #_logger.info('entroooo 2')
+        #_logger.info('entroooo 2')
+        #_logger.info('entroooo 2')
 
         for sequence_id in self:
             sequence_id.use_date_range = True
@@ -70,9 +70,9 @@ class IrSequence(models.Model):
     def check_active_resolution(self):
         sequence_id = self
 
-        _logger.info('entroooo 5')
-        _logger.info('entroooo 5')
-        _logger.info('entroooo 3')
+        #_logger.info('entroooo 5')
+        #_logger.info('entroooo 5')
+        #_logger.info('entroooo 3')
 
         if sequence_id.use_dian_control:
             if sequence_id.implementation != 'no_gap':
@@ -117,9 +117,9 @@ class IrSequence(models.Model):
         return True
 
     def check_date_range_ids(self):
-        _logger.info('entroooo 3')
-        _logger.info('entroooo 3')
-        _logger.info('entroooo 3')
+        #_logger.info('entroooo 3')
+        #_logger.info('entroooo 3')
+        #_logger.info('entroooo 3')
         msg1 = _('Final Date must be greater or equal than Initial Date.')
         msg2 = _('The Date Range must be unique or a date ' +
                  'must not be included in another Date Range.')
@@ -173,21 +173,21 @@ class IrSequence(models.Model):
                 raise ValidationError(msg6)
 
     def _next(self, sequence_date=None):
-        """ Returns the next number in the preferred sequence in all the ones given in self."""
-        if not self.use_date_range:
-            return self._next_do()
-        # date mode
-        dt = sequence_date or self._context.get('ir_sequence_date', fields.Date.today())
-        seq_date = self.env['ir.sequence.date_range'].search([('sequence_id', '=', self.id), ('date_from', '<=', dt), ('date_to', '>=', dt)], limit=1)
+        #_logger.info('next 3')
+        #_logger.info('next 3')
+        #_logger.info('entroooo 3')
         msg = _('There is no active authorized invoicing resolution.')
         date_ranges = self.date_range_ids.search([('active_resolution', '=', True)])
+
+
+
+
         if self.use_dian_control and not date_ranges:
             raise ValidationError(msg)
 
-        if not seq_date:
-            seq_date = self._create_date_range_seq(dt)
+        res = super(IrSequence, self)._next()
 
         if self.use_dian_control:
             self.check_active_resolution()
 
-        return seq_date.with_context(ir_sequence_date_range=seq_date.date_from)._next()
+        return res

@@ -38,7 +38,7 @@ class AccountInvoice(models.Model):
 				invoice._onchange_invoice_dates()
 		
 		return res
-
+	
 	@api.model
 	def create(self, vals):
 		res = super(AccountInvoice, self).create(vals)
@@ -53,7 +53,7 @@ class AccountInvoice(models.Model):
 		invoice_date = self.invoice_date if self.invoice_date else fields.Date.context_today(self)
 		if self.invoice_payment_term_id:
 			time = sum([x.days for x in self.invoice_payment_term_id.line_ids])
-
+		
 		if (invoice_date == self.invoice_date_due and not self.invoice_payment_term_id) \
 			or (self.invoice_payment_term_id and time == 0):
 			id_payment_mean = payment_mean_obj.get_object_reference(
@@ -67,7 +67,7 @@ class AccountInvoice(models.Model):
 			payment_mean_id = self.env['account.payment.mean'].browse(id_payment_mean)
 
 		self.payment_mean_id = payment_mean_id
-
+	
 	@api.onchange('partner_id')
 	def _onchange_partner_id(self):
 		res = super(AccountInvoice, self)._onchange_partner_id()
