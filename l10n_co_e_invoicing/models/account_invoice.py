@@ -153,13 +153,13 @@ class AccountInvoice(models.Model):
 			'domain': [('reversed_entry_id', '=', self.id)],
 		}
 
-	def _post(self, soft=True):
+	def post(self, soft=True):
 		for record in self:
 			if record.state != 'draft':
 				raise ValidationError(_('Esta factura [%s] no está en borrador, por lo tanto, no se puede publicar. \n' \
 										'Por favor, recargue la página para refrescar el estado de esta factura.') % record.id)
 
-		res = super(AccountInvoice, self)._post()
+		res = super(AccountInvoice, self).post()
 
 		for record in self:
 			if record.company_id.einvoicing_enabled and record.journal_id.is_einvoicing:
