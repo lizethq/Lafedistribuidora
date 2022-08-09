@@ -225,8 +225,6 @@ class AccountInvoiceDianDocument(models.Model):
         })
 
         attach_ids = [attachment.id]
-        if xml_attachment_file:
-            attach_ids.append(xml_attachment_file.id)
 
         if self.invoice_id.invoice_type_code in ('01', '02'):
             template.attachment_ids = [(6, 0, attach_ids)]
@@ -518,8 +516,8 @@ class AccountInvoiceDianDocument(models.Model):
             'DocumentCurrencyCode': self.invoice_id.currency_id.name,
             'Delivery': customer._get_delivery_values(),
             'DeliveryTerms': {'LossRiskResponsibilityCode': LossRiskResponsibilityCode, 'LossRisk': LossRisk},
-            'AccountingSupplierParty': supplier._get_accounting_partner_party_values(),
-            'AccountingCustomerParty': customer._get_accounting_partner_party_values(),
+            'AccountingSupplierParty': supplier._get_accounting_partner_party_values(self.company_id),
+            'AccountingCustomerParty': customer._get_accounting_partner_party_values(self.company_id),
             # TODO: No esta completamente calro los datos de que tercero son
             'TaxRepresentativeParty': supplier._get_tax_representative_party_values(),
             'InformationContentProviderParty': self.invoice_id.mandante_id._get_tax_representative_party_values() if self.invoice_id.mandante_id else {},

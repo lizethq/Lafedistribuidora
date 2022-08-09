@@ -9,7 +9,7 @@ from odoo.exceptions import UserError
 class ResPartner(models.Model):
 	_inherit = "res.partner"
 
-	def _get_accounting_partner_party_values(self):
+	def _get_accounting_partner_party_values(self, company_id):
 		msg1 = _("'%s' does not have a person type established.")
 		msg2 = _("'%s' does not have a city established.")
 		msg3 = _("'%s' does not have a state established.")
