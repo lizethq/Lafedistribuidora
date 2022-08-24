@@ -27,7 +27,7 @@
 					<sts:AuthorizationProvider>
 						<sts:AuthorizationProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" schemeID="4" schemeName="31">800197268</sts:AuthorizationProviderID>
 					</sts:AuthorizationProvider>
-               <sts:QRCode>https://catalogo-vpfe-hab.dian.gov.co/document/searchqr?documentkey={{UUID}}</sts:QRCode>
+               <sts:QRCode>https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey={{UUID}}</sts:QRCode>
             </sts:DianExtensions>
          </ext:ExtensionContent>
       </ext:UBLExtension>
