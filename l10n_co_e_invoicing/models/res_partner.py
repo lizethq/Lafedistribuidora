@@ -2,9 +2,11 @@
 # Copyright 2021 Diego Carvajal <Github@diegoivanc>
 
 
-from odoo import api, fields, models, tools, _
+from odoo import api, models, fields, _
 from odoo.exceptions import UserError
+import logging
 
+_logger = logging.getLogger(__name__)
 
 class ResPartner(models.Model):
 	_inherit = "res.partner"
@@ -60,7 +62,7 @@ class ResPartner(models.Model):
 
 		if not self.identification_document:
 			raise UserError(msg7 % self.name)
-		
+
 		if not self.email:
 			raise UserError(msg11 % self.name)
 
@@ -119,7 +121,7 @@ class ResPartner(models.Model):
 			'CompanyID': self.identification_document,
 			'listName': self.with_context(force_company=company_id.id).property_account_position_id.listname,
 			'TaxLevelCode': tax_level_codes,
-			# self.with_company(self.company_id).property_account_position_id.tax_level_code_id.code,
+			# self.with_context(force_company=company_id.id).property_account_position_id.tax_level_code_id.code,
 			'TaxSchemeID': self.with_context(force_company=company_id.id).property_account_position_id.tax_scheme_id.code,
 			'TaxSchemeName': self.with_context(force_company=company_id.id).property_account_position_id.tax_scheme_id.name,
 			'CorporateRegistrationSchemeName': self.ref,

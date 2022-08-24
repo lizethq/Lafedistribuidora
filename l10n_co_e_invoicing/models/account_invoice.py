@@ -108,6 +108,7 @@ class AccountInvoice(models.Model):
 											 ('111', 'Tiene más de un documento DIAN'),
 											 ('other', 'Other')], string='Estado doc. DIAN', compute="_get_status_doc_dian", default=False, tracking=True)
 	orden_compra = fields.Char(string='Orden de compra')
+	cufe_cude = fields.Char(string='CUFE/CUDE', tracking=True)
 
 	@api.depends('dian_document_lines')
 	def _get_status_doc_dian(self):
@@ -162,20 +163,21 @@ class AccountInvoice(models.Model):
 		res = super(AccountInvoice, self).post()
 
 		for record in self:
+			if record.company_id.einvoicing_enabled and record.journal_id.acknowledgement_receipt and record.type in ("in_invoice", "in_refund"):
+				dian_document_obj = self.env['account.invoice.dian.document']
+				dian_document = dian_document_obj.create({
+					'invoice_id': record.id,
+					'company_id': record.company_id.id,
+					'type_account': 'support_document'
+				})
+				dian_document.accuse_recibo()
+
 			if record.company_id.einvoicing_enabled and record.journal_id.is_einvoicing:
 				if len(self) > 1:
 					raise ValidationError(_('No está permitido publicar varias facturas electrónicas a la vez.'))
 				if record._get_warn_pfx_state():
 					raise ValidationError(_('Factura electrónica bloqueada. \n\n El Certificado .pfx de la compañia %s está vencido.') % record.company_id.name)
 	
-				if record.type in ("in_invoice", "in_refund"):
-					dian_document_obj = self.env['account.invoice.dian.document']
-					dian_document = dian_document_obj.create({
-						'invoice_id': record.id,
-						'company_id': record.company_id.id,
-						'type_account': type_account
-					})
-					dian_document.accuse_recibo()
 				if record.type in ("out_invoice", "out_refund"):
 					company_currency = record.company_id.currency_id
 					self.approve_token = self.approve_token if self.approve_token else str(uuid.uuid4())
@@ -288,11 +290,12 @@ class AccountInvoice(models.Model):
 
 		template.attachment_ids = [(6, 0, attach_ids)]
 
-		lang = get_lang(self.env)
-		if template and template.lang:
-			lang = template._render_template(template.lang, 'account.move', self.id)
-		else:
-			lang = lang.code
+		lang = False
+		if template:
+			lang = template._render_lang(self.ids)[self.id]
+		if not lang:
+			lang = get_lang(self.env).code
+
 		compose_form = self.env.ref('account.account_invoice_send_wizard_form', raise_if_not_found=False)
 		ctx = dict(
 			default_model='account.move',
