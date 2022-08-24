@@ -333,8 +333,8 @@
             </cac:TaxSubtotal>
             {% endfor %}
          </cac:TaxTotal>
-      {% endfor %}
       {% endif %}
+      {% endfor %}
       {% for WithholdingTaxTotalID, WithholdingTaxTotal in InvoiceLine.WithholdingTaxesTotal.items() %}
       <cac:WithholdingTaxTotal>
          <cbc:TaxAmount currencyID="{{DocumentCurrencyCode}}">{{'{:.2f}'.format(WithholdingTaxTotal.total)}}</cbc:TaxAmount>
