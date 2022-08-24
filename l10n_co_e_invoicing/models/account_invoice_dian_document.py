@@ -34,7 +34,6 @@ import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
-
 DIAN = {'wsdl-hab': 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc?wsdl',
         'wsdl': 'https://vpfe.dian.gov.co/WcfDianCustomerServices.svc?wsdl',
         'catalogo-hab': 'https://catalogo-vpfe-hab.dian.gov.co/Document/FindDocument?documentKey={}&partitionKey={}&emissionDate={}',
@@ -76,6 +75,7 @@ class AccountInvoiceDianDocument(models.Model):
     profile_execution_id = fields.Selection(string='Destination Environment of Document', related='company_id.profile_execution_id', store=False)
     type_account = fields.Selection([('debit', 'Debit Note'),
                                      ('credit', 'Credit Note'),
+                                     ('support_document', 'Documento Soporte'),
                                      ('invoice', 'Invoice')])
 
     def state_to_cancel(self):
@@ -94,44 +94,75 @@ class AccountInvoiceDianDocument(models.Model):
             'target': 'current'}
 
     def _generate_qr_code(self):
-        einvoicing_taxes = self.invoice_id._get_einvoicing_taxes()
-        try:
-            ValImp1 = einvoicing_taxes['TaxesTotal']['01']['total']
-        except:
-            ValImp1 = 0
-        try:
-            ValImp2 = einvoicing_taxes['TaxesTotal']['04']['total']
-        except:
-            ValImp2 = 0
-        try:
-            ValImp3 = einvoicing_taxes['TaxesTotal']['03']['total']
-        except:
-            ValImp3 = 0
+        if self.invoice_id.type in ('out_invoice', 'out_refund'):
+            einvoicing_taxes = self.invoice_id._get_einvoicing_taxes()
+            try:
+                ValImp1 = einvoicing_taxes['TaxesTotal']['01']['total']
+            except:
+                ValImp1 = 0
+            try:
+                ValImp2 = einvoicing_taxes['TaxesTotal']['04']['total']
+            except:
+                ValImp2 = 0
+            try:
+                ValImp3 = einvoicing_taxes['TaxesTotal']['03']['total']
+            except:
+                ValImp3 = 0
 
-        ValFac = self.invoice_id.amount_untaxed
-        ValOtroIm = ValImp2 - ValImp3
-        ValTolFac = ValFac + ValImp1 + ValImp2 + ValImp3
-        date_format = str(self.invoice_id.create_date)[0:19]
-        create_date = datetime.strptime(date_format, '%Y-%m-%d %H:%M:%S')
-        create_date = create_date.replace(tzinfo=timezone('UTC'))
-        nit_fac = self.company_id.partner_id.identification_document
-        nit_adq = self.invoice_id.partner_id.identification_document
-        cufe = self.cufe_cude
-        number = self.invoice_id.name
+            ValFac = self.invoice_id.amount_untaxed
+            ValOtroIm = ValImp2 - ValImp3
+            ValTolFac = ValFac + ValImp1 + ValImp2 + ValImp3
+            date_format = str(self.invoice_id.create_date)[0:19]
+            create_date = datetime.strptime(date_format, '%Y-%m-%d %H:%M:%S')
+            create_date = create_date.replace(tzinfo=timezone('UTC'))
+            nit_fac = self.company_id.partner_id.identification_document
+            nit_adq = self.invoice_id.partner_id.identification_document
+            cufe = self.cufe_cude
+            number = self.invoice_id.name
 
-        qr_data = "NumFac: " + number if number else 'NO_VALIDADA'
+            qr_data = "NumFac: " + number if number else 'NO_VALIDADA'
 
-        qr_data += "\nNitFac: " + nit_fac if nit_fac else ''
-        qr_data += "\nNitAdq: " + nit_adq if nit_adq else ''
-        qr_data += "\nValFac: " + '{:.2f}'.format(ValFac)
-        qr_data += "\nValIva: " + '{:.2f}'.format(ValImp1)
-        qr_data += "\nValOtroIm: " + '{:.2f}'.format(ValOtroIm)
-        qr_data += "\nValTolFac: " + '{:.2f}'.format(ValTolFac)
-        qr_data += "\nCUFE: " + cufe if cufe else ''
-        qr_data += "\n\n" + self.invoice_url if self.invoice_url else ''
+            qr_data += "\nNitFac: " + nit_fac if nit_fac else ''
+            qr_data += "\nNitAdq: " + nit_adq if nit_adq else ''
+            qr_data += "\nValFac: " + '{:.2f}'.format(ValFac)
+            qr_data += "\nValIva: " + '{:.2f}'.format(ValImp1)
+            qr_data += "\nValOtroIm: " + '{:.2f}'.format(ValOtroIm)
+            qr_data += "\nValTolFac: " + '{:.2f}'.format(ValTolFac)
+            qr_data += "\nCUFE: " + cufe if cufe else ''
+            qr_data += "\n\n" + self.invoice_url if self.invoice_url else ''
+
+        else:
+            einvoicing_taxes = self.invoice_id._get_einvoicing_taxes()
+            try:
+                ValImp1 = einvoicing_taxes['TaxesTotal']['01']['total']
+            except:
+                ValImp1 = 0
+
+            ValFac = self.invoice_id.amount_untaxed
+            ValTolFac = ValFac + ValImp1
+            date_format = str(self.invoice_id.create_date)[0:19]
+            create_date = datetime.strptime(date_format, '%Y-%m-%d %H:%M:%S')
+            create_date = create_date.replace(tzinfo=timezone('UTC'))
+            IssueDate = self.invoice_id.invoice_date
+            IssueTime = create_date.astimezone(
+                timezone('America/Bogota')).strftime('%H:%M:%S-05:00')
+            nit_fac = self.company_id.partner_id.identification_document
+            nit_adq = self.invoice_id.partner_id.identification_document
+            cufe = self.cufe_cude
+            number = self.invoice_id.name
+
+            qr_data = "NumDS: " + number if number else 'NO_VALIDADA'
+            qr_data += "\nFecDS: " + str(IssueDate) if IssueDate else ''
+            qr_data += "\nHorDS: " + str(IssueTime) if IssueTime else ''
+            qr_data += "\nNumSNO: " + nit_fac if nit_fac else ''
+            qr_data += "\nNITABS: " + nit_adq if nit_adq else ''
+            qr_data += "\nValDS: " + '{:.2f}'.format(ValFac)
+            qr_data += "\nValIva: " + '{:.2f}'.format(ValImp1)
+            qr_data += "\nValTolDS: " + '{:.2f}'.format(ValTolFac)
+            qr_data += "\nCUDS: " + cufe if cufe else ''
+            qr_data += "\n" + self.invoice_url if self.invoice_url else ''
 
         self.qr_image = global_functions.get_qr_code(qr_data)
-
 
     def _get_GetStatus_values(self):
         xml_soap_values = global_functions.get_xml_soap_values(
@@ -140,8 +171,6 @@ class AccountInvoiceDianDocument(models.Model):
 
         xml_soap_values['trackId'] = self.cufe_cude
         return xml_soap_values
-
-
 
     def action_GetStatus(self):
         wsdl = DIAN['wsdl-hab']
@@ -168,7 +197,6 @@ class AccountInvoiceDianDocument(models.Model):
             raise ValidationError(response.status_code)
 
         return True
-
 
     def _get_pdf_file(self):
         template = self.env['ir.actions.report'].browse(self.company_id.report_template.id)
@@ -236,7 +264,6 @@ class AccountInvoiceDianDocument(models.Model):
         self.write({'mail_sent': True})
         return True
 
-
     def _get_status_response(self, response, send_mail):
         b = "http://schemas.datacontract.org/2004/07/DianResponse"
         c = "http://schemas.microsoft.com/2003/10/Serialization/Arrays"
@@ -256,14 +283,11 @@ class AccountInvoiceDianDocument(models.Model):
                     self.write({'state': 'done'})
 
                     if self.get_status_zip_status_code != '00':
-                        if (self.invoice_id.type == "out_invoice"
-                            and not self.invoice_id.refund_type):
+                        if (self.invoice_id.type == "out_invoice" and not self.invoice_id.refund_type):
                             self.company_id.out_invoice_sent += 1
-                        elif (self.invoice_id.type == "out_refund"
-                              and self.invoice_id.refund_type != "debit"):
+                        elif (self.invoice_id.type == "out_refund" and self.invoice_id.refund_type != "debit"):
                             self.company_id.out_refund_sent += 1
-                        elif (self.invoice_id.type == "out_invoice"
-                              and self.invoice_id.refund_type == "debit"):
+                        elif (self.invoice_id.type == "out_invoice" and self.invoice_id.refund_type == "debit"):
                             self.company_id.out_refund_sent += 1
 
                 status_code = element.text
@@ -338,7 +362,6 @@ class AccountInvoiceDianDocument(models.Model):
 
         return True
 
-
     def _set_filenames(self):
         #nnnnnnnnnn: NIT del Facturador Electrónico sin DV, de diez (10) dígitos
         # alineados a la derecha y relleno con ceros a la izquierda.
@@ -374,6 +397,9 @@ class AccountInvoiceDianDocument(models.Model):
         elif self.invoice_id.type == 'out_invoice' and self.invoice_id.refund_type == 'debit':
             xml_filename_prefix = 'nd'
             dddddddd = str(out_refund_sent + 1).zfill(8)
+        elif self.invoice_id.type == 'in_invoice':
+            xml_filename_prefix = 'ds'
+            dddddddd = str(out_invoice_sent + 1).zfill(8)
 
 
         # elif self.invoice_id.type == 'out_refund':
@@ -396,7 +422,140 @@ class AccountInvoiceDianDocument(models.Model):
             'xml_filename': xml_filename_prefix + nnnnnnnnnnpppaadddddddd + '.xml',
             'zipped_filename': 'z' + znnnnnnnnnnpppaadddddddd + '.zip'})
 
+    def _get_xml_suppplier_values(self, ClTec):
+        msg7 = _('The Incoterm is not defined for this export type invoice')
 
+        active_dian_resolution = self.invoice_id._get_active_dian_resolution()
+        einvoicing_taxes = self.invoice_id._get_einvoicing_taxes()
+        date_format = str(self.invoice_id.create_date)[0:19]
+        create_date = datetime.strptime(date_format, '%Y-%m-%d %H:%M:%S')
+        create_date = create_date.replace(tzinfo=timezone('UTC'))
+        ID = self.invoice_id.name
+        IssueDate = self.invoice_id.invoice_date
+        IssueTime = create_date.astimezone(
+            timezone('America/Bogota')).strftime('%H:%M:%S-05:00')
+
+        LossRiskResponsibilityCode = self.invoice_id.invoice_incoterm_id.code or ''
+        LossRisk = self.invoice_id.invoice_incoterm_id.name or ''
+        if self.invoice_id.invoice_type_code == '02':
+            if not self.invoice_id.invoice_incoterm_id:
+                raise UserError(msg7)
+            elif not self.invoice_id.invoice_incoterm_id.name or not self.invoice_id.invoice_incoterm_id.code:
+                raise UserError('Incoterm is not properly parameterized')
+            else:
+                LossRiskResponsibilityCode = self.invoice_id.invoice_incoterm_id.code
+                LossRisk = self.invoice_id.invoice_incoterm_id.name
+
+        supplier = self.company_id.partner_id
+        customer = self.invoice_id.partner_id
+        NitOFE = supplier.identification_document
+        NitAdq = customer.identification_document
+
+        ClTec = False
+        SoftwarePIN = False
+        IdSoftware = self.company_id.software_id
+
+        if self.invoice_id.type == 'out_invoice' and not self.invoice_id.refund_type:
+            ClTec = active_dian_resolution['technical_key']
+        else:
+            SoftwarePIN = self.company_id.software_pin
+
+        TipoAmbie = self.company_id.profile_execution_id
+
+        if TipoAmbie == '1':
+            QRCodeURL = DIAN['catalogo']
+        else:
+            QRCodeURL = DIAN['catalogo-hab']
+
+        ValFac = self.invoice_id.amount_untaxed
+        try:
+            ValImp1 = einvoicing_taxes['TaxesTotal']['01']['total']
+        except:
+            ValImp1 = 0
+        try:
+            ValImp2 = einvoicing_taxes['TaxesTotal']['04']['total']
+        except:
+            ValImp2 = 0
+        try:
+            ValImp3 = einvoicing_taxes['TaxesTotal']['03']['total']
+        except:
+            ValImp3 = 0
+        TaxInclusiveAmount = ValFac + ValImp1 + ValImp2 + ValImp3
+        # El valor a pagar puede verse afectado, por anticipos, y descuentos y
+        # cargos a nivel de factura
+        PayableAmount = TaxInclusiveAmount
+        cufe_cude = global_functions.get_cuds(
+            ID,
+            IssueDate,
+            IssueTime,
+            str('{:.2f}'.format(ValFac)),
+            '01',
+            str('{:.2f}'.format(ValImp1)),
+            str('{:.2f}'.format(TaxInclusiveAmount)),  # self.invoice_id.amount_total
+            NitAdq,
+            NitOFE,
+            SoftwarePIN,
+            TipoAmbie)
+        software_security_code = global_functions.get_software_security_code(
+            IdSoftware,
+            self.company_id.software_pin,
+            ID)
+        partition_key = 'co|' + str(IssueDate).split('-')[2] + '|' + cufe_cude['CUFE/CUDE'][:2]
+        emission_date = str(IssueDate).replace('-', '')
+        QRCodeURL = QRCodeURL.format(cufe_cude['CUFE/CUDE'], partition_key, emission_date)
+
+        self.write({
+            'invoice_url': QRCodeURL,
+            'cufe_cude_uncoded': cufe_cude['CUFE/CUDEUncoded'],
+            'cufe_cude': cufe_cude['CUFE/CUDE'],
+            'software_security_code_uncoded':
+                software_security_code['SoftwareSecurityCodeUncoded'],
+            'software_security_code':
+                software_security_code['SoftwareSecurityCode']})
+        return {
+            'InvoiceAuthorization': active_dian_resolution['resolution_number'],
+            'StartDate': active_dian_resolution['date_from'],
+            'EndDate': active_dian_resolution['date_to'],
+            'Prefix': active_dian_resolution['prefix'],
+            'From': active_dian_resolution['number_from'],
+            'To': active_dian_resolution['number_to'],
+            'ProviderIDschemeID': supplier.check_digit,
+            'ProviderIDschemeName': supplier.document_type_id.code,
+            'ProviderID': NitOFE,
+            'NitAdquiriente': NitAdq,
+            'SoftwareID': IdSoftware,
+            'SoftwareSecurityCode': software_security_code['SoftwareSecurityCode'],
+            'QRCodeURL': QRCodeURL,
+            'ProfileExecutionID': TipoAmbie,
+            'ID': ID,
+            'UUID': cufe_cude['CUFE/CUDE'],
+            'IssueDate': IssueDate,
+            'IssueTime': IssueTime,
+            'LineCountNumeric': len(self.invoice_id.invoice_line_ids.filtered(
+                lambda x: x.display_type not in ('line_section', 'line_note'))),
+            'DocumentCurrencyCode': self.invoice_id.currency_id.name,
+            'Delivery': customer._get_delivery_values(),
+            'DeliveryTerms': {'LossRiskResponsibilityCode': LossRiskResponsibilityCode, 'LossRisk': LossRisk},
+            'AccountingSupplierParty': supplier._get_accounting_partner_party_values(self.company_id),
+            'AccountingCustomerParty': customer._get_accounting_partner_party_values(self.company_id),
+            # TODO: No esta completamente calro los datos de que tercero son
+            'TaxRepresentativeParty': supplier._get_tax_representative_party_values(),
+            'InformationContentProviderParty': self.invoice_id.mandante_id._get_tax_representative_party_values() if self.invoice_id.mandante_id else {},
+            'PaymentMeansID': self.invoice_id.payment_mean_id.code,
+            'PaymentMeansCode': self.invoice_id.payment_mean_code_id.code or '10',
+            # 'PaymentMeansCode': self.invoice_id.payment_mean_code_id,
+            # 'PaymentDueDate': self.invoice_id.date_due,
+            'DueDate': self.invoice_id.invoice_date_due,
+            'PaymentExchangeRate': self.invoice_id._get_payment_exchange_rate(),
+            'PaymentDueDate': self.invoice_id.invoice_date_due,
+            'TaxesTotal': einvoicing_taxes['TaxesTotal'],
+            'WithholdingTaxesTotal': einvoicing_taxes['WithholdingTaxesTotal'],
+            'LineExtensionAmount': '{:.2f}'.format(self.invoice_id.amount_untaxed),
+            'TaxExclusiveAmount': '{:.2f}'.format(self.invoice_id.amount_untaxed),
+            'TaxInclusiveAmount': '{:.2f}'.format(TaxInclusiveAmount),  # ValTot
+            'PayableAmount': '{:.2f}'.format(PayableAmount),
+            'OrderReference': self.invoice_id.orden_compra or '',
+        }
 
     def _get_xml_values(self, ClTec):
         msg7 = _('The Incoterm is not defined for this export type invoice')
@@ -537,6 +696,16 @@ class AccountInvoiceDianDocument(models.Model):
             'OrderReference': self.invoice_id.orden_compra or '',
             }
 
+    def _get_accuse_recibo_values(self):
+        xml_values = self._get_xml_suppplier_values(False)
+        xml_values['CustomizationID'] = self.invoice_id.operation_type
+        active_dian_resolution = self.invoice_id._get_active_dian_resolution()
+        xml_values['InvoiceControl'] = active_dian_resolution
+        xml_values['InvoiceTypeCode'] = self.invoice_id.invoice_type_code
+        xml_values['InvoiceLines'] = self.invoice_id._get_invoice_lines()
+        xml_values['UUID'] = self.invoice_id.cufe_cude
+        return xml_values
+
     def _get_accepted_values(self):
         xml_values = self._get_xml_values(False)
         xml_values['CustomizationID'] = self.invoice_id.operation_type
@@ -634,7 +803,6 @@ class AccountInvoiceDianDocument(models.Model):
         xml_values['CreditNoteLines'] = self.invoice_id._get_invoice_lines()
         return xml_values
 
-
     def _get_debit_note_values(self):
         xml_values = self._get_xml_values(False)
         if self.invoice_id.operation_type == '10' or self.invoice_id.debit_origin_id:
@@ -679,10 +847,12 @@ class AccountInvoiceDianDocument(models.Model):
         return xml_values
 
     def accuse_recibo(self):
-        accepted_xml_without_signature = global_functions.get_template_xml(self._get_accepted_values(), 'AceptacionExpresa')
+        accepted_xml_without_signature = global_functions.get_template_xml(self._get_accuse_recibo_values(),'AcuseRecibo')
         accepted_xml_with_signature = global_functions.get_xml_with_signature(accepted_xml_without_signature, self.company_id.signature_policy_url, self.company_id.signature_policy_description, self.company_id.certificate_file, self.company_id.certificate_password)
         self.write({'exp_accepted_file': b64encode(self._get_acp_zipped_file(accepted_xml_with_signature)).decode("utf-8", "ignore")})
         self.action_sent_accepted_file(self.exp_accepted_file)
+        self.action_set_files()
+        self.action_sent_zipped_file()
 
     def express_acceptation(self):
         accepted_xml_without_signature = global_functions.get_template_xml(self._get_accepted_values(),'AceptacionExpresa')
@@ -716,6 +886,8 @@ class AccountInvoiceDianDocument(models.Model):
             xml_without_signature = global_functions.get_template_xml(
                 self._get_debit_note_values(),
                 'DebitNote')
+        elif self.invoice_id.type == "in_invoice":
+            xml_without_signature = global_functions.get_template_xml(self._get_support_values(), 'SupportDocument')
 
         xml_with_signature = global_functions.get_xml_with_signature(
             xml_without_signature,
@@ -750,7 +922,6 @@ class AccountInvoiceDianDocument(models.Model):
 
         self.write({'xml_file': b64encode(self._get_xml_file()).decode("utf-8", "ignore")})
         self.write({'zipped_file': b64encode(self._get_zipped_file()).decode("utf-8", "ignore")})
-
 
     def _get_SendTestSetAsync_values(self):
         xml_soap_values = global_functions.get_xml_soap_values(
@@ -880,8 +1051,6 @@ class AccountInvoiceDianDocument(models.Model):
 
         return True
 
-
-
     def sent_zipped_file(self):
         b = "http://schemas.datacontract.org/2004/07/UploadDocumentResponse"
 
@@ -925,7 +1094,6 @@ class AccountInvoiceDianDocument(models.Model):
         xml_soap_values['trackId'] = self.zip_key
 
         return xml_soap_values
-
 
     def _get_GetStatus(self, send_mail):
         msg1 = _("Unknown Error,\nStatus Code: %s,\nReason: %s"
