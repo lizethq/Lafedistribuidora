@@ -290,11 +290,11 @@ class AccountInvoice(models.Model):
 
 		template.attachment_ids = [(6, 0, attach_ids)]
 
-		lang = False
-		if template:
-			lang = template._render_lang(self.ids)[self.id]
-		if not lang:
-			lang = get_lang(self.env).code
+		lang = get_lang(self.env)
+		if template and template.lang:
+			lang = template._render_template(template.lang, 'account.move', self.id)
+		else:
+			lang = lang.code
 
 		compose_form = self.env.ref('account.account_invoice_send_wizard_form', raise_if_not_found=False)
 		ctx = dict(
