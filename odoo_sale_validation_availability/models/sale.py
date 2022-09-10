@@ -46,6 +46,9 @@ class SaleOrderLine(models.Model):
     quantity_forecasted = fields.Float(
         string="Cantidad Proyectada"
     )
+    qtty_available = fields.Float(
+        string="Cantidad Disponible"
+    )
 
     def _create_available_log(self):
         log = self.env['product.available.log']
@@ -82,6 +85,7 @@ class SaleOrderLine(models.Model):
         if self.product_id:
             if self.order_id.state == 'draft':
                 self.quantity_available = self.product_id.qty_available - self.product_uom_qty
+                self.qtty_available = self.product_id.qty_available
 
 
     """Overwrite"""

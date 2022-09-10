@@ -8,7 +8,8 @@
       <field name="arch" type="xml">
         
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="before">
-            <field name="quantity_available" width="0.1%%"/>
+            <field name="qtty_available" width="0.1%%"/>
+            <field name="quantity_available" width="0.1%%" invisible="1"/>
             <field name="quantity_on_hand" width="0.1%%"/>
             <field name="quantity_forecasted" width="0.1%%"/>
         </xpath>
