@@ -83,7 +83,7 @@
               <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='free_qty_today']" position="attributes">
                 <attribute name="invisible">False</attribute>
                 <attribute name="string">Disponibilidad</attribute>
-            </xpath>
+              </xpath>
           </field>
      </record>
 
