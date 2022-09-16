@@ -8,7 +8,7 @@
       <field name="arch" type="xml">
         
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="before">
-            <field name="qtty_available" width="0.1%%"/>
+            <field name="qtty_available" width="0.1%%" invisible="1"/>
             <field name="quantity_available" width="0.1%%" invisible="1"/>
             <field name="quantity_on_hand" width="0.1%%"/>
             <field name="quantity_forecasted" width="0.1%%"/>
@@ -64,17 +64,28 @@
           <field name="name" width="1%%"/>
         </xpath>
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree" position="attributes">
-            <!--<attribute name="decoration-danger">product_uom_qty >= quantity_available</attribute>-->
-            <attribute name="decoration-danger">quantity_available &lt;=0 and quantity_on_hand &lt;=0</attribute>
+            <attribute name="decoration-danger">qtty_available &lt; 0</attribute>
         </xpath>
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree" position="attributes">
-            <attribute name="decoration-warning">product_uom_qty &gt; quantity_on_hand</attribute>
+            <attribute name="decoration-warning">qtty_available == 0</attribute>
         </xpath>
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree" position="attributes">
-            <attribute name="decoration-success">quantity_on_hand &gt;= product_uom_qty</attribute>
+            <attribute name="decoration-success">qtty_available > 0</attribute>
         </xpath>
       </field>
     </record>
+
+    <record model="ir.ui.view" id="sale_order_line_qty_inherit">
+      <field name="name">sale order line qty inherit</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock_qty"/>
+          <field name="arch" type="xml">
+              <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='free_qty_today']" position="attributes">
+                <attribute name="invisible">False</attribute>
+                <attribute name="string">Disponibilidad</attribute>
+            </xpath>
+          </field>
+     </record>
 
     <!--<record id="view_sale_order_confirm_inherit_form" model="ir.ui.view">
             <field name="name">sale.order.confirm.inherit.form</field>

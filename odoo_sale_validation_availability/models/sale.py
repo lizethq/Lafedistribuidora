@@ -19,14 +19,14 @@ class SaleOrder(models.Model):
 
     def action_sale_ok(self):
         for record in self:
-            if any([line <= 0 for line in record.order_line.mapped('quantity_on_hand')]):
+            if any([line <= 0 for line in record.order_line.mapped('qtty_available')]):
                 raise ValidationError("No se puede confirmar la orden por lineas de producto sin disponibilidad")
 
         return super(SaleOrder, self).action_sale_ok()
 
     def _action_confirm(self):
         for record in self:
-            if any([line <= 0 for line in record.order_line.mapped('quantity_on_hand')]):
+            if any([line <= 0 for line in record.order_line.mapped('qtty_available')]):
                 raise ValidationError("No se puede confirmar la orden por lineas de producto sin disponibilidad")
 
         return super(SaleOrder, self)._action_confirm()
@@ -85,7 +85,7 @@ class SaleOrderLine(models.Model):
         if self.product_id:
             if self.order_id.state == 'draft':
                 self.quantity_available = self.product_id.qty_available - self.product_uom_qty
-                self.qtty_available = self.product_id.qty_available
+                self.qtty_available = self.free_qty_today - self.product_uom_qty
 
 
     """Overwrite"""
