@@ -8,10 +8,10 @@
       <field name="arch" type="xml">
         
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="before">
-            <field name="qtty_available" width="0.1%%" invisible="1"/>
+            <field name="qtty_available" invisible="1"/>
             <field name="quantity_available" width="0.1%%" invisible="1"/>
-            <field name="quantity_on_hand" width="0.1%%"/>
-            <field name="quantity_forecasted" width="0.1%%"/>
+            <field name="quantity_on_hand" width="0.1%%" invisible="1"/>
+            <field name="quantity_forecasted" width="0.1%%" invisible="1"/>
         </xpath>
         
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="replace">
@@ -64,13 +64,13 @@
           <field name="name" width="1%%"/>
         </xpath>
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree" position="attributes">
-            <attribute name="decoration-danger">qtty_available &lt; 0</attribute>
+            <attribute name="decoration-danger">free_qty_today &lt;= 0</attribute>
         </xpath>
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree" position="attributes">
-            <attribute name="decoration-warning">qtty_available == 0</attribute>
+            <attribute name="decoration-warning">free_qty_today &lt; product_uom_qty</attribute>
         </xpath>
         <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree" position="attributes">
-            <attribute name="decoration-success">qtty_available > 0</attribute>
+            <attribute name="decoration-success">free_qty_today >= product_uom_qty</attribute>
         </xpath>
       </field>
     </record>
