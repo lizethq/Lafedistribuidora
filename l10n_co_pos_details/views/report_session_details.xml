@@ -73,11 +73,11 @@
                                 <tr>
                                     <td><span t-field="order.name" /></td>
                                     <td><span t-esc="item" /></td>
-                                    <td><span t-esc="subtotal" /></td>
-                                    <td><span t-esc="iva19" /></td>
-                                    <td><span t-esc="iva5" /></td>
-                                    <td><span t-esc="exentos" /></td>
-                                    <td><span t-esc="totalfactura" /></td>
+                                    <td><span t-esc="subtotal" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td><span t-esc="iva19" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td><span t-esc="iva5" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td><span t-esc="exentos" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td><span t-esc="totalfactura" t-options='{"widget": "float", "precision": 2}'/></td>
                                 </tr>
                             </tbody>
                         </t>
@@ -97,10 +97,10 @@
                                  <tr>
                                     <td><span t-esc="len(o.order_ids)"/></td>
                                     <td><span t-esc="totalitem" /></td>
-                                    <td><span t-esc="totalimportebase" /></td>
-                                    <td><span t-esc="totalimpuestos" /></td>
-                                    <td><span t-esc="totalexentos" /></td>
-                                    <td><span t-esc="totalfacturas" /></td>
+                                    <td><span t-esc="totalimportebase" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td><span t-esc="totalimpuestos" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td><span t-esc="totalexentos" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td><span t-esc="totalfacturas" t-options='{"widget": "float", "precision": 2}'/></td>
                                 </tr>
                             </tbody>
                      </table>
@@ -120,15 +120,15 @@
                             <tbody>
                                  <tr>
                                     <td>Efectivo</td>
-                                    <td><span t-esc="efectivo" /></td>
+                                    <td><span t-esc="efectivo" t-options='{"widget": "float", "precision": 2}'/></td>
                                 </tr>
                                  <tr>
                                     <td>Banco</td>
-                                    <td><span t-esc="bancolombia" /></td>
+                                    <td><span t-esc="bancolombia" t-options='{"widget": "float", "precision": 2}'/></td>
                                 </tr>
                                  <tr>
                                     <td>Datafono</td>
-                                    <td><span t-esc="datafono" /></td>
+                                    <td><span t-esc="datafono" t-options='{"widget": "float", "precision": 2}'/></td>
                                 </tr>
                             </tbody>
                      </table>
