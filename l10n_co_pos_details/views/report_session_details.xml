@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+<template id="report_session_details">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Sesión: <span t-field="o.name" /></h2>
+
+                    <div class="row mt32 mb32">
+                        <div class="col-auto mw-100 mb-3">
+                            <strong>Impreso Por</strong>:<br />
+                            <t t-set="usuario_imprime" t-value="o.user_print()" />
+                            <span t-esc="usuario_imprime" />
+                        </div>
+                        <div class="col-auto mw-100 mb-3">
+                            <strong>Point of Sale</strong>:<br />
+                            <span t-field="o.config_id" />
+                        </div>
+                        <div class="col-auto mw-100 mb-3">
+                            <strong>Fecha Inicio</strong>:<br />
+                            <span t-field="o.start_at" />
+                        </div>
+                        <div class="col-auto mw-100 mb-3">
+                            <strong>Fecha Cierre</strong>:<br />
+                            <span t-field="o.stop_at" />
+                        </div>
+                    </div>
+
+
+
+                    <h4>Orden Pos: <span t-esc="o.order_ids[-1]['name']"/> Hasta: <span t-esc="o.order_ids[0]['name']"/> </h4>
+                    <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>Orden</th>
+                                    <th>Item</th>
+                                    <th>Sub.Total</th>
+                                    <th>Iva 19%</th>
+                                    <th>Iva 5%</th>
+                                    <th>Exentos</th>
+                                    <th>T.Factura</th>
+                                </tr>
+                            </thead>
+                    <t t-set="totalitem" t-value="0"/>
+                    <t t-set="totalimportebase" t-value="0"/>
+                    <t t-set="totalimpuestos" t-value="0"/>
+                    <t t-set="totalexentos" t-value="0"/>
+                    <t t-set="totalfacturas" t-value="0"/>
+                    <t t-foreach="o.order_ids" t-as="order">
+                            <tbody>
+                                <t t-set="item" t-value="0"/>
+                                <t t-set="subtotal" t-value="0"/>
+                                <t t-set="impbase" t-value="0"/>
+                                <t t-set="iva19" t-value="0"/>
+                                <t t-set="iva5" t-value="0"/>
+                                <t t-set="exentos" t-value="0"/>
+                                <t t-set="totalfactura" t-value="0"/>
+                                <t t-foreach="order.lines" t-as="line">
+                                    <t t-set="item" t-value="(line.qty + item)" />
+                                    <t t-set="datos" t-value="line._compute_tax_report()" />
+                                    <t t-set="iva19" t-value="(datos['iva19'])" />
+                                    <t t-set="iva5" t-value="(datos['iva5'])" />
+                                    <t t-set="exentos" t-value="(datos['exento'])" />
+                                    <t t-set="subtotal" t-value="(line.price_subtotal + subtotal)" />
+                                    <t t-set="totalfactura" t-value="(order.amount_total)" />
+                                </t>
+                                <t t-set="totalitem" t-value="(totalitem + item)" />
+                                <t t-set="totalimportebase" t-value="(totalimportebase + subtotal)" />
+                                <t t-set="totalfacturas" t-value="(totalfacturas + totalfactura)" />
+                                <t t-set="totalimpuestos" t-value="(totalimpuestos + iva19 + iva5)" />
+                                <t t-set="totalexentos" t-value="(totalexentos + exentos)" />
+                                <tr>
+                                    <td><span t-field="order.name" /></td>
+                                    <td><span t-esc="item" /></td>
+                                    <td><span t-esc="subtotal" /></td>
+                                    <td><span t-esc="iva19" /></td>
+                                    <td><span t-esc="iva5" /></td>
+                                    <td><span t-esc="exentos" /></td>
+                                    <td><span t-esc="totalfactura" /></td>
+                                </tr>
+                            </tbody>
+                        </t>
+                    </table>
+                     <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>Total Orden</th>
+                                    <th>Total Item</th>
+                                    <th>Importe Base</th>
+                                    <th>Impuesto</th>
+                                    <th>Exentos</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 <tr>
+                                    <td><span t-esc="len(o.order_ids)"/></td>
+                                    <td><span t-esc="totalitem" /></td>
+                                    <td><span t-esc="totalimportebase" /></td>
+                                    <td><span t-esc="totalimpuestos" /></td>
+                                    <td><span t-esc="totalexentos" /></td>
+                                    <td><span t-esc="totalfacturas" /></td>
+                                </tr>
+                            </tbody>
+                     </table>
+
+                    <h4>Medios de pago</h4>
+
+                    <t t-set="efectivo" t-value="o.efectivo()" />
+                    <t t-set="datafono" t-value="o.datafono()" />
+                    <t t-set="bancolombia" t-value="o.bancolombia()" />
+                     <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>Total Orden</th>
+                                    <th>Total Item</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 <tr>
+                                    <td>Efectivo</td>
+                                    <td><span t-esc="efectivo" /></td>
+                                </tr>
+                                 <tr>
+                                    <td>Banco</td>
+                                    <td><span t-esc="bancolombia" /></td>
+                                </tr>
+                                 <tr>
+                                    <td>Datafono</td>
+                                    <td><span t-esc="datafono" /></td>
+                                </tr>
+                            </tbody>
+                     </table>
+
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+     <report
+        id="action_report_l10n_co_pos_session_summary"
+        string="Detalle Sesion"
+        model="pos.session"
+        report_type="qweb-pdf"
+        name="l10n_co_pos_details.report_session_details"
+        file="l10n_co_pos_details.report_session_details"
+        />
+</odoo>
