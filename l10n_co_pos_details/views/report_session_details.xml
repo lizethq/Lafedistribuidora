@@ -111,12 +111,6 @@
                     <t t-set="datafono" t-value="o.datafono()" />
                     <t t-set="bancolombia" t-value="o.bancolombia()" />
                      <table class="table table-sm o_main_table">
-                            <thead>
-                                <tr>
-                                    <th>Total Orden</th>
-                                    <th>Total Item</th>
-                                </tr>
-                            </thead>
                             <tbody>
                                  <tr>
                                     <td>Efectivo</td>
