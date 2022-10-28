@@ -98,9 +98,9 @@
                                 <t t-foreach="order.lines" t-as="line">
                                     <t t-set="item" t-value="(line.qty + item)" />
                                     <t t-set="datos" t-value="line._compute_tax_report()" />
-                                    <t t-set="iva19" t-value="(datos['iva19'])" />
-                                    <t t-set="iva5" t-value="(datos['iva5'])" />
-                                    <t t-set="exentos" t-value="(datos['exento'])" />
+                                    <t t-set="iva19" t-value="(iva19 + datos['iva19'])" />
+                                    <t t-set="iva5" t-value="(iva5 + datos['iva5'])" />
+                                    <t t-set="exentos" t-value="(exentos + datos['exento'])" />
                                     <t t-set="subtotal" t-value="(line.price_subtotal + subtotal)" />
                                     <t t-set="totalfactura" t-value="(order.amount_total)" />
                                 </t>
@@ -165,6 +165,7 @@
                                 </tr>
                             </tbody>
                      </table>
+
 
                 </div>
             </t>
