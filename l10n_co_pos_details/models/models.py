@@ -36,8 +36,8 @@ class PosOrderLine(models.Model):
                 iva19 += data['amount']
             if data['name'] == 'IVA Ventas 5%':
                 iva5 += data['amount']
-            if data['name'] == 'IVA Exento':
-                iva5 += data['amount']
+            if data['name'] == 'IVA Excento':
+                exento += exento + price
 
         return {
             'iva19': iva19,
@@ -74,4 +74,11 @@ class PosSession(models.Model):
         for session in self:
             total_cash_payment = sum(session.order_ids.mapped('payment_ids').filtered(
                 lambda payment: payment.payment_method_id.name == 'Datafono').mapped('amount'))
+        return total_cash_payment
+
+    def credito(self):
+        total_cash_payment = 0
+        for session in self:
+            total_cash_payment = sum(session.order_ids.mapped('payment_ids').filtered(
+                lambda payment: payment.payment_method_id.name == 'Credito').mapped('amount'))
         return total_cash_payment

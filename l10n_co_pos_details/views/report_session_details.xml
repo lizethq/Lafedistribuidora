@@ -16,21 +16,15 @@
         </t>
 
         <t t-esc="company.update_scss()"/>
-
         <div class="header">
             <div class="row">
-                <div class="col-3">
-                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                <div class="col-2">
                 </div>
-                <div class="col-2 offset-2 text-center">
-                    <span t-esc="o.config_id.name"/>
+                <div class="col-4 offset-2 text-center">
+                    <h5><strong>Drogueria La Fe Mas</strong></h5>
+                    <h7><strong>Nit:900.803.927-8</strong></h7>
                 </div>
-                <div class="col-2 offset-3 text-right">
-                    <ul class="list-inline">
-                        <li class="list-inline-item"><span class="page"/></li>
-                        <li class="list-inline-item">/</li>
-                        <li class="list-inline-item"><span class="topage"/></li>
-                    </ul>
+                <div class="col-1 offset-3 text-right">
                 </div>
             </div>
         </div>
@@ -44,7 +38,9 @@
         <t t-foreach="docs" t-as="o">
             <t t-call="l10n_co_pos_details.internal_report_sale">
                 <div class="page">
+                    <h4>Informe de cierre:</h4>
                     <h2>Sesión: <span t-field="o.name" /></h2>
+                    <h5>Impreso del PC Dell optiplex 5490 serie G6DR1N3</h5>
 
                     <div class="row mt32 mb32">
                         <div class="col-auto mw-100 mb-3">
@@ -53,8 +49,8 @@
                             <span t-esc="usuario_imprime" />
                         </div>
                         <div class="col-auto mw-100 mb-3">
-                            <strong>Point of Sale</strong>:<br />
-                            <span t-field="o.config_id" />
+                            <strong>Fecha Informe</strong>:<br />
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
                         </div>
                         <div class="col-auto mw-100 mb-3">
                             <strong>Fecha Inicio</strong>:<br />
@@ -77,13 +73,14 @@
                                     <th>Sub.Total</th>
                                     <th>Iva 19%</th>
                                     <th>Iva 5%</th>
-                                    <th>Exentos</th>
+                                    <th>Excluidas</th>
                                     <th>T.Factura</th>
                                 </tr>
                             </thead>
                     <t t-set="totalitem" t-value="0"/>
                     <t t-set="totalimportebase" t-value="0"/>
-                    <t t-set="totalimpuestos" t-value="0"/>
+                    <t t-set="totalimpuestos19" t-value="0"/>
+                    <t t-set="totalimpuestos5" t-value="0"/>
                     <t t-set="totalexentos" t-value="0"/>
                     <t t-set="totalfacturas" t-value="0"/>
                     <t t-foreach="o.order_ids" t-as="order">
@@ -107,7 +104,8 @@
                                 <t t-set="totalitem" t-value="(totalitem + item)" />
                                 <t t-set="totalimportebase" t-value="(totalimportebase + subtotal)" />
                                 <t t-set="totalfacturas" t-value="(totalfacturas + totalfactura)" />
-                                <t t-set="totalimpuestos" t-value="(totalimpuestos + iva19 + iva5)" />
+                                <t t-set="totalimpuestos19" t-value="(totalimpuestos19 + iva19)" />
+                                <t t-set="totalimpuestos5" t-value="(totalimpuestos5 +  iva5)" />
                                 <t t-set="totalexentos" t-value="(totalexentos + exentos)" />
                                 <tr>
                                     <td><span t-field="order.name" /></td>
@@ -137,7 +135,8 @@
                                     <td><span t-esc="len(o.order_ids)"/></td>
                                     <td><span t-esc="totalitem" /></td>
                                     <td><span t-esc="totalimportebase" t-options='{"widget": "float", "precision": 2}'/></td>
-                                    <td><span t-esc="totalimpuestos" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td><span t-esc="totalimpuestos19" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td><span t-esc="totalimpuestos5" t-options='{"widget": "float", "precision": 2}'/></td>
                                     <td><span t-esc="totalexentos" t-options='{"widget": "float", "precision": 2}'/></td>
                                     <td><span t-esc="totalfacturas" t-options='{"widget": "float", "precision": 2}'/></td>
                                 </tr>
@@ -156,12 +155,16 @@
                                     <td><span t-esc="efectivo" t-options='{"widget": "float", "precision": 2}'/></td>
                                 </tr>
                                  <tr>
-                                    <td>Banco</td>
+                                    <td>Transferencias</td>
                                     <td><span t-esc="bancolombia" t-options='{"widget": "float", "precision": 2}'/></td>
                                 </tr>
                                  <tr>
                                     <td>Datafono</td>
                                     <td><span t-esc="datafono" t-options='{"widget": "float", "precision": 2}'/></td>
+                                </tr>
+                                <tr>
+                                    <td>Credito</td>
+                                    <td><span t-esc="credito" t-options='{"widget": "float", "precision": 2}'/></td>
                                 </tr>
                             </tbody>
                      </table>
