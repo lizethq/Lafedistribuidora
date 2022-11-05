@@ -36,7 +36,7 @@ class PosOrderLine(models.Model):
                 iva19 += data['amount']
             if data['name'] == 'IVA Ventas 5%':
                 iva5 += data['amount']
-            if data['name'] == 'IVA Excento':
+            if data['name'] == 'IVA Exento':
                 exento += exento + price
 
         return {
