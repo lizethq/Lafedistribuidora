@@ -148,6 +148,7 @@
                     <t t-set="efectivo" t-value="o.efectivo()" />
                     <t t-set="datafono" t-value="o.datafono()" />
                     <t t-set="bancolombia" t-value="o.bancolombia()" />
+                    <t t-set="credito" t-value="o.credito()" />
                      <table class="table table-sm o_main_table">
                             <tbody>
                                  <tr>
