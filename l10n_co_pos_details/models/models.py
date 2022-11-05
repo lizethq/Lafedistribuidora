@@ -27,6 +27,7 @@ class PosOrderLine(models.Model):
         fpos = self.order_id.fiscal_position_id
         tax_ids_after_fiscal_position = fpos.map_tax(self.tax_ids, self.product_id, self.order_id.partner_id) if fpos else self.tax_ids
         price = self.price_unit * (1 - (self.discount or 0.0) / 100.0)
+        precio_qty = self.price_subtotal
         taxes = tax_ids_after_fiscal_position.compute_all(price, self.order_id.pricelist_id.currency_id, self.qty, product=self.product_id, partner=self.order_id.partner_id)
         iva19 = 0
         iva5 = 0
@@ -37,7 +38,7 @@ class PosOrderLine(models.Model):
             if data['name'] == 'IVA Ventas 5%':
                 iva5 += data['amount']
             if data['name'] == 'IVA Exento':
-                exento += exento + price
+                exento += exento + precio_qty
 
         return {
             'iva19': iva19,
